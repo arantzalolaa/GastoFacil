@@ -1,0 +1,7 @@
+{
+  "name": "practica4REAL",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
