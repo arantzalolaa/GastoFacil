@@ -1,0 +1,71 @@
+<ion-content class="summary-content" [fullscreen]="false">
+  <section class="summary-wrapper">
+    <header class="summary-title-block" style="margin-top: 24px;">
+      <h1>Resumen</h1>
+      <p>Análisis de tus finanzas este mes</p>
+    </header>
+
+    <article class="total-summary-card">
+      <p>TOTAL ACUMULADO</p>
+      <h2>{{ totalAcumulado | currency: 'USD' : 'symbol' : '1.2-2' }}</h2>
+      <span>
+        <ion-icon name="trending-up-outline" aria-hidden="true"></ion-icon>
+        {{ variacionMesAnterior }}% más que el mes pasado
+      </span>
+    </article>
+
+    <article class="chart-card" aria-label="Gráfica circular de gastos">
+      <div class="donut-chart">
+        <div class="donut-center">
+          <span>Gastos</span>
+          <strong>100%</strong>
+        </div>
+      </div>
+    </article>
+
+    <article class="top-category-card">
+      <div class="top-category-icon">
+        <ion-icon [name]="categoriaPrincipal.icono" aria-hidden="true"></ion-icon>
+      </div>
+      <p>Categoría con más gastos</p>
+      <h3>{{ categoriaPrincipal.categoria }} ({{ categoriaPrincipal.porcentaje }}%)</h3>
+      <div class="progress-track">
+        <span [style.width.%]="categoriaPrincipal.porcentaje"></span>
+      </div>
+    </article>
+
+    <section class="category-breakdown">
+      <h2>DESGLOSE POR CATEGORÍA</h2>
+
+      <div class="category-list">
+        <article class="category-item" *ngFor="let item of desgloseCategorias">
+          <div class="category-icon" [ngClass]="categoriaClass(item.categoria)">
+            <ion-icon [name]="item.icono" aria-hidden="true"></ion-icon>
+          </div>
+
+          <div class="category-copy">
+            <strong>{{ item.categoria }}</strong>
+            <span>{{ item.porcentaje }}% del total</span>
+          </div>
+
+          <strong class="category-total">{{ item.total | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
+        </article>
+      </div>
+    </section>
+
+    <article class="feedback-card">
+      <div>
+        <strong>¡Vas por buen camino!</strong>
+        <p>
+          Has ahorrado un {{ ahorroSemanaAnterior }}% comparado con la semana anterior.
+          Mantén el enfoque en tu categoría de Comida.
+        </p>
+      </div>
+      <div class="feedback-visual" aria-hidden="true">
+        <span class="plate"></span>
+        <span class="coin coin-one"></span>
+        <span class="coin coin-two"></span>
+      </div>
+    </article>
+  </section>
+</ion-content>

@@ -1,0 +1,247 @@
+.scan-content {
+  --background: #f8fafc;
+}
+
+.scan-wrapper {
+  padding: 0 24px 128px;
+}
+
+.scanner-card {
+  border-radius: 36px;
+  box-shadow: 0 18px 38px rgb(15 23 42 / 0.16);
+  height: min(62vh, 560px);
+  margin-bottom: 28px;
+  overflow: hidden;
+  position: relative;
+}
+
+.camera-scene {
+  background:
+    radial-gradient(circle at 50% 26%, rgb(91 255 236 / 0.48), transparent 18%),
+    radial-gradient(circle at 72% 34%, rgb(4 103 200 / 0.35), transparent 22%),
+    linear-gradient(180deg, #102b31 0%, #1d484f 45%, #c7d0d2 46%, #e4ecee 100%);
+  height: 100%;
+  position: relative;
+}
+
+.phone-frame {
+  border: 7px solid rgb(8 21 31 / 0.82);
+  border-radius: 40px;
+  box-shadow: 0 0 0 4px rgb(255 255 255 / 0.16), 0 0 38px rgb(102 255 236 / 0.65);
+  height: 76%;
+  left: 50%;
+  position: absolute;
+  top: 8%;
+  transform: translateX(-50%);
+  width: 54%;
+}
+
+.receipt-paper {
+  background: #f8f6ef;
+  bottom: 18%;
+  box-shadow: 0 14px 26px rgb(0 0 0 / 0.28);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  left: 50%;
+  min-height: 220px;
+  padding: 24px 22px;
+  position: absolute;
+  transform: translateX(-50%) rotate(-1deg);
+  width: 31%;
+
+  span {
+    background: #4f565f;
+    border-radius: 999px;
+    display: block;
+    height: 5px;
+
+    &:nth-child(2),
+    &:nth-child(5) {
+      width: 72%;
+    }
+
+    &:nth-child(3),
+    &:nth-child(6) {
+      margin-left: auto;
+      width: 46%;
+    }
+  }
+}
+
+.scan-frame {
+  border: 6px solid var(--ion-color-primary);
+  border-radius: 48px;
+  inset: 16% 10% 18%;
+  opacity: 0.86;
+  position: absolute;
+
+  &::before,
+  &::after {
+    background: var(--ion-color-primary);
+    content: '';
+    height: 6px;
+    position: absolute;
+    top: -6px;
+    width: 24%;
+  }
+
+  &::before {
+    left: 0;
+  }
+
+  &::after {
+    right: 0;
+  }
+}
+
+.scan-hint {
+  background: rgb(0 0 0 / 0.58);
+  border-radius: 28px;
+  bottom: 72px;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 500;
+  left: 50%;
+  padding: 14px 24px;
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.camera-controls {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 24px;
+}
+
+.take-photo-button,
+.gallery-button,
+.ai-button {
+  --border-radius: 30px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  height: 66px;
+  margin: 0;
+  text-transform: none;
+
+  ion-icon {
+    font-size: 1.45rem;
+  }
+}
+
+.take-photo-button {
+  --background: var(--ion-color-primary);
+  --box-shadow: 0 12px 24px rgb(0 103 200 / 0.22);
+  --color: #ffffff;
+}
+
+.gallery-button {
+  --background: #f7f8fb;
+  --border-color: #d6d8df;
+  --border-width: 1px;
+  --color: var(--ion-color-primary);
+}
+
+.recent-capture {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 14px 30px rgb(15 23 42 / 0.06);
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+  min-height: 96px;
+  padding: 16px 18px;
+}
+
+.ticket-thumb {
+  align-items: center;
+  background: linear-gradient(145deg, #777, #b9b9b9);
+  border-radius: 8px;
+  display: flex;
+  flex: 0 0 64px;
+  height: 64px;
+  justify-content: center;
+  width: 64px;
+}
+
+.mini-ticket {
+  background: #f5f5f0;
+  border-radius: 4px;
+  height: 50px;
+  position: relative;
+  width: 30px;
+
+  &::before,
+  &::after {
+    background: #b5b5b5;
+    border-radius: 999px;
+    content: '';
+    left: 6px;
+    position: absolute;
+    right: 6px;
+  }
+
+  &::before {
+    box-shadow: 0 8px 0 #b5b5b5, 0 16px 0 #b5b5b5, 0 24px 0 #b5b5b5;
+    height: 3px;
+    top: 8px;
+  }
+
+  &::after {
+    bottom: 8px;
+    height: 3px;
+  }
+}
+
+.capture-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+
+  strong {
+    color: #282b32;
+    font-size: 1.12rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+
+  span {
+    color: #565a64;
+    font-size: 1.03rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.delete-capture {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: #c82332;
+  display: flex;
+  flex: 0 0 auto;
+  font-size: 1.5rem;
+  justify-content: center;
+  padding: 8px;
+}
+
+.ai-button {
+  --background: var(--ion-color-success-tint);
+  --box-shadow: 0 12px 24px rgb(98 239 173 / 0.24);
+  --color: #123f31;
+  margin-bottom: 32px;
+}
+
+.scan-footer-text {
+  color: #8d919b;
+  font-size: 1.12rem;
+  line-height: 1.45;
+  margin: 0 auto;
+  max-width: 330px;
+  text-align: center;
+}
