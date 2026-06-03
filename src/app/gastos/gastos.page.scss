@@ -1,5 +1,5 @@
 .expenses-content {
-  --background: #f8fafc;
+  --background: var(--bg-app);
 }
 
 .expenses-wrapper {
@@ -15,8 +15,8 @@ h1 {
 }
 
 .expenses-search {
-  --background: #f0f2f6;
-  --border-radius: 24px;
+  --background: var(--bg-input);
+  --border-radius: var(--radius-medium);
   --box-shadow: none;
   --clear-button-color: #8c93a3;
   --color: #252932;
@@ -44,7 +44,7 @@ h1 {
   align-items: center;
   background: #eceef1;
   border: 1px solid rgb(15 23 42 / 0.04);
-  border-radius: 22px;
+  border-radius: var(--radius-medium);
   color: #474b55;
   display: inline-flex;
   flex: 0 0 auto;
@@ -60,7 +60,7 @@ h1 {
 
   &--active {
     background: var(--ion-color-primary);
-    box-shadow: 0 10px 18px rgb(0 103 200 / 0.2);
+    box-shadow: var(--shadow-primary);
     color: #ffffff;
   }
 }
@@ -74,8 +74,8 @@ h1 {
 .expense-card {
   align-items: center;
   background: #ffffff;
-  border-radius: 28px;
-  box-shadow: 0 16px 34px rgb(15 23 42 / 0.06);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-card);
   display: flex;
   gap: 18px;
   min-height: 112px;
@@ -84,7 +84,7 @@ h1 {
 
 .expense-icon {
   align-items: center;
-  border-radius: 18px;
+  border-radius: var(--radius-small);
   display: flex;
   flex: 0 0 64px;
   height: 64px;
@@ -93,26 +93,6 @@ h1 {
 
   ion-icon {
     font-size: 1.6rem;
-  }
-
-  &--servicios {
-    background: #f9e9ea;
-    color: #a23b43;
-  }
-
-  &--salud {
-    background: #e7f7ef;
-    color: #0b8a61;
-  }
-
-  &--transporte {
-    background: #e5f0ff;
-    color: var(--ion-color-primary);
-  }
-
-  &--comida {
-    background: #fff7df;
-    color: #c98500;
   }
 }
 
@@ -139,30 +119,10 @@ h1 {
 }
 
 .category-tag {
-  border-radius: 7px;
+  border-radius: var(--radius-small);
   font-size: 0.82rem;
   font-weight: 700;
   padding: 4px 10px;
-
-  &--servicios {
-    background: #f9e9ea;
-    color: #9e3740;
-  }
-
-  &--salud {
-    background: #e2f7eb;
-    color: #0c8059;
-  }
-
-  &--transporte {
-    background: #dcecff;
-    color: #1267b4;
-  }
-
-  &--comida {
-    background: #fff5dc;
-    color: #bd7d00;
-  }
 }
 
 .expense-date {
@@ -229,8 +189,8 @@ ion-fab {
   right: 22px;
 
   ion-fab-button {
-    --border-radius: 26px;
-    --box-shadow: 0 12px 24px rgb(0 100 210 / 0.26);
+    --border-radius: var(--radius-medium);
+    --box-shadow: var(--shadow-primary);
     height: 64px;
     width: 64px;
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -12,10 +12,12 @@ import { cameraOutline, imageOutline, sparkles, trashOutline } from 'ionicons/ic
   imports: [CommonModule, IonButton, IonContent, IonIcon],
 })
 export class EscanearPage {
+  private readonly router = inject(Router);
+
   capturaReciente = true;
   nombreCaptura = 'Ticket_20231024_123.jpg';
 
-  constructor(private readonly router: Router) {
+  constructor() {
     addIcons({ cameraOutline, imageOutline, sparkles, trashOutline });
   }
 

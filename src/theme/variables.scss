@@ -15,4 +15,31 @@
   --ion-color-success-contrast-rgb: 6, 63, 42;
   --ion-color-success-shade: #56d298;
   --ion-color-success-tint: #72f1b5;
+
+
+  // Radios de borde estandarizados
+  --radius-small: 16px;
+  --radius-medium: 24px;
+  --radius-large: 28px;
+  --radius-xlarge: 36px;
+
+  // Sombras estandarizadas
+  --shadow-card: 0 16px 32px rgba(15, 23, 42, 0.06);
+  --shadow-card-hover: 0 20px 40px rgba(15, 23, 42, 0.09);
+  --shadow-primary: 0 12px 24px rgba(0, 103, 200, 0.25);
+
+  // Gradiente y fondos unificados
+  --gradient-primary: linear-gradient(135deg, #0067c8 0%, #3979e9 100%);
+  --bg-app: #f8fafc;
+  --bg-input: #f0f2f6;
+
+  // Colores de categorías unificados
+  --cat-comida-bg: #fff5dc;
+  --cat-comida-text: #bd7d00;
+  --cat-transporte-bg: #e5f0ff;
+  --cat-transporte-text: #1267b4;
+  --cat-servicios-bg: #f9e9ea;
+  --cat-servicios-text: #9e3740;
+  --cat-salud-bg: #e2f7eb;
+  --cat-salud-text: #0c8059;
 }

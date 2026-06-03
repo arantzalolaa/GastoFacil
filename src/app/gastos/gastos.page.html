@@ -25,14 +25,14 @@
 
     <div class="expenses-list">
       <article class="expense-card" *ngFor="let gasto of gastosFiltrados">
-        <div class="expense-icon" [ngClass]="iconBackgroundClass(gasto.categoria)">
+        <div class="expense-icon" [ngClass]="categoryClass(gasto.categoria)">
           <ion-icon [name]="gasto.icono" aria-hidden="true"></ion-icon>
         </div>
 
         <div class="expense-copy">
           <h2>{{ gasto.concepto }}</h2>
           <div class="expense-meta">
-            <span class="category-tag" [ngClass]="tagClass(gasto.categoria)">{{ gasto.categoria }}</span>
+            <span class="category-tag" [ngClass]="categoryClass(gasto.categoria)">{{ gasto.categoria }}</span>
             <span class="expense-date">{{ gasto.fechaCorta }}</span>
           </div>
         </div>

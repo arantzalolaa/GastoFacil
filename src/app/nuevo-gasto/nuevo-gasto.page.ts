@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import {
@@ -55,6 +55,8 @@ export interface NuevoGastoFormValue {
   ],
 })
 export class NuevoGastoPage {
+  private readonly formBuilder = inject(FormBuilder);
+
   categorias = ['Comida', 'Transporte', 'Servicios', 'Ocio', 'Estudios', 'Salud'];
   metodosPago = ['Efectivo', 'Tarjeta', 'Transferencia'];
 
@@ -67,7 +69,7 @@ export class NuevoGastoPage {
     notas: [''],
   });
 
-  constructor(private readonly formBuilder: FormBuilder) {
+  constructor() {
     addIcons({ personCircleOutline, qrCodeOutline });
   }
 
