@@ -1,0 +1,241 @@
+.expenses-content {
+  --background: #f8fafc;
+}
+
+.expenses-wrapper {
+  padding: 28px 24px 128px;
+}
+
+h1 {
+  color: #17191f;
+  font-size: 2.3rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  margin: 0 0 20px;
+}
+
+.expenses-search {
+  --background: #f0f2f6;
+  --border-radius: 24px;
+  --box-shadow: none;
+  --clear-button-color: #8c93a3;
+  --color: #252932;
+  --icon-color: #c5c8d4;
+  --placeholder-color: #858995;
+  --placeholder-font-weight: 500;
+  margin-bottom: 28px;
+  padding: 0;
+}
+
+.filters-row {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 34px;
+  overflow-x: auto;
+  padding: 0 0 4px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.filter-pill {
+  align-items: center;
+  background: #eceef1;
+  border: 1px solid rgb(15 23 42 / 0.04);
+  border-radius: 22px;
+  color: #474b55;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 1.05rem;
+  font-weight: 600;
+  gap: 9px;
+  min-height: 52px;
+  padding: 0 22px;
+
+  ion-icon {
+    font-size: 1.18rem;
+  }
+
+  &--active {
+    background: var(--ion-color-primary);
+    box-shadow: 0 10px 18px rgb(0 103 200 / 0.2);
+    color: #ffffff;
+  }
+}
+
+.expenses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.expense-card {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 16px 34px rgb(15 23 42 / 0.06);
+  display: flex;
+  gap: 18px;
+  min-height: 112px;
+  padding: 22px 24px;
+}
+
+.expense-icon {
+  align-items: center;
+  border-radius: 18px;
+  display: flex;
+  flex: 0 0 64px;
+  height: 64px;
+  justify-content: center;
+  width: 64px;
+
+  ion-icon {
+    font-size: 1.6rem;
+  }
+
+  &--servicios {
+    background: #f9e9ea;
+    color: #a23b43;
+  }
+
+  &--salud {
+    background: #e7f7ef;
+    color: #0b8a61;
+  }
+
+  &--transporte {
+    background: #e5f0ff;
+    color: var(--ion-color-primary);
+  }
+
+  &--comida {
+    background: #fff7df;
+    color: #c98500;
+  }
+}
+
+.expense-copy {
+  flex: 1;
+  min-width: 0;
+
+  h2 {
+    color: #20232a;
+    font-size: 1.32rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    margin: 0 0 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.expense-meta {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+}
+
+.category-tag {
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 4px 10px;
+
+  &--servicios {
+    background: #f9e9ea;
+    color: #9e3740;
+  }
+
+  &--salud {
+    background: #e2f7eb;
+    color: #0c8059;
+  }
+
+  &--transporte {
+    background: #dcecff;
+    color: #1267b4;
+  }
+
+  &--comida {
+    background: #fff5dc;
+    color: #bd7d00;
+  }
+}
+
+.expense-date {
+  color: #6f737c;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.expense-amount {
+  color: #1f2229;
+  flex: 0 0 auto;
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  text-align: right;
+}
+
+.empty-search {
+  align-items: center;
+  color: #4e535d;
+  display: flex;
+  flex-direction: column;
+  margin: 72px auto 0;
+  text-align: center;
+
+  p {
+    font-size: 1.12rem;
+    margin: 24px 0 14px;
+  }
+
+  a {
+    color: var(--ion-color-primary);
+    font-size: 1.08rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+}
+
+.empty-icon {
+  align-items: center;
+  background: #e3ecee;
+  border-radius: 50%;
+  color: #a8b1b5;
+  display: flex;
+  height: 112px;
+  justify-content: center;
+  position: relative;
+  width: 112px;
+
+  ion-icon:first-child {
+    font-size: 3rem;
+  }
+
+  &__search {
+    bottom: 30px;
+    font-size: 2.1rem;
+    position: absolute;
+    right: 28px;
+  }
+}
+
+ion-fab {
+  bottom: calc(86px + var(--ion-safe-area-bottom));
+  right: 22px;
+
+  ion-fab-button {
+    --border-radius: 26px;
+    --box-shadow: 0 12px 24px rgb(0 100 210 / 0.26);
+    height: 64px;
+    width: 64px;
+
+    ion-icon {
+      font-size: 2rem;
+    }
+  }
+}

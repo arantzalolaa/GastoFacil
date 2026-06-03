@@ -14,17 +14,22 @@ export const routes: Routes = [
       {
         path: 'gastos',
         loadComponent: () =>
-          import('../tab2/tab2.page').then((m) => m.Tab2Page),
+          import('../gastos/gastos.page').then((m) => m.GastosPage),
       },
       {
         path: 'escanear',
         loadComponent: () =>
-          import('../tab3/tab3.page').then((m) => m.Tab3Page),
+          import('../escanear/escanear.page').then((m) => m.EscanearPage),
+      },
+      {
+        path: 'nuevo-gasto',
+        loadComponent: () =>
+          import('../nuevo-gasto/nuevo-gasto.page').then((m) => m.NuevoGastoPage),
       },
       {
         path: 'resumen',
         loadComponent: () =>
-          import('../tab1/tab1.page').then((m) => m.Tab1Page),
+          import('../resumen/resumen.page').then((m) => m.ResumenPage),
       },
       {
         path: '',

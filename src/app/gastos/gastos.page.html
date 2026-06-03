@@ -1,0 +1,59 @@
+<ion-content class="expenses-content">
+  <section class="expenses-wrapper">
+    <h1>Mis gastos</h1>
+
+    <ion-searchbar
+      class="expenses-search"
+      [(ngModel)]="terminoBusqueda"
+      placeholder="¿En qué gastaste hoy?"
+      search-icon="search-outline"
+      show-clear-button="focus"
+    ></ion-searchbar>
+
+    <div class="filters-row" aria-label="Filtros de gastos">
+      <button
+        type="button"
+        class="filter-pill"
+        *ngFor="let filtro of filtros"
+        [class.filter-pill--active]="categoriaSeleccionada === filtro.etiqueta"
+        (click)="seleccionarFiltro(filtro.etiqueta)"
+      >
+        <ion-icon *ngIf="filtro.icono" [name]="filtro.icono" aria-hidden="true"></ion-icon>
+        <span>{{ filtro.etiqueta }}</span>
+      </button>
+    </div>
+
+    <div class="expenses-list">
+      <article class="expense-card" *ngFor="let gasto of gastosFiltrados">
+        <div class="expense-icon" [ngClass]="iconBackgroundClass(gasto.categoria)">
+          <ion-icon [name]="gasto.icono" aria-hidden="true"></ion-icon>
+        </div>
+
+        <div class="expense-copy">
+          <h2>{{ gasto.concepto }}</h2>
+          <div class="expense-meta">
+            <span class="category-tag" [ngClass]="tagClass(gasto.categoria)">{{ gasto.categoria }}</span>
+            <span class="expense-date">{{ gasto.fechaCorta }}</span>
+          </div>
+        </div>
+
+        <strong class="expense-amount">{{ gasto.monto | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
+      </article>
+    </div>
+
+    <div class="empty-search">
+      <div class="empty-icon">
+        <ion-icon name="receipt-outline" aria-hidden="true"></ion-icon>
+        <ion-icon class="empty-icon__search" name="search-outline" aria-hidden="true"></ion-icon>
+      </div>
+      <p>¿No encuentras lo que buscas?</p>
+      <a href="#">Revisar otros meses</a>
+    </div>
+  </section>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="primary" routerLink="/nuevo-gasto" aria-label="Agregar gasto">
+      <ion-icon name="add" aria-hidden="true"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

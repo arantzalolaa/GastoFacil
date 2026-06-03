@@ -1,0 +1,55 @@
+<ion-content class="scan-content" [fullscreen]="false">
+  <section class="scan-wrapper" style="margin-top: 24px;">
+    <article class="scanner-card" aria-label="Área de escaneo de ticket">
+      <div class="camera-scene">
+        <div class="phone-frame"></div>
+        <div class="receipt-paper">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="scan-frame"></div>
+        <div class="scan-hint">Alinea el ticket con el recuadro</div>
+      </div>
+    </article>
+
+    <div class="camera-controls">
+      <ion-button class="take-photo-button" type="button" (click)="tomarFoto()">
+        <ion-icon name="camera-outline" slot="start" aria-hidden="true"></ion-icon>
+        Tomar foto
+      </ion-button>
+
+      <ion-button class="gallery-button" type="button" fill="outline" (click)="abrirGaleria()">
+        <ion-icon name="image-outline" slot="start" aria-hidden="true"></ion-icon>
+        Galería
+      </ion-button>
+    </div>
+
+    <article class="recent-capture" *ngIf="capturaReciente">
+      <div class="ticket-thumb">
+        <div class="mini-ticket"></div>
+      </div>
+
+      <div class="capture-copy">
+        <strong>Captura reciente</strong>
+        <span>{{ nombreCaptura }}</span>
+      </div>
+
+      <button class="delete-capture" type="button" aria-label="Eliminar captura" (click)="eliminarCaptura()">
+        <ion-icon name="trash-outline" aria-hidden="true"></ion-icon>
+      </button>
+    </article>
+
+    <ion-button class="ai-button" expand="block" type="button" (click)="analizarConIA()">
+      <ion-icon name="sparkles" slot="start" aria-hidden="true"></ion-icon>
+      Analizar con IA
+    </ion-button>
+
+    <p class="scan-footer-text">
+      Nuestra IA detectará automáticamente montos, fechas y categorías para ti.
+    </p>
+  </section>
+</ion-content>
