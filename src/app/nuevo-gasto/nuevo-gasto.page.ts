@@ -21,6 +21,7 @@ import {
 import { addIcons } from 'ionicons';
 import { personCircleOutline, qrCodeOutline } from 'ionicons/icons';
 
+// 1 y 2. Interfaz corregida con todas sus propiedades y cerrada correctamente
 export interface NuevoGastoFormValue {
   concepto: string;
   monto: number | null;
@@ -73,6 +74,11 @@ export class NuevoGastoPage {
     addIcons({ personCircleOutline, qrCodeOutline });
   }
 
+  // 3. Método agregado para obtener la fecha actual (formato YYYY-MM-DD)
+  obtenerFechaActual(): string {
+    return new Date().toISOString().split('T')[0];
+  }
+
   seleccionarMetodoPago(metodo: string): void {
     this.gastoForm.patchValue({ metodo_pago: metodo });
     this.gastoForm.get('metodo_pago')?.markAsTouched();
@@ -85,6 +91,7 @@ export class NuevoGastoPage {
     }
 
     const formValue = this.gastoForm.getRawValue();
+    
     const nuevoGasto: NuevoGastoFormValue = {
       concepto: formValue.concepto ?? '',
       monto: formValue.monto,
@@ -95,9 +102,5 @@ export class NuevoGastoPage {
     };
 
     console.log('Nuevo gasto listo para Supabase:', nuevoGasto);
-  }
-
-  private obtenerFechaActual(): string {
-    return new Date().toISOString().slice(0, 10);
-  }
-}
+  } // 4. Llave de cierre del método
+} // 4. Llave de cierre de la clase
