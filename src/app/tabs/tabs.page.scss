@@ -34,6 +34,13 @@
       font-size: 1.65rem;
     }
   }
+
+  .scan-header-action {
+    color: #2f3138;
+    font-size: 1.05rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
 }
 
 .main-tab-bar {
@@ -46,7 +53,7 @@
 
   ion-tab-button {
     --color: #3f414a;
-    --color-selected: var(--ion-color-success-contrast);
+    --color-selected: var(--ion-color-success);
     --padding-bottom: 6px;
     --padding-top: 6px;
     border-radius: 28px;
@@ -62,7 +69,7 @@
 
     &.tab-selected {
       background: var(--ion-color-success-tint);
-      color: var(--ion-color-success-contrast);
+      color: var(--ion-color-primary-contrast);
     }
   }
 }

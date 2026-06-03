@@ -22,6 +22,11 @@ export const routes: Routes = [
           import('../escanear/escanear.page').then((m) => m.EscanearPage),
       },
       {
+        path: 'confirmar-gasto',
+        loadComponent: () =>
+          import('../confirmar-gasto/confirmar-gasto.page').then((m) => m.ConfirmarGastoPage),
+      },
+      {
         path: 'nuevo-gasto',
         loadComponent: () =>
           import('../nuevo-gasto/nuevo-gasto.page').then((m) => m.NuevoGastoPage),

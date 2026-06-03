@@ -35,3 +35,9 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+
+.cat-comida { background-color: var(--cat-comida-bg) !important; color: var(--cat-comida-text) !important; }
+.cat-transporte { background-color: var(--cat-transporte-bg) !important; color: var(--cat-transporte-text) !important; }
+.cat-servicios { background-color: var(--cat-servicios-bg) !important; color: var(--cat-servicios-text) !important; }
+.cat-salud, .cat-otros { background-color: var(--cat-salud-bg) !important; color: var(--cat-salud-text) !important; }

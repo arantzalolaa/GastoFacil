@@ -131,7 +131,7 @@ export class ResumenPage {
   }
 
   categoriaClass(categoria: string): string {
-    return categoria.toLowerCase();
+    return `cat-${categoria.toLowerCase()}`;
   }
 
   private calcularDesgloseCategorias(): ResumenCategoria[] {

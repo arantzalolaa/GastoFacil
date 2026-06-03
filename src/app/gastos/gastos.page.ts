@@ -133,11 +133,7 @@ export class GastosPage {
     this.categoriaSeleccionada = filtro;
   }
 
-  iconBackgroundClass(categoria: string): string {
-    return `expense-icon--${categoria.toLowerCase()}`;
-  }
-
-  tagClass(categoria: string): string {
-    return `category-tag--${categoria.toLowerCase()}`;
+  categoryClass(categoria: string): string {
+    return `cat-${categoria.toLowerCase()}`;
   }
 }
