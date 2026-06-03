@@ -1,1 +1,68 @@
+.app-header {
+  background: #ffffff;
+  box-shadow: 0 1px 10px rgb(15 23 42 / 0.04);
 
+  ion-toolbar {
+    --background: #ffffff;
+    --border-width: 0;
+    --min-height: 86px;
+    --padding-start: 24px;
+    --padding-end: 22px;
+  }
+
+  .brand {
+    align-items: center;
+    color: var(--ion-color-primary);
+    display: flex;
+    font-size: 2rem;
+    font-weight: 800;
+    gap: 10px;
+    letter-spacing: -0.03em;
+    line-height: 1;
+
+    ion-icon {
+      font-size: 1.75rem;
+    }
+  }
+
+  ion-button {
+    --color: #2f3138;
+    --padding-end: 0;
+    --padding-start: 0;
+
+    ion-icon {
+      font-size: 1.65rem;
+    }
+  }
+}
+
+.main-tab-bar {
+  --background: rgb(255 255 255 / 0.96);
+  --border: 0;
+  border-top: 1px solid rgb(15 23 42 / 0.05);
+  box-shadow: 0 -10px 28px rgb(15 23 42 / 0.06);
+  height: 82px;
+  padding: 8px 18px 12px;
+
+  ion-tab-button {
+    --color: #3f414a;
+    --color-selected: var(--ion-color-success);
+    --padding-bottom: 6px;
+    --padding-top: 6px;
+    border-radius: 28px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    min-height: 58px;
+    transition: background-color 180ms ease, color 180ms ease;
+
+    ion-icon {
+      font-size: 1.4rem;
+      margin-bottom: 2px;
+    }
+
+    &.tab-selected {
+      background: var(--ion-color-success-tint);
+      color: var(--ion-color-primary-contrast);
+    }
+  }
+}

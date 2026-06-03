@@ -1,0 +1,85 @@
+<ion-content class="home-content" [fullscreen]="true">
+  <section class="home-wrapper">
+    <ion-card class="total-card">
+      <div>
+        <p>Total del mes</p>
+        <h1>{{ totalMes | currency: 'USD' : 'symbol' : '1.2-2' }}</h1>
+        <span class="trend-chip">
+          <ion-icon name="arrow-up-outline" aria-hidden="true"></ion-icon>
+          {{ variacionMesAnterior }}% vs mes anterior
+        </span>
+      </div>
+      <ion-icon class="trend-icon" name="trending-up-outline" aria-hidden="true"></ion-icon>
+    </ion-card>
+
+    <ion-grid class="stats-grid">
+      <ion-row>
+        <ion-col size="4">
+          <ion-card class="stat-card stat-card--today">
+            <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+            <span>Hoy</span>
+            <strong>{{ totalHoy | currency: 'USD' : 'symbol' : '1.0-0' }}</strong>
+          </ion-card>
+        </ion-col>
+        <ion-col size="4">
+          <ion-card class="stat-card stat-card--expenses">
+            <ion-icon name="receipt-outline" aria-hidden="true"></ion-icon>
+            <span>Gastos</span>
+            <strong>{{ totalTransacciones }}</strong>
+          </ion-card>
+        </ion-col>
+        <ion-col size="4">
+          <ion-card class="stat-card stat-card--top">
+            <ion-icon name="restaurant-outline" aria-hidden="true"></ion-icon>
+            <span>Top</span>
+            <strong>{{ categoriaTop }}</strong>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <a class="scan-ticket" routerLink="/escanear">
+      <div class="scan-icon">
+        <ion-icon name="qr-code-outline" aria-hidden="true"></ion-icon>
+      </div>
+      <div class="scan-copy">
+        <strong>Escanear ticket</strong>
+        <span>Añade gastos automáticamente</span>
+      </div>
+      <ion-icon class="scan-chevron" name="chevron-forward-outline" aria-hidden="true"></ion-icon>
+    </a>
+
+    <div class="section-title">
+      <h2>Gastos recientes</h2>
+      <a routerLink="/gastos">Ver más</a>
+    </div>
+
+    <div class="recent-list">
+      <article class="recent-item" *ngFor="let gasto of gastosRecientes">
+        <div class="recent-icon">
+          <ion-icon [name]="gasto.icono" aria-hidden="true"></ion-icon>
+        </div>
+        <div class="recent-copy">
+          <strong>{{ gasto.concepto }}</strong>
+          <span>{{ gasto.fecha }}</span>
+        </div>
+        <strong class="recent-amount">-{{ gasto.monto | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
+      </article>
+    </div>
+
+    <div class="financial-note" aria-hidden="true">
+      <div class="note-illustration">
+        <div class="coin coin--one"></div>
+        <div class="coin coin--two"></div>
+        <div class="coin coin--three"></div>
+      </div>
+      <p>Tu camino hacia la libertad financiera empieza con un pequeño paso.</p>
+    </div>
+  </section>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="primary" aria-label="Agregar gasto">
+      <ion-icon name="add" aria-hidden="true"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
