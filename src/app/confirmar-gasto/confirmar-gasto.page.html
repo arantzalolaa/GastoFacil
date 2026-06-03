@@ -1,0 +1,97 @@
+<ion-content class="confirm-content" [fullscreen]="false">
+  <main class="confirm-wrapper">
+    <header class="confirm-hero">
+      <h1>Confirmar gasto</h1>
+      <p>Revisa los datos detectados antes de guardar</p>
+      <span class="ai-badge">
+        <ion-icon name="sparkles" aria-hidden="true"></ion-icon>
+        Datos obtenidos por IA
+      </span>
+    </header>
+
+    <section class="ticket-card" aria-label="Ticket detectado">
+      <div class="ticket-photo" aria-hidden="true">
+        <div class="receipt-paper">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <button class="ticket-button" type="button">
+        <ion-icon name="eye-outline" aria-hidden="true"></ion-icon>
+        Ver ticket original
+      </button>
+    </section>
+
+    <section class="amount-card" aria-label="Monto total detectado">
+      <span>Monto total</span>
+      <strong><span>$</span> {{ gastoDetectado.monto | number: '1.2-2' }}</strong>
+    </section>
+
+    <section class="review-card" aria-label="Datos detectados del gasto">
+      <div class="review-field">
+        <label>Establecimiento</label>
+        <div class="field-box">
+          <ion-icon name="storefront-outline" aria-hidden="true"></ion-icon>
+          <span>{{ gastoDetectado.establecimiento }}</span>
+        </div>
+      </div>
+
+      <div class="review-field">
+        <label>Concepto</label>
+        <div class="field-box">
+          <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+          <span>{{ gastoDetectado.concepto }}</span>
+        </div>
+      </div>
+
+      <div class="review-grid">
+        <div class="review-field">
+          <label>Fecha</label>
+          <div class="field-box field-box--compact">
+            <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+            <span>{{ gastoDetectado.fecha }}</span>
+          </div>
+        </div>
+
+        <div class="review-field">
+          <label>Categoría sugerida</label>
+          <div class="field-box field-box--category">
+            <ion-icon name="restaurant-outline" aria-hidden="true"></ion-icon>
+            <span>{{ gastoDetectado.categoria }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-field">
+        <label>Método de pago</label>
+        <div class="field-box field-box--dropdown">
+          <ion-icon name="cash-outline" aria-hidden="true"></ion-icon>
+          <span>{{ gastoDetectado.metodo_pago }}</span>
+          <ion-icon class="dropdown-icon" name="chevron-down-outline" aria-hidden="true"></ion-icon>
+        </div>
+      </div>
+
+      <div class="review-field">
+        <label>Notas</label>
+        <div class="field-box field-box--notes">
+          <ion-icon name="document-text-outline" aria-hidden="true"></ion-icon>
+          <span>{{ gastoDetectado.notas }}</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</ion-content>
+
+<ion-footer class="confirm-footer ion-no-border">
+  <div class="footer-actions">
+    <ion-button expand="block" class="save-button" type="button" (click)="confirmarYGuardar()">
+      Guardar gasto
+    </ion-button>
+    <ion-button expand="block" class="manual-button" type="button" fill="outline" (click)="corregirManualmente()">
+      Corregir manualmente
+    </ion-button>
+  </div>
+</ion-footer>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import {
@@ -21,6 +21,7 @@ import {
 import { addIcons } from 'ionicons';
 import { personCircleOutline, qrCodeOutline } from 'ionicons/icons';
 
+// 1 y 2. Interfaz corregida con todas sus propiedades y cerrada correctamente
 export interface NuevoGastoFormValue {
   concepto: string;
   monto: number | null;
@@ -55,6 +56,8 @@ export interface NuevoGastoFormValue {
   ],
 })
 export class NuevoGastoPage {
+  private readonly formBuilder = inject(FormBuilder);
+
   categorias = ['Comida', 'Transporte', 'Servicios', 'Ocio', 'Estudios', 'Salud'];
   metodosPago = ['Efectivo', 'Tarjeta', 'Transferencia'];
 
@@ -67,8 +70,13 @@ export class NuevoGastoPage {
     notas: [''],
   });
 
-  constructor(private readonly formBuilder: FormBuilder) {
+  constructor() {
     addIcons({ personCircleOutline, qrCodeOutline });
+  }
+
+  // 3. Método agregado para obtener la fecha actual (formato YYYY-MM-DD)
+  obtenerFechaActual(): string {
+    return new Date().toISOString().split('T')[0];
   }
 
   seleccionarMetodoPago(metodo: string): void {
@@ -83,6 +91,7 @@ export class NuevoGastoPage {
     }
 
     const formValue = this.gastoForm.getRawValue();
+    
     const nuevoGasto: NuevoGastoFormValue = {
       concepto: formValue.concepto ?? '',
       monto: formValue.monto,
@@ -93,9 +102,5 @@ export class NuevoGastoPage {
     };
 
     console.log('Nuevo gasto listo para Supabase:', nuevoGasto);
-  }
-
-  private obtenerFechaActual(): string {
-    return new Date().toISOString().slice(0, 10);
-  }
-}
+  } // 4. Llave de cierre del método
+} // 4. Llave de cierre de la clase
