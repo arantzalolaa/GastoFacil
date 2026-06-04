@@ -1,9 +1,5 @@
-.scan-content {
-  --background: #f8fafc;
-}
-
 .scan-wrapper {
-  padding: 0 24px 128px;
+  padding-top: 24px;
 }
 
 .scanner-card {
@@ -146,7 +142,7 @@
 
 .recent-capture {
   align-items: center;
-  background: #ffffff;
+  background: var(--app-surface);
   border-radius: 28px;
   box-shadow: 0 14px 30px rgb(15 23 42 / 0.06);
   display: flex;

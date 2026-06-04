@@ -1,5 +1,5 @@
-<ion-content class="expenses-content">
-  <section class="expenses-wrapper">
+<ion-content class="expenses-content app-content" [fullscreen]="false">
+  <section class="expenses-wrapper app-page-wrapper">
     <h1>Mis gastos</h1>
 
     <ion-searchbar
@@ -51,7 +51,7 @@
     </div>
   </section>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab class="app-expense-fab" slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button color="primary" routerLink="/nuevo-gasto" aria-label="Agregar gasto">
       <ion-icon name="add" aria-hidden="true"></ion-icon>
     </ion-fab-button>

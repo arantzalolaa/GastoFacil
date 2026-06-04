@@ -5,25 +5,10 @@
       <span>Gasto Fácil</span>
     </div>
 
-    <ion-buttons slot="end">
-      <ng-container *ngIf="mostrarAccionesGastos; else accionesNoGastos">
-        <ion-button aria-label="Buscar" fill="clear">
-          <ion-icon name="search-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-        <ion-button aria-label="Más opciones" fill="clear">
-          <ion-icon name="ellipsis-vertical-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-      </ng-container>
-
-      <ng-template #accionesNoGastos>
-        <span class="scan-header-action" *ngIf="mostrarTextoEscanear; else accionesGenerales">Escanear ticket</span>
-      </ng-template>
-
-      <ng-template #accionesGenerales>
-        <ion-button aria-label="Notificaciones" fill="clear">
-          <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-      </ng-template>
+    <ion-buttons slot="end" class="header-actions">
+      <ion-button aria-label="Notificaciones" fill="clear">
+        <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

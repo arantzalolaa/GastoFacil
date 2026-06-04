@@ -1,13 +1,12 @@
 .app-header {
-  background: #ffffff;
-  box-shadow: 0 1px 10px rgb(15 23 42 / 0.04);
+  background: var(--app-surface);
 
   ion-toolbar {
-    --background: #ffffff;
+    --background: var(--app-surface);
     --border-width: 0;
     --min-height: 86px;
-    --padding-start: 24px;
     --padding-end: 22px;
+    --padding-start: 24px;
   }
 
   .brand {
@@ -25,7 +24,17 @@
     }
   }
 
+  .header-actions {
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
   ion-button {
+    --background: transparent;
+    --background-activated: transparent;
+    --background-focused: transparent;
+    --background-hover: transparent;
+    --box-shadow: none;
     --color: #2f3138;
     --padding-end: 0;
     --padding-start: 0;
@@ -34,33 +43,42 @@
       font-size: 1.65rem;
     }
   }
+}
 
-  .scan-header-action {
-    color: #2f3138;
-    font-size: 1.05rem;
-    font-weight: 700;
-    white-space: nowrap;
-  }
+ion-tabs {
+  background: transparent;
 }
 
 .main-tab-bar {
-  --background: rgb(255 255 255 / 0.96);
+  --background: var(--app-tab-bar-background);
   --border: 0;
-  border-top: 1px solid rgb(15 23 42 / 0.05);
-  box-shadow: 0 -10px 28px rgb(15 23 42 / 0.06);
-  height: 82px;
+  background: var(--app-tab-bar-background);
+  border: 0;
+  box-shadow: none;
+  height: var(--app-tab-bar-height);
+  bottom: 0;
+  left: 0;
   padding: 8px 18px 12px;
+  position: absolute;
+  right: 0;
+  z-index: 20;
 
   ion-tab-button {
-    --color: #3f414a;
-    --color-selected: var(--ion-color-success);
+    --background: transparent;
+    --background-focused: transparent;
+    --background-focused-opacity: 0;
+    --background-selected: transparent;
+    --color: var(--app-text-soft);
+    --color-selected: var(--ion-color-primary);
     --padding-bottom: 6px;
     --padding-top: 6px;
-    border-radius: 28px;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
     font-size: 0.88rem;
     font-weight: 600;
     min-height: 58px;
-    transition: background-color 180ms ease, color 180ms ease;
+    transition: color 180ms ease;
 
     ion-icon {
       font-size: 1.4rem;
@@ -68,8 +86,8 @@
     }
 
     &.tab-selected {
-      background: var(--ion-color-success-tint);
-      color: var(--ion-color-primary-contrast);
+      background: transparent;
+      color: var(--ion-color-primary);
     }
   }
 }
