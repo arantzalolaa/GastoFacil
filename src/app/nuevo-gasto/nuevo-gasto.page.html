@@ -86,7 +86,11 @@
         ></ion-textarea>
       </label>
 
-      <ion-button class="save-button" expand="block" type="submit">Guardar</ion-button>
+      <p class="form-error" *ngIf="errorGuardado">{{ errorGuardado }}</p>
+
+      <ion-button class="save-button" expand="block" type="submit" [disabled]="guardando">
+        {{ guardando ? 'Guardando...' : 'Guardar' }}
+      </ion-button>
       <ion-button class="cancel-button" expand="block" fill="outline" routerLink="/gastos" type="button">
         Cancelar
       </ion-button>

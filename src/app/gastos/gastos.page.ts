@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import {
@@ -18,18 +18,10 @@ import {
   cafeOutline,
   receiptOutline,
   searchOutline,
+  walletOutline,
   wifiOutline,
 } from 'ionicons/icons';
-
-export interface Gasto {
-  id: number;
-  categoria: string;
-  concepto: string;
-  monto: number;
-  fecha: string;
-  metodo_pago: string;
-  notas: string | null;
-}
+import { Gasto, GastosService } from '../services/gastos.service';
 
 export interface GastoListado extends Gasto {
   fechaCorta: string;
@@ -43,60 +35,18 @@ export interface GastoListado extends Gasto {
   imports: [CommonModule, FormsModule, RouterLink, IonContent, IonFab, IonFabButton, IonIcon, IonSearchbar],
 })
 export class GastosPage {
+  private readonly gastosService = inject(GastosService);
+
   terminoBusqueda = '';
   categoriaSeleccionada = 'Todos';
+  gastos: GastoListado[] = [];
 
   filtros = [
     { etiqueta: 'Fecha', icono: 'calendar-outline' },
     { etiqueta: 'Todos' },
     { etiqueta: 'Comida' },
-  ];
-
-  gastos: GastoListado[] = [
-    {
-      id: 1,
-      categoria: 'Servicios',
-      concepto: 'Pago de internet',
-      monto: 600,
-      fecha: '2026-10-05T10:30:00-06:00',
-      fechaCorta: '05/10',
-      metodo_pago: 'Tarjeta',
-      notas: 'Mensualidad de internet del hogar',
-      icono: 'wifi-outline',
-    },
-    {
-      id: 2,
-      categoria: 'Salud',
-      concepto: 'Compra en farmacia',
-      monto: 230,
-      fecha: '2026-10-04T18:15:00-06:00',
-      fechaCorta: '04/10',
-      metodo_pago: 'Efectivo',
-      notas: null,
-      icono: 'medkit-outline',
-    },
-    {
-      id: 3,
-      categoria: 'Transporte',
-      concepto: 'Transporte en taxi',
-      monto: 150,
-      fecha: '2026-10-03T20:15:00-06:00',
-      fechaCorta: '03/10',
-      metodo_pago: 'Efectivo',
-      notas: null,
-      icono: 'car-outline',
-    },
-    {
-      id: 4,
-      categoria: 'Comida',
-      concepto: 'Comida en cafetería',
-      monto: 120,
-      fecha: '2026-10-02T11:00:00-06:00',
-      fechaCorta: '02/10',
-      metodo_pago: 'Tarjeta',
-      notas: null,
-      icono: 'cafe-outline',
-    },
+    { etiqueta: 'Transporte' },
+    { etiqueta: 'Servicios' },
   ];
 
   constructor() {
@@ -108,8 +58,13 @@ export class GastosPage {
       cafeOutline,
       receiptOutline,
       searchOutline,
+      walletOutline,
       wifiOutline,
     });
+  }
+
+  ionViewWillEnter(): void {
+    void this.cargarGastos();
   }
 
   get gastosFiltrados(): GastoListado[] {
@@ -123,7 +78,8 @@ export class GastosPage {
       const coincideBusqueda =
         !termino ||
         gasto.concepto.toLowerCase().includes(termino) ||
-        gasto.categoria.toLowerCase().includes(termino);
+        gasto.categoria.toLowerCase().includes(termino) ||
+        gasto.metodo_pago.toLowerCase().includes(termino);
 
       return coincideCategoria && coincideBusqueda;
     });
@@ -134,10 +90,46 @@ export class GastosPage {
   }
 
   iconBackgroundClass(categoria: string): string {
-    return `expense-icon--${categoria.toLowerCase()}`;
+    return `expense-icon--${this.normalizarCategoria(categoria)}`;
   }
 
   tagClass(categoria: string): string {
-    return `category-tag--${categoria.toLowerCase()}`;
+    return `category-tag--${this.normalizarCategoria(categoria)}`;
+  }
+
+  private async cargarGastos(): Promise<void> {
+    try {
+      const gastos = await this.gastosService.obtenerGastos();
+      this.gastos = gastos.map((gasto) => ({
+        ...gasto,
+        fechaCorta: this.formatearFechaCorta(gasto.fecha),
+        icono: this.iconoPorCategoria(gasto.categoria),
+      }));
+    } catch (error) {
+      console.error('No se pudieron cargar los gastos:', error);
+      this.gastos = [];
+    }
+  }
+
+  private formatearFechaCorta(fecha: string): string {
+    return new Intl.DateTimeFormat('es-MX', {
+      day: '2-digit',
+      month: '2-digit',
+    }).format(new Date(fecha));
+  }
+
+  private iconoPorCategoria(categoria: string): string {
+    const iconos: Record<string, string> = {
+      comida: 'cafe-outline',
+      salud: 'medkit-outline',
+      servicios: 'wifi-outline',
+      transporte: 'car-outline',
+    };
+
+    return iconos[this.normalizarCategoria(categoria)] ?? 'wallet-outline';
+  }
+
+  private normalizarCategoria(categoria: string): string {
+    return categoria.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 }

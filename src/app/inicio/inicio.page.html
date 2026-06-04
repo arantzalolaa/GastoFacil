@@ -61,7 +61,7 @@
         </div>
         <div class="recent-copy">
           <strong>{{ gasto.concepto }}</strong>
-          <span>{{ gasto.fecha }}</span>
+          <span>{{ gasto.fechaRelativa }}</span>
         </div>
         <strong class="recent-amount">-{{ gasto.monto | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
       </article>

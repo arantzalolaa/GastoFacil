@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   IonBackButton,
   IonButton,
@@ -20,8 +20,8 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { personCircleOutline, qrCodeOutline } from 'ionicons/icons';
+import { GastosService } from '../services/gastos.service';
 
-// 1 y 2. Interfaz corregida con todas sus propiedades y cerrada correctamente
 export interface NuevoGastoFormValue {
   concepto: string;
   monto: number | null;
@@ -57,9 +57,13 @@ export interface NuevoGastoFormValue {
 })
 export class NuevoGastoPage {
   private readonly formBuilder = inject(FormBuilder);
+  private readonly gastosService = inject(GastosService);
+  private readonly router = inject(Router);
 
   categorias = ['Comida', 'Transporte', 'Servicios', 'Ocio', 'Estudios', 'Salud'];
   metodosPago = ['Efectivo', 'Tarjeta', 'Transferencia'];
+  guardando = false;
+  errorGuardado = '';
 
   gastoForm = this.formBuilder.group({
     concepto: ['', Validators.required],
@@ -74,7 +78,6 @@ export class NuevoGastoPage {
     addIcons({ personCircleOutline, qrCodeOutline });
   }
 
-  // 3. Método agregado para obtener la fecha actual (formato YYYY-MM-DD)
   obtenerFechaActual(): string {
     return new Date().toISOString().split('T')[0];
   }
@@ -84,23 +87,47 @@ export class NuevoGastoPage {
     this.gastoForm.get('metodo_pago')?.markAsTouched();
   }
 
-  guardarGasto(): void {
-    if (this.gastoForm.invalid) {
+  async guardarGasto(): Promise<void> {
+    if (this.gastoForm.invalid || this.guardando) {
       this.gastoForm.markAllAsTouched();
       return;
     }
 
+    this.guardando = true;
+    this.errorGuardado = '';
     const formValue = this.gastoForm.getRawValue();
-    
     const nuevoGasto: NuevoGastoFormValue = {
       concepto: formValue.concepto ?? '',
       monto: formValue.monto,
-      fecha: formValue.fecha ?? '',
+      fecha: this.normalizarFecha(formValue.fecha ?? ''),
       categoria: formValue.categoria ?? '',
       metodo_pago: formValue.metodo_pago ?? '',
       notas: formValue.notas || null,
     };
 
-    console.log('Nuevo gasto listo para Supabase:', nuevoGasto);
-  } // 4. Llave de cierre del método
-} // 4. Llave de cierre de la clase
+    try {
+      await this.gastosService.crearGasto({
+        ...nuevoGasto,
+        monto: Number(nuevoGasto.monto),
+      });
+      this.gastoForm.reset({
+        concepto: '',
+        monto: null,
+        fecha: this.obtenerFechaActual(),
+        categoria: '',
+        metodo_pago: 'Efectivo',
+        notas: '',
+      });
+      await this.router.navigate(['/gastos']);
+    } catch (error) {
+      console.error('No se pudo guardar el gasto:', error);
+      this.errorGuardado = 'No se pudo guardar el gasto. Intenta nuevamente.';
+    } finally {
+      this.guardando = false;
+    }
+  }
+
+  private normalizarFecha(fecha: string): string {
+    return new Date(`${fecha}T12:00:00`).toISOString();
+  }
+}
