@@ -11,6 +11,7 @@ import {
   walletOutline,
   wifiOutline,
 } from 'ionicons/icons';
+import { normalizarCategoria } from '../services/categorias.util';
 import { Gasto, GastosService } from '../services/gastos.service';
 
 export interface ResumenCategoria {
@@ -90,9 +91,15 @@ export class ResumenPage {
 
   private calcularDesgloseCategorias(gastos: Gasto[]): ResumenCategoria[] {
     const totales = gastos.reduce<Record<string, number>>((acc, gasto) => {
-      const categoriaAgrupada = ['Comida', 'Servicios', 'Transporte'].includes(gasto.categoria)
-        ? gasto.categoria
-        : 'Otros';
+      const categoriaNormalizada = normalizarCategoria(gasto.categoria);
+      const categoriaAgrupada =
+        categoriaNormalizada === 'comida'
+          ? 'Comida'
+          : categoriaNormalizada === 'servicios'
+            ? 'Servicios'
+            : categoriaNormalizada === 'transporte'
+              ? 'Transporte'
+              : 'Otros';
 
       acc[categoriaAgrupada] = (acc[categoriaAgrupada] ?? 0) + gasto.monto;
       return acc;

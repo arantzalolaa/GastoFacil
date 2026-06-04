@@ -12,18 +12,29 @@ import {
 import { addIcons } from 'ionicons';
 import {
   add,
-  medkitOutline,
   calendarOutline,
   carOutline,
-  cafeOutline,
+  flashOutline,
+  gameControllerOutline,
+  medkitOutline,
   receiptOutline,
+  restaurantOutline,
+  schoolOutline,
   searchOutline,
   walletOutline,
-  wifiOutline,
 } from 'ionicons/icons';
+import {
+  CategoriaClave,
+  capitalizarCategoria,
+  normalizarCategoria,
+  obtenerCategoriaVisual,
+  obtenerCategoriasVisuales,
+} from '../services/categorias.util';
 import { Gasto, GastosService } from '../services/gastos.service';
 
 export interface GastoListado extends Gasto {
+  categoriaClave: CategoriaClave;
+  categoriaFormateada: string;
   fechaCorta: string;
   icono: string;
 }
@@ -39,27 +50,29 @@ export class GastosPage {
 
   terminoBusqueda = '';
   categoriaSeleccionada = 'Todos';
+  fechaDesde = '';
+  fechaHasta = '';
   gastos: GastoListado[] = [];
 
   filtros = [
     { etiqueta: 'Fecha', icono: 'calendar-outline' },
     { etiqueta: 'Todos' },
-    { etiqueta: 'Comida' },
-    { etiqueta: 'Transporte' },
-    { etiqueta: 'Servicios' },
+    ...obtenerCategoriasVisuales().map((categoria) => ({ etiqueta: categoria.etiqueta })),
   ];
 
   constructor() {
     addIcons({
       add,
-      medkitOutline,
       calendarOutline,
       carOutline,
-      cafeOutline,
+      flashOutline,
+      gameControllerOutline,
+      medkitOutline,
       receiptOutline,
+      restaurantOutline,
+      schoolOutline,
       searchOutline,
       walletOutline,
-      wifiOutline,
     });
   }
 
@@ -67,21 +80,28 @@ export class GastosPage {
     void this.cargarGastos();
   }
 
+  get mostrarFiltroFecha(): boolean {
+    return this.categoriaSeleccionada === 'Fecha';
+  }
+
   get gastosFiltrados(): GastoListado[] {
     const termino = this.terminoBusqueda.trim().toLowerCase();
+    const categoriaActiva = normalizarCategoria(this.categoriaSeleccionada);
 
     return this.gastos.filter((gasto) => {
       const coincideCategoria =
         this.categoriaSeleccionada === 'Todos' ||
         this.categoriaSeleccionada === 'Fecha' ||
-        gasto.categoria === this.categoriaSeleccionada;
+        gasto.categoriaClave === categoriaActiva;
       const coincideBusqueda =
         !termino ||
         gasto.concepto.toLowerCase().includes(termino) ||
-        gasto.categoria.toLowerCase().includes(termino) ||
-        gasto.metodo_pago.toLowerCase().includes(termino);
+        gasto.categoriaFormateada.toLowerCase().includes(termino) ||
+        gasto.metodo_pago.toLowerCase().includes(termino) ||
+        (gasto.notas?.toLowerCase().includes(termino) ?? false);
+      const coincideFecha = this.coincideRangoFecha(gasto.fecha);
 
-      return coincideCategoria && coincideBusqueda;
+      return coincideCategoria && coincideBusqueda && coincideFecha;
     });
   }
 
@@ -89,22 +109,33 @@ export class GastosPage {
     this.categoriaSeleccionada = filtro;
   }
 
+  limpiarFiltroFecha(): void {
+    this.fechaDesde = '';
+    this.fechaHasta = '';
+  }
+
   iconBackgroundClass(categoria: string): string {
-    return `expense-icon--${this.normalizarCategoria(categoria)}`;
+    return `expense-icon--${normalizarCategoria(categoria)}`;
   }
 
   tagClass(categoria: string): string {
-    return `category-tag--${this.normalizarCategoria(categoria)}`;
+    return `category-tag--${normalizarCategoria(categoria)}`;
   }
 
   private async cargarGastos(): Promise<void> {
     try {
       const gastos = await this.gastosService.obtenerGastos();
-      this.gastos = gastos.map((gasto) => ({
-        ...gasto,
-        fechaCorta: this.formatearFechaCorta(gasto.fecha),
-        icono: this.iconoPorCategoria(gasto.categoria),
-      }));
+      this.gastos = gastos.map((gasto) => {
+        const categoriaVisual = obtenerCategoriaVisual(gasto.categoria);
+
+        return {
+          ...gasto,
+          categoriaClave: categoriaVisual.clave,
+          categoriaFormateada: capitalizarCategoria(gasto.categoria),
+          fechaCorta: this.formatearFechaCorta(gasto.fecha),
+          icono: categoriaVisual.icono,
+        };
+      });
     } catch (error) {
       console.error('No se pudieron cargar los gastos:', error);
       this.gastos = [];
@@ -118,18 +149,15 @@ export class GastosPage {
     }).format(new Date(fecha));
   }
 
-  private iconoPorCategoria(categoria: string): string {
-    const iconos: Record<string, string> = {
-      comida: 'cafe-outline',
-      salud: 'medkit-outline',
-      servicios: 'wifi-outline',
-      transporte: 'car-outline',
-    };
+  private coincideRangoFecha(fecha: string): boolean {
+    if (!this.fechaDesde && !this.fechaHasta) {
+      return true;
+    }
 
-    return iconos[this.normalizarCategoria(categoria)] ?? 'wallet-outline';
-  }
+    const fechaGasto = new Date(fecha).getTime();
+    const desde = this.fechaDesde ? new Date(`${this.fechaDesde}T00:00:00`).getTime() : Number.NEGATIVE_INFINITY;
+    const hasta = this.fechaHasta ? new Date(`${this.fechaHasta}T23:59:59`).getTime() : Number.POSITIVE_INFINITY;
 
-  private normalizarCategoria(categoria: string): string {
-    return categoria.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return fechaGasto >= desde && fechaGasto <= hasta;
   }
 }

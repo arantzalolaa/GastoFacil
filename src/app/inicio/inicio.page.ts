@@ -15,18 +15,21 @@ import { addIcons } from 'ionicons';
 import {
   add,
   arrowUpOutline,
-  cafeOutline,
   calendarOutline,
   carOutline,
-  cartOutline,
   chevronForwardOutline,
   qrCodeOutline,
+  flashOutline,
+  gameControllerOutline,
+  medkitOutline,
   receiptOutline,
   restaurantOutline,
+  schoolOutline,
   trendingUpOutline,
   walletOutline,
   wifiOutline,
 } from 'ionicons/icons';
+import { capitalizarCategoria, obtenerCategoriaVisual } from '../services/categorias.util';
 import { Gasto, GastosService } from '../services/gastos.service';
 
 export interface GastoReciente extends Gasto {
@@ -65,14 +68,16 @@ export class InicioPage {
     addIcons({
       add,
       arrowUpOutline,
-      cafeOutline,
       calendarOutline,
       carOutline,
-      cartOutline,
       chevronForwardOutline,
       qrCodeOutline,
+      flashOutline,
+      gameControllerOutline,
+      medkitOutline,
       receiptOutline,
       restaurantOutline,
+      schoolOutline,
       trendingUpOutline,
       walletOutline,
       wifiOutline,
@@ -133,7 +138,7 @@ export class InicioPage {
       return acc;
     }, {});
 
-    return Object.entries(totales).sort(([, totalA], [, totalB]) => totalB - totalA)[0][0];
+    return capitalizarCategoria(Object.entries(totales).sort(([, totalA], [, totalB]) => totalB - totalA)[0][0]);
   }
 
   private esMismoDia(fecha: string, referencia: Date): boolean {
@@ -155,22 +160,17 @@ export class InicioPage {
   }
 
   private formatearFechaReciente(fecha: string): string {
-    return new Intl.DateTimeFormat('es-MX', {
+    const partes = new Intl.DateTimeFormat('es-MX', {
       day: '2-digit',
       month: 'short',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(new Date(fecha));
+    }).formatToParts(new Date(fecha));
+    const dia = partes.find((parte) => parte.type === 'day')?.value ?? '';
+    const mes = partes.find((parte) => parte.type === 'month')?.value ?? '';
+
+    return `${dia} ${mes.charAt(0).toUpperCase()}${mes.slice(1).replace('.', '')}`;
   }
 
   private iconoPorCategoria(categoria: string): string {
-    const iconos: Record<string, string> = {
-      Comida: 'cafe-outline',
-      Compras: 'cart-outline',
-      Servicios: 'wifi-outline',
-      Transporte: 'car-outline',
-    };
-
-    return iconos[categoria] ?? 'wallet-outline';
+    return obtenerCategoriaVisual(categoria).icono;
   }
 }

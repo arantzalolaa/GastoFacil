@@ -64,7 +64,7 @@ div {
 }
 
 ion-fab.app-expense-fab {
-  bottom: calc(var(--app-tab-bar-height) + 12px + var(--ion-safe-area-bottom));
+  bottom: calc(var(--app-tab-bar-height) + 24px + var(--ion-safe-area-bottom));
   right: 22px;
 
   ion-fab-button {
