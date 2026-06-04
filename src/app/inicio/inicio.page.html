@@ -1,6 +1,6 @@
-<ion-content class="home-content" [fullscreen]="false">
-  <section class="home-wrapper">
-    <ion-card class="total-card" style="margin-top: 60px;">
+<ion-content class="home-content app-content" [fullscreen]="false">
+  <section class="home-wrapper app-page-wrapper">
+    <ion-card class="total-card">
       <div>
         <p>Total del mes</p>
         <h1>{{ totalMes | currency: 'USD' : 'symbol' : '1.2-2' }}</h1>
@@ -61,7 +61,7 @@
         </div>
         <div class="recent-copy">
           <strong>{{ gasto.concepto }}</strong>
-          <span>{{ gasto.fecha }}</span>
+          <span>{{ gasto.fechaRelativa }}</span>
         </div>
         <strong class="recent-amount">-{{ gasto.monto | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
       </article>
@@ -77,7 +77,7 @@
     </div>
   </section>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab class="app-expense-fab" slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button color="primary" routerLink="/nuevo-gasto" aria-label="Agregar gasto">
       <ion-icon name="add" aria-hidden="true"></ion-icon>
     </ion-fab-button>

@@ -1,6 +1,6 @@
-<ion-content class="summary-content" [fullscreen]="false">
-  <section class="summary-wrapper">
-    <header class="summary-title-block" style="margin-top: 24px;">
+<ion-content class="summary-content app-content" [fullscreen]="false">
+  <section class="summary-wrapper app-page-wrapper">
+    <header class="summary-title-block">
       <h1>Resumen</h1>
       <p>Análisis de tus finanzas este mes</p>
     </header>
@@ -15,7 +15,7 @@
     </article>
 
     <article class="chart-card" aria-label="Gráfica circular de gastos">
-      <div class="donut-chart">
+      <div class="donut-chart" [style.background]="chartGradient">
         <div class="donut-center">
           <span>Gastos</span>
           <strong>100%</strong>
