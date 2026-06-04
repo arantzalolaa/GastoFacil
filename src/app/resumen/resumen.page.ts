@@ -27,6 +27,7 @@ export interface ResumenCategoria {
   total: number;
   porcentaje: number;
   icono: string;
+  color: string;
 }
 
 @Component({
@@ -117,6 +118,7 @@ export class ResumenPage {
   totalAcumulado = this.gastosMock.reduce((total, gasto) => total + gasto.monto, 0);
   desgloseCategorias = this.calcularDesgloseCategorias();
   categoriaPrincipal = this.desgloseCategorias[0];
+  chartGradient = this.crearGradienteCategorias();
 
   constructor() {
     addIcons({
@@ -150,12 +152,37 @@ export class ResumenPage {
       Transporte: 'car-outline',
       Otros: 'shapes-outline',
     };
+    const coloresPorCategoria: Record<string, string> = {
+      Comida: 'var(--app-chart-comida)',
+      Servicios: 'var(--app-chart-servicios)',
+      Transporte: 'var(--app-chart-transporte)',
+      Otros: 'var(--app-chart-otros)',
+    };
 
     return ['Comida', 'Servicios', 'Transporte', 'Otros'].map((categoria) => ({
       categoria,
       total: totales[categoria] ?? 0,
       porcentaje: Math.round(((totales[categoria] ?? 0) / this.totalAcumulado) * 100),
       icono: iconosPorCategoria[categoria],
+      color: coloresPorCategoria[categoria],
     }));
+  }
+
+  private crearGradienteCategorias(): string {
+    const valoresVisuales = this.desgloseCategorias.map((item) => Math.max(item.total, 1));
+    const totalVisual = valoresVisuales.reduce((total, valor) => total + valor, 0);
+    let inicio = 0;
+    const segmentos = this.desgloseCategorias.map((item, index) => {
+      const fin =
+        index === this.desgloseCategorias.length - 1
+          ? 360
+          : inicio + (valoresVisuales[index] / totalVisual) * 360;
+      const segmento = `${item.color} ${inicio.toFixed(2)}deg ${fin.toFixed(2)}deg`;
+
+      inicio = fin;
+      return segmento;
+    });
+
+    return `conic-gradient(from -90deg, ${segmentos.join(', ')})`;
   }
 }

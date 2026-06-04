@@ -15,12 +15,10 @@ import {
 import { addIcons } from 'ionicons';
 import {
   barChartOutline,
-  ellipsisVerticalOutline,
   homeOutline,
   notificationsOutline,
   personCircleOutline,
   qrCodeOutline,
-  searchOutline,
   walletOutline,
 } from 'ionicons/icons';
 import { filter } from 'rxjs';
@@ -45,20 +43,15 @@ import { filter } from 'rxjs';
 export class TabsPage {
   public environmentInjector = inject(EnvironmentInjector);
   ocultarHeaderGlobal = false;
-  mostrarAccionesGastos = false;
-  mostrarTextoEscanear = false;
-
   private readonly router = inject(Router);
 
   constructor() {
     addIcons({
       barChartOutline,
-      ellipsisVerticalOutline,
       homeOutline,
       notificationsOutline,
       personCircleOutline,
       qrCodeOutline,
-      searchOutline,
       walletOutline,
     });
 
@@ -70,7 +63,5 @@ export class TabsPage {
 
   private actualizarVisibilidadHeader(url: string): void {
     this.ocultarHeaderGlobal = url.includes('/nuevo-gasto');
-    this.mostrarAccionesGastos = url.includes('/gastos');
-    this.mostrarTextoEscanear = url.includes('/escanear');
   }
 }

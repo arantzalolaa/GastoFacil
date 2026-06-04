@@ -1,9 +1,5 @@
-.expenses-content {
-  --background: #f8fafc;
-}
-
 .expenses-wrapper {
-  padding: 28px 24px 128px;
+  padding-top: 28px;
 }
 
 h1 {
@@ -73,7 +69,7 @@ h1 {
 
 .expense-card {
   align-items: center;
-  background: #ffffff;
+  background: var(--app-surface);
   border-radius: 28px;
   box-shadow: 0 16px 34px rgb(15 23 42 / 0.06);
   display: flex;
@@ -221,21 +217,5 @@ h1 {
     font-size: 2.1rem;
     position: absolute;
     right: 28px;
-  }
-}
-
-ion-fab {
-  bottom: calc(86px + var(--ion-safe-area-bottom));
-  right: 22px;
-
-  ion-fab-button {
-    --border-radius: 26px;
-    --box-shadow: 0 12px 24px rgb(0 100 210 / 0.26);
-    height: 64px;
-    width: 64px;
-
-    ion-icon {
-      font-size: 2rem;
-    }
   }
 }

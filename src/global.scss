@@ -35,3 +35,46 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* GastoFacil shared visual system */
+html,
+body {
+  font-family: var(--app-font-family);
+}
+
+ion-app {
+  background: var(--app-background);
+}
+
+ion-content.app-content {
+  --background: var(--app-background);
+  --offset-bottom: 0px !important;
+}
+
+.app-page-wrapper {
+  padding-inline: 24px;
+  padding-bottom: calc(var(--app-tab-bar-height) + 46px + var(--ion-safe-area-bottom));
+}
+
+ion-card,
+article,
+section,
+div {
+  box-sizing: border-box;
+}
+
+ion-fab.app-expense-fab {
+  bottom: calc(var(--app-tab-bar-height) - 8px + var(--ion-safe-area-bottom));
+  right: 22px;
+
+  ion-fab-button {
+    --border-radius: 26px;
+    --box-shadow: 0 12px 24px rgb(0 100 210 / 0.26);
+    height: 64px;
+    width: 64px;
+
+    ion-icon {
+      font-size: 2rem;
+    }
+  }
+}
