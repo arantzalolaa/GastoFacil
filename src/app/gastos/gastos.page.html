@@ -1,5 +1,5 @@
-<ion-content class="expenses-content">
-  <section class="expenses-wrapper">
+<ion-content class="expenses-content app-content" [fullscreen]="false">
+  <section class="expenses-wrapper app-page-wrapper">
     <h1>Mis gastos</h1>
 
     <ion-searchbar
@@ -23,6 +23,18 @@
       </button>
     </div>
 
+    <div class="date-filter-panel" *ngIf="mostrarFiltroFecha">
+      <label>
+        <span>Desde</span>
+        <input type="date" [(ngModel)]="fechaDesde" />
+      </label>
+      <label>
+        <span>Hasta</span>
+        <input type="date" [(ngModel)]="fechaHasta" />
+      </label>
+      <button type="button" (click)="limpiarFiltroFecha()">Limpiar</button>
+    </div>
+
     <div class="expenses-list">
       <article class="expense-card" *ngFor="let gasto of gastosFiltrados">
         <div class="expense-icon" [ngClass]="iconBackgroundClass(gasto.categoria)">
@@ -32,7 +44,7 @@
         <div class="expense-copy">
           <h2>{{ gasto.concepto }}</h2>
           <div class="expense-meta">
-            <span class="category-tag" [ngClass]="tagClass(gasto.categoria)">{{ gasto.categoria }}</span>
+            <span class="category-tag" [ngClass]="tagClass(gasto.categoria)">{{ gasto.categoriaFormateada }}</span>
             <span class="expense-date">{{ gasto.fechaCorta }}</span>
           </div>
         </div>
@@ -41,7 +53,7 @@
       </article>
     </div>
 
-    <div class="empty-search">
+    <div class="empty-search" *ngIf="gastosFiltrados.length === 0">
       <div class="empty-icon">
         <ion-icon name="receipt-outline" aria-hidden="true"></ion-icon>
         <ion-icon class="empty-icon__search" name="search-outline" aria-hidden="true"></ion-icon>
@@ -51,7 +63,7 @@
     </div>
   </section>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab class="app-expense-fab" slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button color="primary" routerLink="/nuevo-gasto" aria-label="Agregar gasto">
       <ion-icon name="add" aria-hidden="true"></ion-icon>
     </ion-fab-button>

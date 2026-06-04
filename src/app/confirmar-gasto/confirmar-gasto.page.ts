@@ -14,6 +14,7 @@ import {
   sparkles,
   storefrontOutline,
 } from 'ionicons/icons';
+import { GastosService } from '../services/gastos.service';
 
 export interface GastoIA {
   establecimiento: string;
@@ -33,6 +34,7 @@ export interface GastoIA {
 })
 export class ConfirmarGastoPage {
   private readonly router = inject(Router);
+  private readonly gastosService = inject(GastosService);
 
   gastoDetectado: GastoIA = {
     establecimiento: 'OXXO',
@@ -59,22 +61,24 @@ export class ConfirmarGastoPage {
   }
 
   async confirmarYGuardar(): Promise<void> {
-    const gastoParaSupabase = {
-      establecimiento: this.gastoDetectado.establecimiento,
+    await this.gastosService.crearGasto({
       concepto: this.gastoDetectado.concepto,
       monto: this.gastoDetectado.monto,
-      fecha: this.gastoDetectado.fecha,
+      fecha: this.normalizarFechaDetectada(this.gastoDetectado.fecha),
       categoria: this.gastoDetectado.categoria,
       metodo_pago: this.gastoDetectado.metodo_pago,
       notas: this.gastoDetectado.notas,
-    };
-
-    console.log('Gasto listo para guardar en Supabase:', gastoParaSupabase);
-    await Promise.resolve(gastoParaSupabase);
+    });
     await this.router.navigate(['/inicio']);
   }
 
   corregirManualmente(): void {
     this.router.navigate(['/nuevo-gasto']);
+  }
+
+  private normalizarFechaDetectada(fecha: string): string {
+    const [dia, mes, anio] = fecha.split('/').map(Number);
+
+    return new Date(anio, mes - 1, dia, 12).toISOString();
   }
 }

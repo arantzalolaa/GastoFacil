@@ -2,6 +2,23 @@
 // https://ionicframework.com/docs/theming/
 
 :root {
+  --app-font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --app-background: #f8fafc;
+  --app-surface: #ffffff;
+  --app-surface-muted: #f0f2f6;
+  --app-text: #17191f;
+  --app-text-soft: #3f414a;
+  --app-text-muted: #6f737c;
+  --app-border-soft: rgb(15 23 42 / 0.06);
+  --app-card-radius: 28px;
+  --app-card-shadow: 0 16px 32px rgb(15 23 42 / 0.07);
+  --app-primary-gradient: linear-gradient(135deg, #3472df 0%, #3979e9 100%);
+  --app-tab-bar-height: 82px;
+  --app-tab-bar-background: #ffffff;
+  --app-chart-comida: #0067c8;
+  --app-chart-servicios: #a23b43;
+  --app-chart-transporte: #0b8a61;
+  --app-chart-otros: #c98500;
   --ion-color-primary: #0067c8;
   --ion-color-primary-rgb: 0, 103, 200;
   --ion-color-primary-contrast: #ffffff;
