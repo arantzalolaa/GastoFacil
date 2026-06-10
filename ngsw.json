@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1781107858440,
+  "timestamp": 1781108563405,
   "index": "/GastoFacil/index.html",
   "assetGroups": [
     {
@@ -50,7 +50,7 @@
         "/GastoFacil/index.html",
         "/GastoFacil/main-KBLFJLAK.js",
         "/GastoFacil/polyfills-TDCRLYKL.js",
-        "/GastoFacil/styles-PKKADRZ6.css"
+        "/GastoFacil/styles-LEBRX5BP.css"
       ],
       "patterns": []
     },
@@ -122,10 +122,10 @@
     "/GastoFacil/chunk-YJ5TA4PT.js": "3588f144b673886efc030c76678ca4feee860e22",
     "/GastoFacil/chunk-YUNOCBLG.js": "e2d1b2b8fe6ae2d6a5f5b8ae3d404a0300831fb4",
     "/GastoFacil/chunk-ZM5NHWKH.js": "689a9124214cac80192b772f272715a78ee6ee9f",
-    "/GastoFacil/index.html": "cf760fc47b0252ccc2e53b1768faa1188167631b",
+    "/GastoFacil/index.html": "147372a2196fa01691cc58964bad55b2318a07db",
     "/GastoFacil/main-KBLFJLAK.js": "253e64f6bd536c7cd0170e706ed8c206d8c132a5",
     "/GastoFacil/polyfills-TDCRLYKL.js": "454f6db4230cc7ab61b24fe465dcc92bf041737d",
-    "/GastoFacil/styles-PKKADRZ6.css": "574881b24ece825bb39b0b057aea0ad3b878bfb7"
+    "/GastoFacil/styles-LEBRX5BP.css": "a62285d55f961d097c9853cbbb4aa1a9ee27af80"
   },
   "navigationUrls": [
     {
