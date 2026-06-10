@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonButton, IonContent, IonFooter, IonIcon } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   bagHandleOutline,
@@ -13,37 +13,42 @@ import {
   restaurantOutline,
   sparkles,
   storefrontOutline,
+  bulbOutline,
+  carOutline,
+  gameControllerOutline,
+  schoolOutline,
+  medkitOutline,
+  shapesOutline,
+  closeOutline // <-- Agregamos el icono de cerrar
 } from 'ionicons/icons';
 import { GastosService } from '../services/gastos.service';
-
-export interface GastoIA {
-  establecimiento: string;
-  concepto: string;
-  monto: number;
-  fecha: string;
-  categoria: string;
-  metodo_pago: string;
-  notas: string;
-}
+import { AnalisisTicketService, GastoIA } from '../services/analisis-ticket.service';
+import { normalizarCategoria } from '../services/categorias.util';
 
 @Component({
   selector: 'app-confirmar-gasto',
   templateUrl: 'confirmar-gasto.page.html',
   styleUrls: ['confirmar-gasto.page.scss'],
-  imports: [CommonModule, IonButton, IonContent, IonFooter, IonIcon],
+  imports: [CommonModule, IonButton, IonContent, IonIcon, IonSpinner],
 })
 export class ConfirmarGastoPage {
   private readonly router = inject(Router);
   private readonly gastosService = inject(GastosService);
+  private readonly analisisService = inject(AnalisisTicketService);
+
+  cargando = true;
+  errorAnalisis = false;
+  imagenTicketBase64: string | null = null;
+  mostrarVisor = false; // <-- Controla si se ve el visor o no
 
   gastoDetectado: GastoIA = {
-    establecimiento: 'OXXO',
-    concepto: 'Refresco y botana',
-    monto: 85,
-    fecha: '12/10/2023',
-    categoria: 'Comida',
-    metodo_pago: 'Efectivo',
-    notas: 'Escaneado desde ticket',
+    establecimiento: '',
+    concepto: '',
+    monto: 0,
+    fecha: '',
+    categoria: '',
+    metodo_pago: '',
+    notas: '',
   };
 
   constructor() {
@@ -57,7 +62,62 @@ export class ConfirmarGastoPage {
       restaurantOutline,
       sparkles,
       storefrontOutline,
+      bulbOutline,
+      carOutline,
+      gameControllerOutline,
+      schoolOutline,
+      medkitOutline,
+      shapesOutline,
+      closeOutline // <-- Registramos el icono
     });
+  }
+
+  ionViewWillEnter(): void {
+    void this.iniciarAnalisis();
+  }
+
+  private async iniciarAnalisis(): Promise<void> {
+    this.cargando = true;
+    this.errorAnalisis = false;
+    this.imagenTicketBase64 = this.analisisService.getImagen();
+
+    if (!this.imagenTicketBase64) {
+      this.router.navigate(['/escanear']);
+      return;
+    }
+
+    try {
+      this.gastoDetectado = await this.analisisService.analizarTicket();
+    } catch (error) {
+      this.errorAnalisis = true;
+      console.error(error);
+    } finally {
+      this.cargando = false;
+    }
+  }
+
+  // Funciones para controlar el visor
+  abrirVisor(): void {
+    this.mostrarVisor = true;
+  }
+
+  cerrarVisor(): void {
+    this.mostrarVisor = false;
+  }
+
+  obtenerIconoCategoria(categoria: string): string {
+    const cat = normalizarCategoria(categoria);
+    const mapaIconos: Record<string, string> = {
+      comida: 'restaurant-outline',
+      servicios: 'bulb-outline',
+      transporte: 'car-outline',
+      ocio: 'game-controller-outline',
+      estudios: 'school-outline',
+      salud: 'medkit-outline',
+      otros: 'shapes-outline'
+    };
+
+    return mapaIconos[cat] || 'shapes-outline';
   }
 
   async confirmarYGuardar(): Promise<void> {
@@ -77,8 +137,8 @@ export class ConfirmarGastoPage {
   }
 
   private normalizarFechaDetectada(fecha: string): string {
+    if (!fecha || !fecha.includes('/')) return new Date().toISOString();
     const [dia, mes, anio] = fecha.split('/').map(Number);
-
     return new Date(anio, mes - 1, dia, 12).toISOString();
   }
 }

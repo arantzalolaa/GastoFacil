@@ -1,5 +1,6 @@
 <ion-content class="summary-content app-content" [fullscreen]="false">
   <section class="summary-wrapper app-page-wrapper">
+    
     <header class="summary-title-block">
       <h1>Resumen</h1>
       <p>Análisis de tus finanzas este mes</p>
@@ -8,26 +9,39 @@
     <article class="total-summary-card">
       <p>TOTAL ACUMULADO</p>
       <h2>{{ totalAcumulado | currency: 'USD' : 'symbol' : '1.2-2' }}</h2>
-      <span>
-        <ion-icon name="trending-up-outline" aria-hidden="true"></ion-icon>
-        {{ variacionMesAnterior }}% más que el mes pasado
+      <span class="trend-chip">
+        <ion-icon [name]="variacionMesAnterior <= 0 ? 'trending-down-outline' : 'trending-up-outline'" aria-hidden="true"></ion-icon>
+        {{ variacionMesAnterior >= 0 ? variacionMesAnterior + '% más que el mes pasado' : (variacionMesAnterior * -1) + '% menos que el mes pasado' }}
       </span>
     </article>
 
     <article class="chart-card" aria-label="Gráfica circular de gastos">
+      
       <div class="donut-chart" [style.background]="chartGradient">
         <div class="donut-center">
           <span>Gastos</span>
           <strong>100%</strong>
         </div>
       </div>
+
+      <div class="chart-legend">
+        <ng-container *ngFor="let item of desgloseCategorias">
+          <div class="legend-item" *ngIf="item.porcentaje > 0">
+            <span class="legend-dot" [style.background]="item.colorHex"></span>
+            <span class="legend-text">{{ item.categoria }} ({{ item.porcentaje }}%)</span>
+          </div>
+        </ng-container>
+      </div>
+
     </article>
 
-    <article class="top-category-card">
-      <div class="top-category-icon">
-        <ion-icon [name]="categoriaPrincipal.icono" aria-hidden="true"></ion-icon>
+    <article class="top-category-card" *ngIf="categoriaPrincipal">
+      <div class="top-category-header">
+        <p>Categoría con más gastos</p>
+        <div class="top-category-icon">
+          <ion-icon [name]="categoriaPrincipal.icono" aria-hidden="true"></ion-icon>
+        </div>
       </div>
-      <p>Categoría con más gastos</p>
       <h3>{{ categoriaPrincipal.categoria }} ({{ categoriaPrincipal.porcentaje }}%)</h3>
       <div class="progress-track">
         <span [style.width.%]="categoriaPrincipal.porcentaje"></span>
@@ -39,7 +53,8 @@
 
       <div class="category-list">
         <article class="category-item" *ngFor="let item of desgloseCategorias">
-          <div class="category-icon" [ngClass]="categoriaClass(item.categoria)">
+          
+          <div class="category-icon" [ngClass]="item.clase">
             <ion-icon [name]="item.icono" aria-hidden="true"></ion-icon>
           </div>
 
@@ -54,18 +69,12 @@
     </section>
 
     <article class="feedback-card">
-      <div>
-        <strong>¡Vas por buen camino!</strong>
-        <p>
-          Has ahorrado un {{ ahorroSemanaAnterior }}% comparado con la semana anterior.
-          Mantén el enfoque en tu categoría de Comida.
-        </p>
+      <div class="feedback-text">
+        <strong>{{ tituloFeedback }}</strong>
+        <p>{{ mensajeFeedback }}</p>
       </div>
-      <div class="feedback-visual" aria-hidden="true">
-        <span class="plate"></span>
-        <span class="coin coin-one"></span>
-        <span class="coin coin-two"></span>
-      </div>
+      <img src="assets/cerdito.jpg" alt="Ahorro" class="feedback-image" />
     </article>
+
   </section>
 </ion-content>

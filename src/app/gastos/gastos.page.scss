@@ -1,296 +1,287 @@
+* {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
 .expenses-wrapper {
-  padding-top: 28px;
+  padding: 16px 16px 80px;
+  background: #f7f9fb;
+  min-height: 100vh;
 }
 
-h1 {
-  color: #17191f;
-  font-size: 2.3rem;
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  margin: 0 0 20px;
+.page-title {
+  color: #191C1E;
+  font-size: 28px;
+  font-weight: 700; // Bold
+  margin: px 0 12px;
+  margin-top: 70px;
 }
 
+// BARRA DE BÚSQUEDA
 .expenses-search {
-  --background: #f0f2f6;
-  --border-radius: 24px;
+  --background: #F2F4F6;
+  --border-radius: 28px;
   --box-shadow: none;
-  --clear-button-color: #8c93a3;
-  --color: #252932;
-  --icon-color: #c5c8d4;
-  --placeholder-color: #858995;
-  --placeholder-font-weight: 500;
-  margin-bottom: 28px;
+  --color: #191C1E;
+  --icon-color: #737785;
+  --placeholder-color: #737785;
+  --placeholder-font-weight: 400; // Regular
+  height: 56px;
+  margin-bottom: 24px;
   padding: 0;
+  
+  // Ajuste interno para la altura
+  .searchbar-input-container {
+    height: 100%;
+  }
+  .searchbar-input {
+    font-size: 1rem;
+    font-weight: 400; // Regular
+  }
 }
 
+// FILTROS HORIZONTALES
 .filters-row {
+  align-items: center;
   display: flex;
-  gap: 18px;
-  margin-bottom: 34px;
+  gap: 12px;
+  margin-bottom: 24px;
   overflow-x: auto;
-  padding: 0 0 4px;
-  scrollbar-width: none;
+  padding-bottom: 4px;
+  scrollbar-width: none; // Ocultar scrollbar
 
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
+.filter-separator {
+  width: 1px;
+  height: 24px;
+  background-color: rgba(195, 198, 214, 0.3);
+  flex-shrink: 0;
+  margin: 0 4px;
+}
+
 .filter-pill {
   align-items: center;
-  background: #eceef1;
-  border: 1px solid rgb(15 23 42 / 0.04);
-  border-radius: 22px;
-  color: #474b55;
+  background: #E6E8EA;
+  border: none;
+  border-radius: 9999px;
+  color: #424653;
   display: inline-flex;
   flex: 0 0 auto;
-  font-size: 1.05rem;
-  font-weight: 600;
-  gap: 9px;
-  min-height: 52px;
-  padding: 0 22px;
+  font-size: 0.95rem;
+  font-weight: 400; // Regular
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  transition: all 0.2s ease;
 
   ion-icon {
-    font-size: 1.18rem;
+    font-size: 1.1rem;
   }
 
   &--active {
-    background: var(--ion-color-primary);
-    box-shadow: 0 10px 18px rgb(0 103 200 / 0.2);
-    color: #ffffff;
+    background: #0456C5;
+    color: #FFFFFF;
+    font-weight: 400; // Regular
   }
 }
 
-.expenses-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.expense-card {
-  align-items: center;
-  background: var(--app-surface);
-  border-radius: 28px;
-  box-shadow: 0 16px 34px rgb(15 23 42 / 0.06);
-  display: flex;
-  gap: 18px;
-  min-height: 112px;
-  padding: 22px 24px;
-}
-
-.expense-icon {
-  align-items: center;
-  border-radius: 18px;
-  display: flex;
-  flex: 0 0 64px;
-  height: 64px;
-  justify-content: center;
-  width: 64px;
-
-  ion-icon {
-    font-size: 1.6rem;
-  }
-
-  &--servicios {
-    background: #f9e9ea;
-    color: #a23b43;
-  }
-
-  &--salud {
-    background: #e7f7ef;
-    color: #0b8a61;
-  }
-
-  &--transporte {
-    background: #e5f0ff;
-    color: var(--ion-color-primary);
-  }
-
-  &--comida {
-    background: #fff7df;
-    color: #c98500;
-  }
-
-  &--ocio {
-    background: #f1e8ff;
-    box-shadow: inset 0 -2px 0 #7c3aed;
-    color: #7c3aed;
-  }
-
-  &--estudios {
-    background: #ffe7f2;
-    box-shadow: inset 0 -2px 0 #d9468f;
-    color: #d9468f;
-  }
-
-  &--otros {
-    background: #eef0f2;
-    color: #626772;
-  }
-}
-
-.expense-copy {
-  flex: 1;
-  min-width: 0;
-
-  h2 {
-    color: #20232a;
-    font-size: 1.32rem;
-    font-weight: 500;
-    letter-spacing: -0.03em;
-    margin: 0 0 11px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-
-.expense-meta {
-  align-items: center;
-  display: flex;
-  gap: 14px;
-}
-
-.category-tag {
-  border-radius: 7px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  padding: 4px 10px;
-
-  &--servicios {
-    background: #f9e9ea;
-    color: #9e3740;
-  }
-
-  &--salud {
-    background: #e2f7eb;
-    color: #0c8059;
-  }
-
-  &--transporte {
-    background: #dcecff;
-    color: #1267b4;
-  }
-
-  &--comida {
-    background: #fff5dc;
-    color: #bd7d00;
-  }
-
-  &--ocio {
-    background: #f1e8ff;
-    box-shadow: inset 0 -2px 0 #7c3aed;
-    color: #7c3aed;
-  }
-
-  &--estudios {
-    background: #ffe7f2;
-    box-shadow: inset 0 -2px 0 #d9468f;
-    color: #d9468f;
-  }
-
-  &--otros {
-    background: #eef0f2;
-    color: #626772;
-  }
-}
-
-.expense-date {
-  color: #6f737c;
-  font-size: 0.92rem;
-  font-weight: 500;
-}
-
-.expense-amount {
-  color: #1f2229;
-  flex: 0 0 auto;
-  font-size: 1.35rem;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  text-align: right;
-}
-
-.empty-search {
-  align-items: center;
-  color: #4e535d;
-  display: flex;
-  flex-direction: column;
-  margin: 72px auto 0;
-  text-align: center;
-
-  p {
-    font-size: 1.12rem;
-    margin: 24px 0 14px;
-  }
-
-  a {
-    color: var(--ion-color-primary);
-    font-size: 1.08rem;
-    font-weight: 500;
-    text-decoration: none;
-  }
-}
-
-.empty-icon {
-  align-items: center;
-  background: #e3ecee;
-  border-radius: 50%;
-  color: #a8b1b5;
-  display: flex;
-  height: 112px;
-  justify-content: center;
-  position: relative;
-  width: 112px;
-
-  ion-icon:first-child {
-    font-size: 3rem;
-  }
-
-  &__search {
-    bottom: 30px;
-    font-size: 2.1rem;
-    position: absolute;
-    right: 28px;
-  }
-}
-
+// PANEL DE FECHA
 .date-filter-panel {
-  align-items: end;
-  background: var(--app-surface);
+  background: #FFFFFF;
   border-radius: 24px;
-  box-shadow: var(--app-card-shadow);
   display: grid;
   gap: 14px;
   grid-template-columns: 1fr 1fr auto;
-  margin: -12px 0 28px;
+  margin-bottom: 24px;
   padding: 16px;
+  align-items: end;
 
   label {
-    color: var(--app-text-muted);
+    color: #424653;
     display: flex;
     flex-direction: column;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     gap: 8px;
   }
 
   input {
-    background: var(--app-surface-muted);
+    background: #F2F4F6;
     border: 0;
     border-radius: 16px;
-    color: var(--app-text);
-    font: inherit;
+    color: #191C1E;
+    font-family: inherit;
     min-height: 46px;
     padding: 0 12px;
+
+    &::-webkit-calendar-picker-indicator {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%230456C5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+      background-repeat: no-repeat;
+      background-position: center;
+      cursor: pointer;
+    }
   }
 
-  button {
-    background: var(--ion-color-primary);
+  .btn-clear {
+    background: #0456C5;
     border: 0;
     border-radius: 16px;
     color: #ffffff;
-    font-weight: 600;
+    font-weight: 500;
     min-height: 46px;
-    padding: 0 14px;
+    padding: 0 16px;
+  }
+}
+
+// LISTA DE GASTOS
+.expenses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.expense-card {
+  align-items: center;
+  background: #FFFFFF;
+  border-radius: 24px;
+  box-shadow: none;
+  display: flex;
+  gap: 16px;
+  height: 94px;
+  padding: 0 20px;
+}
+
+// ICONOS (Lógica de colores)
+.expense-icon {
+  align-items: center;
+  border-radius: 16px; // Cuadrado redondeado para el icono
+  display: flex;
+  flex: 0 0 48px;
+  height: 48px;
+  justify-content: center;
+  width: 48px;
+
+  ion-icon {
+    font-size: 1.4rem;
+  }
+
+  &--servicios { background: #FDE8E8; color: #9B1C1C; }
+  &--salud { background: #DEF7EC; color: #03543F; }
+  &--transporte { background: #E1EFFE; color: #1E429F; }
+  &--comida { background: #FEF3C7; color: #9F580A; }
+  &--ocio { background: #EDEBFE; color: #5521B5; }
+  &--estudios { background: #FCE8F3; color: #99154B; }
+  &--otros { background: #F3F4F6; color: #4B5563; }
+}
+
+// CONTENIDO DE LA TARJETA
+.expense-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0; // Previene overflow
+}
+
+.expense-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .expense-title {
+    color: #191C1E;
+    font-size: 1rem;
+    font-weight: 400; // Regular
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .expense-amount {
+    color: #191C1E;
+    font-size: 1.05rem;
+    font-weight: 400; // Regular
+  }
+}
+
+.expense-bottom {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+
+  .category-tag {
+    border-radius: 6px; // Radio específico
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 2px 8px;
+
+    &--servicios { background: #FDE8E8; color: #9B1C1C; }
+    &--salud { background: #DEF7EC; color: #03543F; }
+    &--transporte { background: #E1EFFE; color: #1E429F; }
+    &--comida { background: #FEF3C7; color: #9F580A; }
+    &--ocio { background: #EDEBFE; color: #5521B5; }
+    &--estudios { background: #FCE8F3; color: #99154B; }
+    &--otros { background: #F3F4F6; color: #4B5563; }
+  }
+
+  .expense-date {
+    color: #737785;
+    font-size: 0.85rem;
+    font-weight: 500; // Medium
+  }
+}
+
+// ESTADO FINAL / IMAGEN
+.end-of-list {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 40px auto 32px;
+  text-align: center;
+
+  .end-image {
+    border-radius: 50%; // Completamente circular
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    margin-bottom: 24px;
+    background-color: #E6E8EA; // Fallback
+  }
+
+  p {
+    color: #424653;
+    font-size: 0.95rem;
+    font-weight: 400; // Regular
+    margin: 0 0 8px;
+  }
+
+  a {
+    color: #0456C5;
+    font-size: 0.95rem;
+    font-weight: 400; // Regular
+    text-decoration: none;
+  }
+}
+
+// BOTÓN FAB (Idéntico a Inicio)
+.app-expense-fab {
+  margin-bottom: 16px;
+  margin-right: 8px;
+
+  ion-fab-button {
+    --background: #0456C5;
+    --background-activated: #03429c;
+    --color: #FFFFFF;
+    --border-radius: 16px;
+    width: 56px;
+    height: 56px;
+
+    ion-icon {
+      font-size: 1.8rem;
+    }
   }
 }
 

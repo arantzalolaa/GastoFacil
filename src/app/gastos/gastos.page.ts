@@ -20,8 +20,10 @@ import {
   receiptOutline,
   restaurantOutline,
   schoolOutline,
-  searchOutline,
+  search,
   walletOutline,
+  shapesOutline,
+  bulbOutline
 } from 'ionicons/icons';
 import {
   CategoriaClave,
@@ -53,12 +55,8 @@ export class GastosPage {
   fechaDesde = '';
   fechaHasta = '';
   gastos: GastoListado[] = [];
-
-  filtros = [
-    { etiqueta: 'Fecha', icono: 'calendar-outline' },
-    { etiqueta: 'Todos' },
-    ...obtenerCategoriasVisuales().map((categoria) => ({ etiqueta: categoria.etiqueta })),
-  ];
+  categoriasOrdenadas: { etiqueta: string }[] = [];
+  filtros: { etiqueta: string; icono?: string }[] = [];
 
   constructor() {
     addIcons({
@@ -71,13 +69,32 @@ export class GastosPage {
       receiptOutline,
       restaurantOutline,
       schoolOutline,
-      searchOutline,
+      search,
       walletOutline,
+      shapesOutline,
+      bulbOutline
     });
+
+    // Cargamos las categorías base
+    const categoriasBase = obtenerCategoriasVisuales().map((categoria) => ({ etiqueta: categoria.etiqueta }));
+    
+    // Verificamos si "Otros" ya viene de las utilidades; si no, lo forzamos.
+    if (!categoriasBase.some(c => c.etiqueta === 'Otros')) {
+      categoriasBase.push({ etiqueta: 'Otros' });
+    }
+
+    this.filtros = [
+      { etiqueta: 'Fecha', icono: 'calendar-outline' },
+      { etiqueta: 'Todos' },
+      ...categoriasBase
+    ];
+  
+    // Ordenar las categorías alfabéticamente
+    this.categoriasOrdenadas = [...categoriasBase].sort((a, b) => a.etiqueta.localeCompare(b.etiqueta));
   }
 
-  ionViewWillEnter(): void {
-    void this.cargarGastos();
+  async ionViewWillEnter(): Promise<void> {
+    await this.cargarGastos();
   }
 
   get mostrarFiltroFecha(): boolean {
@@ -142,11 +159,11 @@ export class GastosPage {
     }
   }
 
-  private formatearFechaCorta(fecha: string): string {
-    return new Intl.DateTimeFormat('es-MX', {
-      day: '2-digit',
-      month: '2-digit',
-    }).format(new Date(fecha));
+  private formatearFechaCorta(fechaStr: string): string {
+    const fecha = new Date(fechaStr);
+    const dia = fecha.getDate().toString().padStart(2, '0');
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+    return `${dia}/${mes}`;
   }
 
   private coincideRangoFecha(fecha: string): boolean {

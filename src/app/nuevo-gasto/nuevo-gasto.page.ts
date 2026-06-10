@@ -19,7 +19,7 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { personCircleOutline, qrCodeOutline } from 'ionicons/icons';
+import { personCircleOutline, qrCodeOutline, arrowBackOutline, chevronDownOutline } from 'ionicons/icons';
 import { GastosService } from '../services/gastos.service';
 
 export interface NuevoGastoFormValue {
@@ -60,7 +60,8 @@ export class NuevoGastoPage {
   private readonly gastosService = inject(GastosService);
   private readonly router = inject(Router);
 
-  categorias = ['Comida', 'Transporte', 'Servicios', 'Ocio', 'Estudios', 'Salud'];
+  // Se añade 'Otros' al arreglo de categorías obligatorias
+  categorias = ['Comida', 'Transporte', 'Servicios', 'Ocio', 'Estudios', 'Salud', 'Otros'];
   metodosPago = ['Efectivo', 'Tarjeta', 'Transferencia'];
   guardando = false;
   errorGuardado = '';
@@ -70,12 +71,12 @@ export class NuevoGastoPage {
     monto: [null as number | null, Validators.required],
     fecha: [this.obtenerFechaActual(), Validators.required],
     categoria: ['', Validators.required],
-    metodo_pago: ['Efectivo', Validators.required],
+    metodo_pago: 'Efectivo',
     notas: [''],
   });
 
   constructor() {
-    addIcons({ personCircleOutline, qrCodeOutline });
+    addIcons({ personCircleOutline, qrCodeOutline, arrowBackOutline, chevronDownOutline });
   }
 
   obtenerFechaActual(): string {
