@@ -1,55 +1,79 @@
 <ion-content class="scan-content app-content" [fullscreen]="false">
   <section class="scan-wrapper app-page-wrapper">
-    <article class="scanner-card" aria-label="Área de escaneo de ticket">
-      <div class="camera-scene">
-        <div class="phone-frame"></div>
-        <div class="receipt-paper">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <div class="scan-frame"></div>
-        <div class="scan-hint">Alinea el ticket con el recuadro</div>
+
+    <article class="camera-container">
+      
+      <video 
+        #videoElement 
+        class="camera-feed" 
+        autoplay 
+        playsinline 
+        muted 
+        [hidden]="capturaReciente">
+      </video>
+
+      <img 
+        *ngIf="capturaReciente" 
+        [src]="imagenRuta" 
+        class="camera-feed" 
+        alt="Foto capturada">
+
+      <div class="scan-frame" *ngIf="!capturaReciente">
+        <div class="corner top-left"></div>
+        <div class="corner top-right"></div>
+        <div class="corner bottom-left"></div>
+        <div class="corner bottom-right"></div>
+        <div class="scan-line"></div>
+      </div>
+
+      <div class="scan-hint" *ngIf="!capturaReciente">
+        Alinea el ticket con el recuadro
       </div>
     </article>
 
-    <div class="camera-controls">
-      <ion-button class="take-photo-button" type="button" (click)="tomarFoto()">
-        <ion-icon name="camera-outline" slot="start" aria-hidden="true"></ion-icon>
+    <div class="camera-actions">
+      <button class="btn-take-photo" (click)="tomarFoto()" [disabled]="capturaReciente">
+        <ion-icon name="camera" aria-hidden="true"></ion-icon>
         Tomar foto
-      </ion-button>
+      </button>
 
-      <ion-button class="gallery-button" type="button" fill="outline" (click)="abrirGaleria()">
-        <ion-icon name="image-outline" slot="start" aria-hidden="true"></ion-icon>
+      <button class="btn-gallery" (click)="abrirGaleria()">
+        <ion-icon name="image" aria-hidden="true"></ion-icon>
         Galería
-      </ion-button>
+      </button>
     </div>
 
+    <canvas #canvasElement style="display: none;"></canvas>
+    <input 
+      #fileInput 
+      type="file" 
+      accept="image/*" 
+      style="display: none;" 
+      (change)="cargarDesdeGaleria($event)">
+
     <article class="recent-capture" *ngIf="capturaReciente">
-      <div class="ticket-thumb">
-        <div class="mini-ticket"></div>
+      <div class="capture-thumb">
+        <img [src]="imagenRuta" alt="Miniatura del ticket" />
       </div>
 
-      <div class="capture-copy">
+      <div class="capture-info">
         <strong>Captura reciente</strong>
         <span>{{ nombreCaptura }}</span>
       </div>
 
-      <button class="delete-capture" type="button" aria-label="Eliminar captura" (click)="eliminarCaptura()">
-        <ion-icon name="trash-outline" aria-hidden="true"></ion-icon>
+      <button class="btn-delete" (click)="eliminarCaptura()" aria-label="Eliminar captura">
+        <ion-icon name="trash" aria-hidden="true"></ion-icon>
       </button>
     </article>
 
-    <ion-button class="ai-button" expand="block" type="button" (click)="analizarConIA()">
-      <ion-icon name="sparkles" slot="start" aria-hidden="true"></ion-icon>
+    <button class="btn-ai" (click)="analizarConIA()" [disabled]="!capturaReciente">
+      <ion-icon name="sparkles" class="ai-icon" aria-hidden="true"></ion-icon>
       Analizar con IA
-    </ion-button>
+    </button>
 
     <p class="scan-footer-text">
       Nuestra IA detectará automáticamente montos, fechas y categorías para ti.
     </p>
+
   </section>
 </ion-content>

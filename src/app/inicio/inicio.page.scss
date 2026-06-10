@@ -1,138 +1,155 @@
-.home-wrapper {
-  padding-top: 104px;
+// Variables globales de fuente (Asegúrate de que Plus Jakarta Sans esté importada en tu index.html)
+* {
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+.home-wrapper {
+  padding: 24px 16px 80px; // Padding inferior para que el FAB/Tabs no tapen el contenido
+  background-color: #f7f9fb; // Color de fondo general
+}
+
+// Main Card
 .total-card {
   align-items: flex-start;
-  background: var(--app-primary-gradient);
+  background: #3470DF;
   border-radius: 24px;
-  box-shadow: 0 18px 32px rgb(52 114 223 / 0.25);
-  color: #ffffff;
+  box-shadow: none;
+  color: #FEFCFF;
   display: flex;
   justify-content: space-between;
-  margin: 0 0 34px;
-  padding: 30px 28px;
+  margin: 65px 0 24px;
+  padding: 30px 24px;
+  position: relative;
+  overflow: hidden;
 
-  p {
-    font-size: 1.02rem;
-    font-weight: 400;
-    margin: 0 0 8px;
-    opacity: 0.92;
+  .total-info {
+    z-index: 2;
   }
 
-  h1 {
-    font-size: clamp(2.7rem, 12vw, 4.2rem);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    line-height: 1;
-    margin: 0 0 22px;
+  .total-title {
+    font-size: 14px;
+    font-weight: 600; // SemiBold
+    margin: 0 0 8px;
+  }
+
+  .total-amount {
+    font-size: 40px;
+    font-weight: 700; // Bold
+    margin: 0 0 16px;
   }
 
   .trend-chip {
     align-items: center;
-    background: rgb(107 216 176 / 0.36);
-    border-radius: 18px;
+    background: #438cd5;
+    border-radius: 9999px;
     display: inline-flex;
     font-size: 0.88rem;
-    font-weight: 400;
+    font-weight: 500; // Medium
     gap: 4px;
-    padding: 7px 12px;
+    padding: 6px 12px;
+    color: #FEFCFF;
+
+    ion-icon {
+      font-size: 1rem;
+    }
   }
 
-  .trend-icon {
-    font-size: 2rem;
-    margin-top: 3px;
+  .trend-icon-bg {
+    position: absolute;
+    right: 24px; // Alineado al borde derecho interno
+    top: 24px;   // Alineado al borde superior interno
+    font-size: 2.5rem; // Más pequeño
+    opacity: 1; // Ya no es transparente
+    color: #FFFFFF; // Totalmente blanco
+    z-index: 1;
   }
 }
 
+// Grid stats
 .stats-grid {
-  margin-bottom: 34px;
+  margin-bottom: 24px;
   padding: 0;
 
   ion-row {
-    margin-left: -8px;
-    margin-right: -8px;
+    margin-left: -6px;
+    margin-right: -6px;
   }
 
   ion-col {
-    padding: 0 8px;
+    padding: 0 6px;
   }
 }
 
 .stat-card {
   align-items: center;
-  background: var(--app-surface);
-  border-radius: 22px;
-  box-shadow: 0 16px 32px rgb(15 23 42 / 0.07);
+  background: #FFFFFF;
+  border-radius: 24px;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   gap: 5px;
   margin: 0;
-  min-height: 116px;
-  padding: 22px 8px 18px;
+  padding: 16px 8px;
   text-align: center;
 
   ion-icon {
-    font-size: 1.55rem;
-    margin-bottom: 4px;
+    font-size: 1.8rem;
   }
 
   span {
-    color: #3f414a;
-    font-size: 0.95rem;
-    font-weight: 400;
+    color: #424653;
+    font-size: 0.9rem;
+    font-weight: 500; // Medium
   }
 
   strong {
-    font-size: 1.02rem;
-    font-weight: 800;
+    font-size: 1.1rem;
+    font-weight: 600; // SemiBold
   }
 
   &--today {
-    color: var(--ion-color-primary);
+    ion-icon { color: #0456C5; }
+    strong { color: #0456C5; }
   }
 
   &--expenses {
-    color: #0b7f54;
+    ion-icon { color: #006D3D; }
+    strong { color: #006D3D; }
   }
 
   &--top {
-    color: #a83845;
+    ion-icon { color: #A13835; }
+    strong { color: #A13835; }
   }
 }
 
+// Botón Escanear
 .scan-ticket {
   align-items: center;
-  background: #f0f2f5;
-  border: 1px solid rgb(15 23 42 / 0.06);
+  background: #ECEEF0;
+  border: 1px solid rgba(195, 198, 214, 0.3);
   border-radius: 28px;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7);
-  color: #1f2329;
   display: flex;
   gap: 16px;
-  margin-bottom: 34px;
-  min-height: 88px;
-  padding: 16px 18px;
+  margin-bottom: 32px;
+  padding: 12px 16px;
   text-decoration: none;
-}
-
-.scan-icon,
-.recent-icon {
-  align-items: center;
-  border-radius: 18px;
-  display: flex;
-  flex-shrink: 0;
-  justify-content: center;
+  height: 82px;
 }
 
 .scan-icon {
-  background: #dceeff;
-  color: var(--ion-color-primary);
-  height: 52px;
-  width: 52px;
+  align-items: center;
+  background: rgba(4, 86, 197, 0.1);
+  border-radius: 50%; // Circular
+  color: #0456C5;
+  display: flex;
+  justify-content: center;
+  height: 48px;
+  width: 48px;
+  flex-shrink: 0;
 
   ion-icon {
-    font-size: 1.65rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -142,39 +159,41 @@
   flex-direction: column;
 
   strong {
-    font-size: 1.08rem;
-    font-weight: 600;
+    color: #191C1E;
+    font-size: 1rem;
+    font-weight: 600; // SemiBold
   }
 
   span {
-    color: #555a64;
-    font-size: 0.88rem;
+    color: #424653;
+    font-size: 0.85rem;
+    font-weight: 500; // Medium
   }
 }
 
 .scan-chevron {
-  color: #69707b;
+  color: #737785;
   font-size: 1.5rem;
 }
 
+// Gastos recientes
 .section-title {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin: 0 4px 18px;
+  margin: 0 4px 16px;
 
   h2 {
-    color: #15171b;
-    font-size: 1.65rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
+    color: #191C1E;
+    font-size: 1.25rem;
+    font-weight: 600; // SemiBold
     margin: 0;
   }
 
   a {
-    color: var(--ion-color-primary);
+    color: #0456C5;
     font-size: 0.95rem;
-    font-weight: 400;
+    font-weight: 600; // SemiBold
     text-decoration: none;
   }
 }
@@ -182,28 +201,32 @@
 .recent-list {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 12px;
 }
 
 .recent-item {
   align-items: center;
-  background: var(--app-surface);
-  border-radius: 28px;
-  box-shadow: 0 15px 32px rgb(15 23 42 / 0.06);
+  background: #FFFFFF;
+  border-radius: 32px;
+  box-shadow: none;
   display: flex;
   gap: 16px;
-  min-height: 88px;
-  padding: 16px 18px;
+  padding: 12px 20px;
 }
 
 .recent-icon {
-  background: #f0f1f3;
-  color: #4c4f57;
-  height: 56px;
-  width: 56px;
+  align-items: center;
+  background: #ECEEF0;
+  border-radius: 16px; // Rectangular redondeado
+  color: #424653;
+  display: flex;
+  justify-content: center;
+  height: 48px;
+  width: 48px;
+  flex-shrink: 0;
 
   ion-icon {
-    font-size: 1.45rem;
+    font-size: 1.4rem;
   }
 }
 
@@ -214,77 +237,71 @@
   min-width: 0;
 
   strong {
-    color: #17191d;
+    color: #191C1E;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 600; // SemiBold
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   span {
-    color: #4c4f57;
-    font-size: 0.86rem;
+    color: #424653;
+    font-size: 0.85rem;
+    font-weight: 500; // Medium
     margin-top: 2px;
   }
 }
 
 .recent-amount {
-  color: #a72e3b;
-  font-size: 1rem;
-  font-weight: 800;
+  color: #BA1A1A;
+  font-size: 1.1rem;
+  font-weight: 600; // SemiBold
   white-space: nowrap;
 }
 
+// Imagen y nota final
 .financial-note {
   align-items: center;
-  color: #9ca3af;
   display: flex;
   flex-direction: column;
-  font-size: 0.86rem;
   gap: 16px;
-  margin: 44px auto 0;
-  max-width: 330px;
+  margin: 32px auto 0;
   text-align: center;
-}
 
-.note-illustration {
-  background: radial-gradient(circle at 55% 40%, #d9f9ef 0 18%, transparent 19%),
-    radial-gradient(circle at 38% 56%, #9ed5ee 0 10%, transparent 11%),
-    linear-gradient(145deg, rgb(229 255 247 / 0.9), rgb(242 249 252 / 0.95));
-  border-radius: 44px;
-  height: 210px;
-  opacity: 0.78;
-  position: relative;
-  width: 220px;
-}
-
-.coin {
-  background: linear-gradient(145deg, #bfece3, #eefdf8);
-  border-radius: 50%;
-  box-shadow: 0 8px 18px rgb(27 85 120 / 0.16);
-  position: absolute;
-
-  &--one {
-    height: 72px;
-    right: 44px;
-    top: 62px;
-    transform: skew(-18deg) rotate(-12deg);
-    width: 94px;
+  .note-image {
+    width: 220px;
+    height: auto;
+    border-radius: 48px;
+    object-fit: cover;
+    opacity: 0.3;
   }
 
-  &--two {
-    bottom: 56px;
-    height: 40px;
-    left: 72px;
-    transform: rotate(48deg);
-    width: 96px;
+  p {
+    color: #424653;
+    font-size: 0.9rem;
+    font-weight: 500; // Medium
+    max-width: 300px;
+    opacity: 0.8;
+    margin-bottom: 50px;
   }
+}
 
-  &--three {
-    bottom: 64px;
-    height: 70px;
-    left: 50px;
-    width: 70px;
+// Botón FAB
+.app-expense-fab {
+  margin-bottom: 16px;
+  margin-right: 8px;
+
+  ion-fab-button {
+    --background: #0456C5;
+    --background-activated: #03429c;
+    --color: #FFFFFF;
+    --border-radius: 16px; // Cuadrado redondeado
+    width: 56px;
+    height: 56px;
+
+    ion-icon {
+      font-size: 1.8rem;
+    }
   }
 }

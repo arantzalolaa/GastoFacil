@@ -1,97 +1,121 @@
 <ion-content class="confirm-content" [fullscreen]="false">
-  <main class="confirm-wrapper">
+  
+  <div class="loading-state" *ngIf="cargando">
+    <div class="spinner-box">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+    <h2>Analizando ticket...</h2>
+    <p>Nuestra IA está extrayendo los datos.</p>
+  </div>
+
+  <div class="loading-state" *ngIf="!cargando && errorAnalisis">
+    <h2>Error al analizar</h2>
+    <p>No se pudo procesar la imagen del ticket.</p>
+    <ion-button (click)="corregirManualmente()">Llenar manualmente</ion-button>
+  </div>
+
+  <main class="confirm-wrapper" *ngIf="!cargando && !errorAnalisis">
+    
     <header class="confirm-hero">
       <h1>Confirmar gasto</h1>
       <p>Revisa los datos detectados antes de guardar</p>
-      <span class="ai-badge">
+      <button class="ai-badge" type="button">
         <ion-icon name="sparkles" aria-hidden="true"></ion-icon>
-        Datos obtenidos por IA
-      </span>
+        <span>Datos obtenidos por IA</span>
+      </button>
     </header>
 
-    <section class="ticket-card" aria-label="Ticket detectado">
-      <div class="ticket-photo" aria-hidden="true">
-        <div class="receipt-paper">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-      <button class="ticket-button" type="button">
+    <section class="ticket-preview-container" [style.background-image]="'url(' + imagenTicketBase64 + ')'" (click)="abrirVisor()">
+      <div class="ticket-overlay"></div>
+      <button class="btn-view-original" type="button" (click)="abrirVisor(); $event.stopPropagation()">
         <ion-icon name="eye-outline" aria-hidden="true"></ion-icon>
-        Ver ticket original
+        <span>Ver ticket original</span>
       </button>
     </section>
 
-    <section class="amount-card" aria-label="Monto total detectado">
-      <span>Monto total</span>
-      <strong><span>$</span> {{ gastoDetectado.monto | number: '1.2-2' }}</strong>
-    </section>
+    <article class="amount-display-card">
+      <span class="amount-label">Monto total</span>
+      <div class="amount-breakdown">
+        <span class="currency-symbol">$</span>
+        <strong class="currency-value">{{ gastoDetectado.monto | number: '1.2-2' }}</strong>
+      </div>
+    </article>
 
-    <section class="review-card" aria-label="Datos detectados del gasto">
-      <div class="review-field">
-        <label>Establecimiento</label>
-        <div class="field-box">
-          <ion-icon name="storefront-outline" aria-hidden="true"></ion-icon>
-          <span>{{ gastoDetectado.establecimiento }}</span>
+    <section class="review-fields-card">
+      
+      <div class="field-group">
+        <label class="field-label">Establecimiento</label>
+        <div class="field-input-box">
+          <ion-icon name="storefront-outline" class="icon-store" aria-hidden="true"></ion-icon>
+          <span class="field-text-value">{{ gastoDetectado.establecimiento }}</span>
         </div>
       </div>
 
-      <div class="review-field">
-        <label>Concepto</label>
-        <div class="field-box">
-          <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
-          <span>{{ gastoDetectado.concepto }}</span>
+      <div class="field-group">
+        <label class="field-label">Concepto</label>
+        <div class="field-input-box">
+          <ion-icon name="bag-handle-outline" class="icon-bag" aria-hidden="true"></ion-icon>
+          <span class="field-text-value">{{ gastoDetectado.concepto }}</span>
         </div>
       </div>
 
-      <div class="review-grid">
-        <div class="review-field">
-          <label>Fecha</label>
-          <div class="field-box field-box--compact">
-            <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
-            <span>{{ gastoDetectado.fecha }}</span>
+      <div class="review-row-grid">
+        
+        <div class="field-group">
+          <label class="field-label">Fecha</label>
+          <div class="field-input-box compact-box">
+            <ion-icon name="calendar-outline" class="icon-calendar" aria-hidden="true"></ion-icon>
+            <span class="field-text-value">{{ gastoDetectado.fecha }}</span>
           </div>
         </div>
 
-        <div class="review-field">
-          <label>Categoría sugerida</label>
-          <div class="field-box field-box--category">
-            <ion-icon name="restaurant-outline" aria-hidden="true"></ion-icon>
-            <span>{{ gastoDetectado.categoria }}</span>
+        <div class="field-group">
+          <label class="field-label">Categoría sugerida</label>
+          <div class="category-badge-box">
+            <ion-icon [name]="obtenerIconoCategoria(gastoDetectado.categoria)" class="icon-fork" aria-hidden="true"></ion-icon>
+            <span class="category-text-value">{{ gastoDetectado.categoria }}</span>
           </div>
         </div>
+
       </div>
 
-      <div class="review-field">
-        <label>Método de pago</label>
-        <div class="field-box field-box--dropdown">
-          <ion-icon name="cash-outline" aria-hidden="true"></ion-icon>
-          <span>{{ gastoDetectado.metodo_pago }}</span>
-          <ion-icon class="dropdown-icon" name="chevron-down-outline" aria-hidden="true"></ion-icon>
+      <div class="field-group">
+        <label class="field-label">Método de pago</label>
+        <div class="field-input-box">
+          <ion-icon name="cash-outline" class="icon-card" aria-hidden="true"></ion-icon>
+          <span class="field-text-value">{{ gastoDetectado.metodo_pago }}</span>
+          <ion-icon name="chevron-down-outline" class="icon-dropdown" aria-hidden="true"></ion-icon>
         </div>
       </div>
 
-      <div class="review-field">
-        <label>Notas</label>
-        <div class="field-box field-box--notes">
-          <ion-icon name="document-text-outline" aria-hidden="true"></ion-icon>
-          <span>{{ gastoDetectado.notas }}</span>
+      <div class="field-group">
+        <label class="field-label">Notas</label>
+        <div class="field-input-box notes-box">
+          <ion-icon name="document-text-outline" class="icon-doc" aria-hidden="true"></ion-icon>
+          <span class="field-text-value">{{ gastoDetectado.notas }}</span>
         </div>
       </div>
+
     </section>
+
+    <div class="action-buttons-group">
+      <button class="btn-action-save" type="button" (click)="confirmarYGuardar()">
+        <span>Guardar</span>
+      </button>
+      
+      <button class="btn-action-cancel" type="button" (click)="corregirManualmente()">
+        <span>Corregir Manualmente</span>
+      </button>
+    </div>
+
+    <div class="image-viewer-overlay" *ngIf="mostrarVisor" (click)="cerrarVisor()">
+      <button class="btn-close-viewer" (click)="cerrarVisor(); $event.stopPropagation()" type="button">
+        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+      </button>
+      <div class="viewer-image-content" (click)="$event.stopPropagation()">
+        <img [src]="imagenTicketBase64" alt="Ticket original escaneado" />
+      </div>
+    </div>
+
   </main>
 </ion-content>
-
-<ion-footer class="confirm-footer ion-no-border">
-  <div class="footer-actions">
-    <ion-button expand="block" class="save-button" type="button" (click)="confirmarYGuardar()">
-      Guardar gasto
-    </ion-button>
-    <ion-button expand="block" class="manual-button" type="button" fill="outline" (click)="corregirManualmente()">
-      Corregir manualmente
-    </ion-button>
-  </div>
-</ion-footer>

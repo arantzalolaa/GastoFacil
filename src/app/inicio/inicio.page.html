@@ -1,36 +1,38 @@
+
 <ion-content class="home-content app-content" [fullscreen]="false">
   <section class="home-wrapper app-page-wrapper">
+    
     <ion-card class="total-card">
-      <div>
-        <p>Total del mes</p>
-        <h1>{{ totalMes | currency: 'USD' : 'symbol' : '1.2-2' }}</h1>
+      <div class="total-info">
+        <p class="total-title">Total del mes</p>
+        <h1 class="total-amount">{{ totalMes | currency: 'USD' : 'symbol' : '1.2-2' }}</h1>
         <span class="trend-chip">
-          <ion-icon name="arrow-up-outline" aria-hidden="true"></ion-icon>
-          {{ variacionMesAnterior }}% vs mes anterior
+          <ion-icon [name]="tendenciaPositiva ? 'arrow-up' : 'arrow-down'" aria-hidden="true"></ion-icon>
+          {{ variacionAbsoluta }}% vs mes anterior
         </span>
       </div>
-      <ion-icon class="trend-icon" name="trending-up-outline" aria-hidden="true"></ion-icon>
+      <ion-icon class="trend-icon-bg" name="trending-up-outline" aria-hidden="true"></ion-icon>
     </ion-card>
 
     <ion-grid class="stats-grid">
       <ion-row>
         <ion-col size="4">
           <ion-card class="stat-card stat-card--today">
-            <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+            <ion-icon name="calendar" aria-hidden="true"></ion-icon>
             <span>Hoy</span>
             <strong>{{ totalHoy | currency: 'USD' : 'symbol' : '1.0-0' }}</strong>
           </ion-card>
         </ion-col>
         <ion-col size="4">
           <ion-card class="stat-card stat-card--expenses">
-            <ion-icon name="receipt-outline" aria-hidden="true"></ion-icon>
+            <ion-icon name="receipt" aria-hidden="true"></ion-icon>
             <span>Gastos</span>
             <strong>{{ totalTransacciones }}</strong>
           </ion-card>
         </ion-col>
         <ion-col size="4">
           <ion-card class="stat-card stat-card--top">
-            <ion-icon name="restaurant-outline" aria-hidden="true"></ion-icon>
+            <ion-icon [name]="iconoTop" aria-hidden="true"></ion-icon>
             <span>Top</span>
             <strong>{{ categoriaTop }}</strong>
           </ion-card>
@@ -40,13 +42,13 @@
 
     <a class="scan-ticket" routerLink="/escanear">
       <div class="scan-icon">
-        <ion-icon name="qr-code-outline" aria-hidden="true"></ion-icon>
+        <ion-icon name="qr-code" aria-hidden="true"></ion-icon>
       </div>
       <div class="scan-copy">
         <strong>Escanear ticket</strong>
         <span>Añade gastos automáticamente</span>
       </div>
-      <ion-icon class="scan-chevron" name="chevron-forward-outline" aria-hidden="true"></ion-icon>
+      <ion-icon class="scan-chevron" name="chevron-forward" aria-hidden="true"></ion-icon>
     </a>
 
     <div class="section-title">
@@ -68,17 +70,14 @@
     </div>
 
     <div class="financial-note" aria-hidden="true">
-      <div class="note-illustration">
-        <div class="coin coin--one"></div>
-        <div class="coin coin--two"></div>
-        <div class="coin coin--three"></div>
-      </div>
+      <img src="assets/inicio.jpg" class="note-image" alt="Ilustración financiera" />
       <p>Tu camino hacia la libertad financiera empieza con un pequeño paso.</p>
     </div>
+
   </section>
 
   <ion-fab class="app-expense-fab" slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button color="primary" routerLink="/nuevo-gasto" aria-label="Agregar gasto">
+    <ion-fab-button routerLink="/nuevo-gasto" aria-label="Agregar gasto">
       <ion-icon name="add" aria-hidden="true"></ion-icon>
     </ion-fab-button>
   </ion-fab>

@@ -14,12 +14,12 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
-  barChartOutline,
-  homeOutline,
-  notificationsOutline,
+  home,
+  wallet,
+  qrCode,
+  barChart,
   personCircleOutline,
-  qrCodeOutline,
-  walletOutline,
+  notificationsOutline,
 } from 'ionicons/icons';
 import { filter } from 'rxjs';
 
@@ -47,12 +47,12 @@ export class TabsPage {
 
   constructor() {
     addIcons({
-      barChartOutline,
-      homeOutline,
-      notificationsOutline,
+      home,
+      wallet,
+      qrCode,
+      barChart,
       personCircleOutline,
-      qrCodeOutline,
-      walletOutline,
+      notificationsOutline,
     });
 
     this.actualizarVisibilidadHeader(this.router.url);

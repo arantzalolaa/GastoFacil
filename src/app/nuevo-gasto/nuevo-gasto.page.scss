@@ -1,215 +1,242 @@
-.new-expense-header {
-  background: #ffffff;
-  box-shadow: 0 1px 10px rgb(15 23 42 / 0.04);
-
-  ion-toolbar {
-    --background: #ffffff;
-    --border-width: 0;
-    --min-height: 84px;
-    --padding-end: 22px;
-    --padding-start: 12px;
-  }
-
-  ion-title {
-    color: var(--ion-color-primary);
-    font-size: 1.55rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    text-align: center;
-  }
-
-  ion-back-button,
-  ion-button {
-    --color: var(--ion-color-primary);
-  }
-
-  ion-icon {
-    font-size: 1.7rem;
-  }
+* {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  box-sizing: border-box;
 }
 
 .new-expense-content {
-  --background: #f8fafc;
+  --background: #f7f9fc;
 }
 
-.form-shell {
-  background: #ffffff;
-  border-radius: 42px;
-  box-shadow: 0 18px 38px rgb(15 23 42 / 0.06);
-  margin: 28px 24px 112px;
-  overflow: hidden;
-  padding: 28px 28px 30px;
-}
+// ESTILOS DEL TOOLBAR SUPERIOR
+.new-expense-header {
+  ion-toolbar {
+    --background: #ffffff;
+    --border-width: 0;
+    padding: calc(8px + var(--ion-safe-area-top, 0px)) 12px 8px;
 
-.form-illustration {
-  border-radius: 30px;
-  display: block;
-  height: 164px;
-  margin-bottom: 30px;
-  object-fit: cover;
-  width: 100%;
-}
+    ion-title {
+      color: #0456C5;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+    }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+    ion-back-button {
+      --color: #0456C5;
+    }
 
-.field-group {
-  color: #373a44;
-  display: flex;
-  flex-direction: column;
-  font-size: 1rem;
-  font-weight: 700;
-  gap: 9px;
-}
-
-ion-input,
-ion-select,
-ion-textarea,
-.amount-input {
-  --background: #f0f3f8;
-  --border-radius: 26px;
-  --highlight-color-focused: transparent;
-  --padding-bottom: 0;
-  --padding-end: 18px;
-  --padding-start: 20px;
-  --padding-top: 0;
-  background: #f0f3f8;
-  border-radius: 26px;
-  color: #2d333d;
-  min-height: 64px;
-}
-
-ion-input,
-ion-select {
-  font-size: 1.05rem;
-}
-
-ion-textarea {
-  --padding-top: 18px;
-  min-height: 132px;
-}
-
-.amount-input {
-  align-items: center;
-  display: flex;
-  gap: 8px;
-  padding-left: 20px;
-
-  ion-input {
-    --background: transparent;
-    background: transparent;
-    border-radius: 0;
-    flex: 1;
-    font-size: 1.55rem;
-    font-weight: 800;
-    min-height: 64px;
+    ion-button {
+      --color: #0456C5;
+      font-size: 26px;
+    }
   }
 }
 
-.currency-symbol {
-  color: var(--ion-color-primary);
-  font-size: 1.25rem;
-  font-weight: 700;
+// CONTENEDOR CENTRAL DE LA PÁGINA
+.form-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 20px 32px;
+  margin: 0 auto;
+  max-width: 430px;
+  background: #ffffff;
+  border-radius: 32px;
+  box-shadow: 0px 8px 24px rgba(19, 32, 54, 0.02);
+  margin-top: 10px;
+}
+
+// BANNER ILUSTRATIVO SUPERIOR
+.form-illustration {
+  width: 100%;
+  height: 144px;
+  object-fit: cover;
+  border-radius: 24px;
+  margin-bottom: 24px;
+}
+
+// FORMULARIO Y FILAS
+form {
+  width: 100%;
 }
 
 .two-column-row {
-  margin-left: -8px;
-  margin-right: -8px;
-
+  margin: 0 -8px;
+  
   ion-col {
     padding: 0 8px;
   }
 }
 
-.payment-options {
+// GRUPOS DE CAMPOS (LABELS)
+.field-group {
   display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 2px;
-  scrollbar-width: none;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 20px;
 
-  &::-webkit-scrollbar {
-    display: none;
+  span {
+    color: #424653;
+    font-size: 14px;
+    font-weight: 600; // SemiBold
+    padding-left: 2px;
   }
 }
 
-.payment-pill {
-  background: #f3f4f6;
-  border: 1px solid rgb(15 23 42 / 0.09);
-  border-radius: 28px;
-  color: #363a43;
-  flex: 0 0 auto;
-  font-size: 0.96rem;
-  font-weight: 700;
-  min-height: 58px;
-  padding: 0 28px;
-
-  &--selected {
-    background: var(--ion-color-success-tint);
-    border-color: #0f6d4c;
-    color: #143b2f;
-  }
+// OVERRIDES PARA APARIENCIA EN LAS CAJAS DE ENTRADA (IONIC ELEMENTS)
+ion-input, ion-select, ion-textarea {
+  --background: #F2F4F6;
+  --border-radius: 16px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --color: #191C1E;
+  --placeholder-color: #A0A5B5;
+  font-size: 15px;
+  font-weight: 400;
+  height: 48px;
+  margin: 0;
 }
 
-.save-button,
-.cancel-button {
-  --border-radius: 28px;
-  font-size: 1.05rem;
-  font-weight: 600;
-  height: 62px;
-  margin: 16px 0 0;
-  text-transform: none;
+ion-textarea {
+  height: auto;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
 }
 
-.save-button {
-  --background: var(--ion-color-primary);
-  --box-shadow: 0 12px 22px rgb(0 103 200 / 0.22);
-}
-
-.cancel-button {
-  --background: #ffffff;
-  --border-color: var(--ion-color-primary);
-  --border-width: 2px;
-  --color: var(--ion-color-primary);
-  margin-top: 14px;
-}
-
-.ai-banner {
-  background: #d9ffe9;
-  border: 1px solid rgb(98 239 173 / 0.45);
-  border-radius: 30px;
-  color: #0a6b4c;
-  margin-top: 30px;
-  padding: 22px 18px;
-  text-align: center;
-
-  p {
-    font-size: 0.98rem;
-    font-weight: 700;
-    line-height: 1.55;
-    margin: 0 0 16px;
-  }
-
-  a {
+// CAJA ESPECÍFICA PARA EL MONTO
+.amount-field {
+  .amount-input {
+    display: flex;
     align-items: center;
-    color: var(--ion-color-primary);
-    display: inline-flex;
-    font-size: 1.08rem;
-    font-weight: 800;
-    gap: 8px;
-    text-decoration: none;
+    background: #F2F4F6;
+    border-radius: 16px;
+    height: 48px;
+    padding: 0 16px;
+    gap: 6px;
 
-    ion-icon {
-      font-size: 1.25rem;
+    .currency-symbol {
+      color: #0456C5;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 0;
+    }
+
+    ion-input {
+      --background: transparent;
+      --padding-start: 0px;
+      font-size: 16px;
+      font-weight: 700;
+      height: 100%;
+      color: #191C1E;
     }
   }
 }
+
+// ELEMENTO SELECT POP OVERRIDE
+ion-select {
+  width: 100%;
+  &::part(icon) {
+    color: #424653;
+    opacity: 1;
+    font-size: 16px;
+  }
+}
+
+// PASTILLAS DE SELECCIÓN DE MÉTODO DE PAGO
+.payment-options {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 2px;
+}
+
+.payment-pill {
+  flex: 1;
+  height: 44px;
+  border-radius: 16px;
+  background: #F2F4F6;
+  border: none;
+  color: #424653;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+
+  &--selected {
+    background: #7EFBAE;
+    color: #007442;
+    font-weight: 600;
+  }
+}
+
+// TEXTO DE ERROR EN VALIDACIONES
 .form-error {
   color: #a23b43;
-  font-size: 0.92rem;
-  margin: 0 0 14px;
+  font-size: 13px;
+  font-weight: 500;
+  margin: -8px 0 16px 2px;
+}
+
+// BOTONES DE ACCIÓN (GUARDAR / CANCELAR)
+ion-button.save-button, ion-button.cancel-button {
+  --height: 48px;
+  --border-radius: 100px;
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+ion-button.save-button {
+  --background: #0456C5;
+  --color: #ffffff;
+  --box-shadow: none;
+  margin-top: 12px;
+}
+
+ion-button.cancel-button {
+  --border-color: #0456C5;
+  --border-width: 1px;
+  --color: #0456C5;
+}
+
+// BANNER INFERIOR PUBLICITARIO DE IA
+.ai-banner {
+  background: #E6FAF0;
+  border-radius: 24px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   text-align: center;
+  margin-top: 12px;
+  width: 100%;
+
+  p {
+    margin: 0;
+    color: #007442;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #0456C5;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 15px;
+
+    ion-icon {
+      font-size: 18px;
+    }
+  }
 }
