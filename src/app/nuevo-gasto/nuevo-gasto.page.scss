@@ -1,242 +1,336 @@
 * {
-  font-family: 'Plus Jakarta Sans', sans-serif;
   box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-.new-expense-content {
-  --background: #f7f9fc;
-}
-
-// ESTILOS DEL TOOLBAR SUPERIOR
 .new-expense-header {
+  background: #f7f9fb;
+  box-shadow: none;
+
   ion-toolbar {
-    --background: #ffffff;
+    --background: #f7f9fb;
     --border-width: 0;
-    padding: calc(8px + var(--ion-safe-area-top, 0px)) 12px 8px;
+    --min-height: 64px;
+    --padding-end: 16px;
+    --padding-start: 10px;
+  }
 
-    ion-title {
-      color: #0456C5;
-      font-size: 20px;
-      font-weight: 700;
-      text-align: center;
-    }
+  ion-back-button {
+    --color: #0456c5;
+    --icon-font-size: 24px;
+    --padding-end: 0;
+    --padding-start: 0;
+    --ripple-color: rgba(4, 86, 197, 0.14);
 
-    ion-back-button {
-      --color: #0456C5;
-    }
+    margin-right: 4px;
+  }
 
-    ion-button {
-      --color: #0456C5;
-      font-size: 26px;
-    }
+  ion-title {
+    color: #0456c5;
+    font-size: 22px;
+    font-weight: 700;
+    padding-inline: 0;
+    text-align: left;
   }
 }
 
-// CONTENEDOR CENTRAL DE LA PÁGINA
-.form-shell {
+.new-expense-content {
+  --background: #f7f9fb;
+}
+
+.new-expense-wrapper {
+  align-items: center;
+  background: #f7f9fb;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 12px 20px 32px;
   margin: 0 auto;
   max-width: 430px;
+  min-height: 100%;
+  padding: 12px 18px 96px;
+}
+
+.main-white-card {
+  align-items: center;
   background: #ffffff;
-  border-radius: 32px;
-  box-shadow: 0px 8px 24px rgba(19, 32, 54, 0.02);
-  margin-top: 10px;
-}
-
-// BANNER ILUSTRATIVO SUPERIOR
-.form-illustration {
+  border-radius: 49px;
+  box-shadow: 0 8px 24px rgba(19, 32, 54, 0.01);
+  display: flex;
+  flex-direction: column;
+  padding: 22px 18px 20px;
   width: 100%;
-  height: 144px;
-  object-fit: cover;
-  border-radius: 24px;
-  margin-bottom: 24px;
 }
 
-// FORMULARIO Y FILAS
+.form-illustration {
+  border-radius: 32px;
+  height: 128px;
+  margin-bottom: 22px;
+  object-fit: cover;
+  width: min(300px, 100%);
+}
+
 form {
   width: 100%;
 }
 
-.two-column-row {
-  margin: 0 -8px;
-  
-  ion-col {
-    padding: 0 8px;
-  }
-}
-
-// GRUPOS DE CAMPOS (LABELS)
 .field-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-bottom: 18px;
   width: 100%;
-  margin-bottom: 20px;
 
-  span {
+  > span {
     color: #424653;
     font-size: 14px;
-    font-weight: 600; // SemiBold
+    font-weight: 600;
+    line-height: 1.2;
     padding-left: 2px;
   }
 }
 
-// OVERRIDES PARA APARIENCIA EN LAS CAJAS DE ENTRADA (IONIC ELEMENTS)
-ion-input, ion-select, ion-textarea {
-  --background: #F2F4F6;
-  --border-radius: 16px;
-  --padding-start: 16px;
-  --padding-end: 16px;
-  --color: #191C1E;
-  --placeholder-color: #A0A5B5;
-  font-size: 15px;
+.custom-input,
+.custom-select,
+.custom-textarea {
+  --background: #f1f5f9;
+  --border-radius: 32px;
+  --color: #191c1e;
+  --highlight-color-focused: transparent;
+  --padding-end: 20px;
+  --padding-start: 20px;
+  --placeholder-color: #c3c6d6;
+  --placeholder-opacity: 1;
+
+  background: #f1f5f9;
+  border-radius: 32px;
+  color: #191c1e;
+  font-size: 16px;
   font-weight: 400;
-  height: 48px;
-  margin: 0;
+  min-height: 52px;
 }
 
-ion-textarea {
-  height: auto;
-  --padding-top: 14px;
-  --padding-bottom: 14px;
+.custom-input {
+  height: 52px;
 }
 
-// CAJA ESPECÍFICA PARA EL MONTO
-.amount-field {
-  .amount-input {
-    display: flex;
-    align-items: center;
-    background: #F2F4F6;
-    border-radius: 16px;
-    height: 48px;
-    padding: 0 16px;
-    gap: 6px;
-
-    .currency-symbol {
-      color: #0456C5;
-      font-size: 16px;
-      font-weight: 700;
-      padding: 0;
-    }
-
-    ion-input {
-      --background: transparent;
-      --padding-start: 0px;
-      font-size: 16px;
-      font-weight: 700;
-      height: 100%;
-      color: #191C1E;
-    }
-  }
+.date-input {
+  --placeholder-color: #191c1e;
 }
 
-// ELEMENTO SELECT POP OVERRIDE
-ion-select {
-  width: 100%;
+.custom-select {
+  --padding-bottom: 0;
+  --padding-top: 0;
+
+  height: 52px;
+
   &::part(icon) {
     color: #424653;
+    font-size: 18px;
     opacity: 1;
-    font-size: 16px;
+  }
+
+  &::part(placeholder) {
+    color: #c3c6d6;
+    opacity: 1;
+  }
+
+  &::part(text) {
+    color: #191c1e;
   }
 }
 
-// PASTILLAS DE SELECCIÓN DE MÉTODO DE PAGO
+.custom-textarea {
+  --padding-bottom: 16px;
+  --padding-top: 16px;
+
+  min-height: 122px;
+}
+
+.two-column-row {
+  margin: 0 -6px;
+
+  ion-col {
+    padding: 0 6px;
+  }
+}
+
+.amount-field {
+  .amount-input {
+    align-items: center;
+    background: #f1f5f9;
+    border-radius: 32px;
+    display: flex;
+    gap: 6px;
+    height: 52px;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  .currency-symbol {
+    color: #0456c5;
+    flex: 0 0 auto;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .custom-amount-input {
+    --background: transparent;
+    --color: #6b7280;
+    --highlight-color-focused: transparent;
+    --padding-end: 0;
+    --padding-start: 0;
+    --placeholder-color: #6b7280;
+    --placeholder-opacity: 1;
+
+    color: #6b7280;
+    flex: 0 1 auto;
+    font-size: 18px;
+    font-weight: 500;
+    height: 100%;
+    min-height: 52px;
+    text-align: left;
+    width: 120px;
+  }
+
+  .custom-amount-input::part(native) {
+    text-align: left;
+  }
+}
+
 .payment-options {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  margin-top: 2px;
 }
 
 .payment-pill {
-  flex: 1;
-  height: 44px;
-  border-radius: 16px;
-  background: #F2F4F6;
-  border: none;
+  align-items: center;
+  background: #f2f4f6;
+  border: 1px solid rgba(195, 198, 214, 0.3);
+  border-radius: 9999px;
   color: #424653;
-  font-size: 14px;
-  font-weight: 500;
   cursor: pointer;
   display: flex;
-  align-items: center;
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  height: 44px;
   justify-content: center;
-  transition: all 0.15s ease;
+  min-width: 0;
+  padding: 0 8px;
+  transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
 
-  &--selected {
-    background: #7EFBAE;
+  &:active {
+    transform: scale(0.96);
+  }
+
+  &.payment-pill--selected {
+    background: #7efbae;
+    border-color: #006d3d;
     color: #007442;
-    font-weight: 600;
   }
 }
 
-// TEXTO DE ERROR EN VALIDACIONES
 .form-error {
   color: #a23b43;
   font-size: 13px;
   font-weight: 500;
-  margin: -8px 0 16px 2px;
+  margin: -6px 0 14px 2px;
 }
 
-// BOTONES DE ACCIÓN (GUARDAR / CANCELAR)
-ion-button.save-button, ion-button.cancel-button {
-  --height: 48px;
-  --border-radius: 100px;
-  margin: 0 0 12px 0;
+ion-button.save-button,
+ion-button.cancel-button {
+  --border-radius: 9999px;
+  --box-shadow: none;
+  --height: 50px;
+
   font-size: 16px;
-  font-weight: 600;
-  text-transform: none;
+  font-weight: 400;
   letter-spacing: 0;
+  margin: 0 0 14px;
+  text-transform: none;
 }
 
 ion-button.save-button {
-  --background: #0456C5;
+  --background: #0456c5;
+  --background-activated: #03429c;
   --color: #ffffff;
-  --box-shadow: none;
-  margin-top: 12px;
+
+  margin-top: 8px;
 }
 
 ion-button.cancel-button {
-  --border-color: #0456C5;
-  --border-width: 1px;
-  --color: #0456C5;
+  --background: #ffffff;
+  --border-color: #0456c5;
+  --border-style: solid;
+  --border-width: 2px;
+  --color: #0456c5;
 }
 
-// BANNER INFERIOR PUBLICITARIO DE IA
 .ai-banner {
-  background: #E6FAF0;
-  border-radius: 24px;
-  padding: 16px;
+  align-items: center;
+  background: rgba(126, 251, 174, 0.3);
+  border: 1px solid rgba(126, 251, 174, 0.5);
+  border-radius: 32px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
-  margin-top: 12px;
+  gap: 14px;
+  margin-top: 2px;
+  padding: 18px 16px;
   width: 100%;
 
   p {
-    margin: 0;
     color: #007442;
     font-size: 14px;
     font-weight: 600;
-    line-height: 20px;
+    line-height: 1.45;
+    margin: 0;
+    text-align: center;
   }
 
   a {
-    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: #0456C5;
+    color: #0456c5;
+    display: inline-flex;
+    font-size: 16px;
     font-weight: 700;
+    gap: 8px;
+    justify-content: center;
+    text-align: center;
     text-decoration: none;
-    font-size: 15px;
 
     ion-icon {
-      font-size: 18px;
+      color: #0456c5;
+      font-size: 20px;
     }
+  }
+}
+
+@media (max-width: 380px) {
+  .new-expense-wrapper {
+    padding-inline: 14px;
+  }
+
+  .main-white-card {
+    border-radius: 38px;
+    padding: 20px 14px 18px;
+  }
+
+  .payment-options {
+    gap: 6px;
+  }
+
+  .payment-pill {
+    font-size: 12.5px;
+    padding-inline: 6px;
+  }
+
+  .custom-input,
+  .custom-select,
+  .amount-field .amount-input {
+    min-height: 50px;
+  }
+
+  .amount-field .custom-amount-input {
+    font-size: 18px;
   }
 }

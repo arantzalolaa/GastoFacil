@@ -1,107 +1,142 @@
 <ion-header class="new-expense-header ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/gastos" text="" color="primary"></ion-back-button>
+      <ion-back-button
+        defaultHref="/gastos"
+        text=""
+        icon="arrow-back-outline"
+        aria-label="Regresar"
+      ></ion-back-button>
     </ion-buttons>
-    <ion-title>Nuevo gasto</ion-title>
-    <ion-buttons slot="end">
-      <ion-button aria-label="Perfil" fill="clear">
-        <ion-icon name="person-circle-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+
+    <ion-title>Nuevo Gasto</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="new-expense-content" [fullscreen]="false">
-  <section class="form-shell">
-    <img
-      class="form-illustration"
-      src="assets/nuevo-gasto-illustration.svg"
-      alt="Ilustración decorativa de gastos"
-    />
+<ion-content class="new-expense-content app-content" [fullscreen]="false">
+  <div class="new-expense-wrapper">
+    <main class="main-white-card">
+      <img
+        class="form-illustration"
+        src="assets/nuevo_gasto.png"
+        alt="Ilustración decorativa de nuevo gasto"
+      />
 
-    <form [formGroup]="gastoForm" (ngSubmit)="guardarGasto()">
-      <label class="field-group">
-        <span>Concepto</span>
-        <ion-input
-          formControlName="concepto"
-          placeholder="¿En qué gastaste hoy?"
-          type="text"
-        ></ion-input>
-      </label>
+      <form [formGroup]="gastoForm" (ngSubmit)="guardarGasto()">
+        <label class="field-group">
+          <span>Concepto</span>
 
-      <label class="field-group amount-field">
-        <span>Monto</span>
-        <div class="amount-input">
-          <span class="currency-symbol">$</span>
           <ion-input
-            formControlName="monto"
-            inputmode="decimal"
-            placeholder="0.00"
-            type="number"
+            formControlName="concepto"
+            placeholder="¿En qué gastaste hoy?"
+            type="text"
+            class="custom-input"
           ></ion-input>
-        </div>
-      </label>
+        </label>
 
-      <ion-row class="two-column-row">
-        <ion-col size="6">
-          <label class="field-group">
-            <span>Fecha</span>
-            <ion-input formControlName="fecha" type="date"></ion-input>
-          </label>
-        </ion-col>
-        <ion-col size="6">
-          <label class="field-group">
-            <span>Categoría</span>
-            <ion-select formControlName="categoria" interface="popover" placeholder="Seleccionar">
-              <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">
-                {{ categoria }}
-              </ion-select-option>
-            </ion-select>
-          </label>
-        </ion-col>
-      </ion-row>
+        <label class="field-group amount-field">
+          <span>Monto</span>
 
-      <div class="field-group">
-        <span>Método de pago</span>
-        <div class="payment-options">
-          <button
-            type="button"
-            class="payment-pill"
-            *ngFor="let metodo of metodosPago"
-            [class.payment-pill--selected]="gastoForm.value.metodo_pago === metodo"
-            (click)="seleccionarMetodoPago(metodo)"
-          >
-            {{ metodo }}
-          </button>
+          <div class="amount-input">
+            <span class="currency-symbol">$</span>
+
+            <ion-input
+              formControlName="monto"
+              inputmode="decimal"
+              placeholder="0.00"
+              type="number"
+              class="custom-amount-input"
+            ></ion-input>
+          </div>
+        </label>
+
+        <ion-row class="two-column-row">
+          <ion-col size="6">
+            <label class="field-group">
+              <span>Fecha</span>
+
+              <ion-input
+                formControlName="fecha"
+                type="date"
+                class="custom-input date-input"
+              ></ion-input>
+            </label>
+          </ion-col>
+
+          <ion-col size="6">
+            <label class="field-group">
+              <span>Categoría</span>
+
+              <ion-select
+                formControlName="categoria"
+                interface="popover"
+                placeholder="Seleccionar"
+                class="custom-select"
+              >
+                <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">
+                  {{ categoria }}
+                </ion-select-option>
+              </ion-select>
+            </label>
+          </ion-col>
+        </ion-row>
+
+        <div class="field-group">
+          <span>Método de pago</span>
+
+          <div class="payment-options">
+            <button
+              type="button"
+              class="payment-pill"
+              *ngFor="let metodo of metodosPago"
+              [class.payment-pill--selected]="gastoForm.value.metodo_pago === metodo"
+              (click)="seleccionarMetodoPago(metodo)"
+            >
+              {{ metodo }}
+            </button>
+          </div>
         </div>
+
+        <label class="field-group">
+          <span>Notas</span>
+
+          <ion-textarea
+            formControlName="notas"
+            placeholder="Agrega más detalles aquí..."
+            rows="4"
+            class="custom-textarea"
+          ></ion-textarea>
+        </label>
+
+        <p class="form-error" *ngIf="errorGuardado">
+          {{ errorGuardado }}
+        </p>
+
+        <ion-button class="save-button" expand="block" type="submit" [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : 'Guardar' }}
+        </ion-button>
+
+        <ion-button
+          class="cancel-button"
+          expand="block"
+          fill="outline"
+          routerLink="/gastos"
+          type="button"
+        >
+          Cancelar
+        </ion-button>
+      </form>
+
+      <div class="ai-banner">
+        <p>
+          Puedes ingresar el gasto manualmente o escanear un ticket para que la IA lo haga por ti.
+        </p>
+
+        <a routerLink="/escanear">
+          <ion-icon name="qr-code-outline" aria-hidden="true"></ion-icon>
+          <span>Escanear ticket</span>
+        </a>
       </div>
-
-      <label class="field-group">
-        <span>Notas</span>
-        <ion-textarea
-          formControlName="notas"
-          placeholder="Agrega más detalles aquí..."
-          rows="4"
-        ></ion-textarea>
-      </label>
-
-      <p class="form-error" *ngIf="errorGuardado">{{ errorGuardado }}</p>
-
-      <ion-button class="save-button" expand="block" type="submit" [disabled]="guardando">
-        {{ guardando ? 'Guardando...' : 'Guardar' }}
-      </ion-button>
-      <ion-button class="cancel-button" expand="block" fill="outline" routerLink="/gastos" type="button">
-        Cancelar
-      </ion-button>
-    </form>
-
-    <div class="ai-banner">
-      <p>Puedes ingresar el gasto manualmente o escanear un ticket para que la IA lo haga por ti.</p>
-      <a routerLink="/escanear">
-        <ion-icon name="qr-code-outline" aria-hidden="true"></ion-icon>
-        Escanear ticket
-      </a>
-    </div>
-  </section>
+    </main>
+  </div>
 </ion-content>

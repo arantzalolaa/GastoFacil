@@ -1,0 +1,104 @@
+<ion-content class="auth-content" [fullscreen]="true">
+  <main class="auth-wrapper">
+    <section class="auth-card">
+      <button type="button" class="back-button" (click)="regresarLogin()" aria-label="Regresar">
+        <ion-icon name="arrow-back-outline" aria-hidden="true"></ion-icon>
+      </button>
+      <div class="brand-badge">
+        <ion-icon name="person-add-outline" aria-hidden="true"></ion-icon>
+      </div>
+
+      <div class="auth-heading">
+        <span>Nueva cuenta</span>
+        <h1>Regístrate</h1>
+        <p>Crea tu cuenta para guardar tus gastos y consultar tu historial desde GastoFácil.</p>
+      </div>
+
+      <form class="auth-form" (ngSubmit)="registrarUsuario()">
+        <label class="auth-field">
+          <span>Nombre</span>
+          <div class="input-wrapper">
+            <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+            <input
+              type="text"
+              name="nombre"
+              placeholder="tu nombre"
+              autocomplete="name"
+              [(ngModel)]="nombre"
+            />
+          </div>
+        </label>
+
+        <label class="auth-field">
+          <span>Correo electrónico</span>
+          <div class="input-wrapper">
+            <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
+            <input
+              type="email"
+              name="email"
+              placeholder="tu correo"
+              autocomplete="email"
+              [(ngModel)]="email"
+            />
+          </div>
+        </label>
+
+        <label class="auth-field">
+          <span>Contraseña</span>
+          <div class="input-wrapper">
+            <ion-icon name="lock-closed-outline" aria-hidden="true"></ion-icon>
+            <input
+              [type]="mostrarPassword ? 'text' : 'password'"
+              name="password"
+              placeholder="mínimo 6 caracteres"
+              autocomplete="new-password"
+              [(ngModel)]="password"
+            />
+
+            <button
+              type="button"
+              class="password-toggle"
+              aria-label="Mostrar u ocultar contraseña"
+              (click)="alternarPassword()"
+            >
+              <ion-icon [name]="mostrarPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </button>
+          </div>
+        </label>
+
+        <label class="auth-field">
+          <span>Confirmar contraseña</span>
+          <div class="input-wrapper">
+            <ion-icon name="lock-closed-outline" aria-hidden="true"></ion-icon>
+            <input
+              [type]="mostrarConfirmarPassword ? 'text' : 'password'"
+              name="confirmarPassword"
+              placeholder="repite tu contraseña"
+              autocomplete="new-password"
+              [(ngModel)]="confirmarPassword"
+            />
+
+            <button
+              type="button"
+              class="password-toggle"
+              aria-label="Mostrar u ocultar contraseña"
+              (click)="alternarConfirmarPassword()"
+            >
+              <ion-icon [name]="mostrarConfirmarPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </button>
+          </div>
+        </label>
+
+        <button type="submit" class="auth-primary-button" [disabled]="cargando">
+          <span>{{ cargando ? 'Creando cuenta...' : 'Crear cuenta' }}</span>
+          <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+        </button>
+      </form>
+
+      <p class="auth-switch">
+        ¿Ya tienes cuenta?
+        <a routerLink="/login">Iniciar sesión</a>
+      </p>
+    </section>
+  </main>
+</ion-content>

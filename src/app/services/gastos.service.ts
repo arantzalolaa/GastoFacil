@@ -13,6 +13,7 @@ export interface Gasto {
 }
 
 export type NuevoGasto = Omit<Gasto, 'id'>;
+export type ActualizarGasto = Partial<NuevoGasto>;
 
 interface GastoRow {
   id: number;
@@ -47,10 +48,22 @@ export class GastosService {
   }
 
   async crearGasto(gasto: NuevoGasto): Promise<Gasto> {
+    const {
+      data: { user },
+      error: userError,
+    } = await this.supabase.auth.getUser();
+
+    if (userError || !user) {
+      throw new Error('No hay usuario autenticado.');
+    }
+
     const { data, error } = await this.supabase
       .schema('GastoFacil')
       .from('gastos')
-      .insert(gasto)
+      .insert({
+        ...gasto,
+        user_id: user.id,
+      })
       .select('id,categoria,concepto,monto,fecha,metodo_pago,notas')
       .single();
 
@@ -59,6 +72,34 @@ export class GastosService {
     }
 
     return this.mapearGasto(data as GastoRow);
+  }
+
+  async actualizarGasto(id: number, cambios: ActualizarGasto): Promise<Gasto> {
+    const { data, error } = await this.supabase
+      .schema('GastoFacil')
+      .from('gastos')
+      .update(cambios)
+      .eq('id', id)
+      .select('id,categoria,concepto,monto,fecha,metodo_pago,notas')
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return this.mapearGasto(data as GastoRow);
+  }
+
+  async eliminarGasto(id: number): Promise<void> {
+    const { error } = await this.supabase
+      .schema('GastoFacil')
+      .from('gastos')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      throw error;
+    }
   }
 
   private mapearGasto(gasto: GastoRow): Gasto {

@@ -1,12 +1,7 @@
 /*
  * App Global CSS
  * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
+ * Estilos globales para toda la app.
  */
 
 /* Core CSS required for Ionic components to work properly */
@@ -18,73 +13,260 @@
 @import "@ionic/angular/css/typography.css";
 @import "@ionic/angular/css/display.css";
 
-/* Optional CSS utils that can be commented out */
+/* Optional CSS utils */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
-
+/* Fuente global */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-/* GastoFacil shared visual system */
+:root {
+  --ion-font-family: 'Plus Jakarta Sans', sans-serif;
+  --app-font-family: 'Plus Jakarta Sans', sans-serif;
+  --app-background: #f7f9fb;
+
+  /*
+   * Safe areas reales del dispositivo.
+   */
+  --app-safe-top: env(safe-area-inset-top, 0px);
+  --app-safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /*
+   * Tamaños base de tu layout.
+   */
+  --app-header-height: 20px;
+  --app-tab-bar-height: 20px;
+
+  /*
+   * Espacios base para navegador normal.
+   */
+  --app-page-top-space: calc(var(--app-header-height) + var(--app-safe-top));
+  --app-page-bottom-space: calc(var(--app-tab-bar-height) + var(--app-safe-bottom));
+}
+
 html,
 body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
   font-family: var(--app-font-family);
+  background: var(--app-background);
+}
+
+body {
+  position: fixed;
+  inset: 0;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: manipulation;
+}
+
+app-root,
+ion-app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 ion-app {
   background: var(--app-background);
 }
 
+* {
+  box-sizing: border-box;
+  font-family: var(--app-font-family);
+}
+
+/*
+ * Ion Content global.
+ */
 ion-content.app-content {
   --background: var(--app-background);
   --offset-bottom: 0px !important;
+  --overflow: auto;
 }
 
+/*
+ * Scroll interno de Ionic.
+ */
+ion-content.app-content::part(scroll) {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/*
+ * Wrapper global para todas las páginas.
+ */
 .app-page-wrapper {
+  min-height: 100%;
+  padding-top: var(--app-page-top-space) !important;
   padding-inline: 24px;
-  padding-bottom: calc(var(--app-tab-bar-height) + 46px + var(--ion-safe-area-bottom));
+  padding-bottom: var(--app-page-bottom-space) !important;
 }
 
-ion-card,
-article,
-section,
-div {
-  box-sizing: border-box;
+/*
+ * MODO PWA INSTALADA.
+ * Esta clase la agrega index.html al abrirse como app.
+ */
+html.pwa-standalone {
+  --app-header-height: 20px;
+  --app-tab-bar-height: 20px;
+  --app-page-top-space: calc(var(--app-header-height) + var(--app-safe-top));
+  --app-page-bottom-space: calc(var(--app-tab-bar-height) + var(--app-safe-bottom));
 }
 
-ion-fab.app-expense-fab {
-  bottom: calc(var(--app-tab-bar-height) + 24px + var(--ion-safe-area-bottom));
-  right: 22px;
+html.pwa-standalone .app-page-wrapper {
+  padding-top: var(--app-page-top-space) !important;
+  padding-bottom: var(--app-page-bottom-space) !important;
+}
 
-  ion-fab-button {
-    --border-radius: 26px;
-    --box-shadow: 0 12px 24px rgb(0 100 210 / 0.26);
-    height: 64px;
-    width: 64px;
+/*
+ * Refuerzo específico para PWA.
+ */
+html.pwa-standalone ion-content.app-content::part(scroll) {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
 
-    ion-icon {
-      font-size: 2rem;
-    }
+/*
+ * Pantallas chicas en navegador normal.
+ */
+@media (max-width: 440px) {
+  :root {
+    --app-header-height: 20px;
+    --app-tab-bar-height: 20px;
+    --app-page-top-space: calc(var(--app-header-height) + var(--app-safe-top));
+    --app-page-bottom-space: calc(var(--app-tab-bar-height) + var(--app-safe-bottom));
+  }
+
+  .app-page-wrapper {
+    padding-inline: 16px;
   }
 }
 
-:root {
-  --ion-font-family: 'Plus Jakarta Sans', sans-serif;
+/*
+ * iPhone grandes / Plus / Pro Max en PWA instalada.
+ * Este es probablemente el que te aplica en iPhone 16 Plus.
+ */
+@media (max-width: 440px) {
+  html.pwa-standalone {
+    --app-header-height: 20px;
+    --app-tab-bar-height: 20px;
+    --app-page-top-space: calc(var(--app-header-height) + var(--app-safe-top));
+    --app-page-bottom-space: calc(var(--app-tab-bar-height) + var(--app-safe-bottom));
+  }
+
+  html.pwa-standalone .app-page-wrapper {
+    padding-top: var(--app-page-top-space) !important;
+    padding-bottom: var(--app-page-bottom-space) !important;
+  }
 }
 
-* {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+/*
+ * iPhones más pequeños en PWA instalada.
+ * Como está debajo del de 440px, este gana en pantallas de 420px o menos.
+ */
+@media (max-width: 420px) {
+  html.pwa-standalone {
+    --app-header-height: 20px;
+    --app-tab-bar-height: 20px;
+    --app-page-top-space: calc(var(--app-header-height) + 4px + var(--app-safe-top));
+    --app-page-bottom-space: calc(var(--app-tab-bar-height) + var(--app-safe-bottom));
+  }
+
+  html.pwa-standalone .app-page-wrapper {
+    padding-top: var(--app-page-top-space) !important;
+    padding-bottom: var(--app-page-bottom-space) !important;
+  }
+}
+
+/*
+ * Si la pantalla es baja.
+ * OJO: lo dejo solo para pantallas menores de 420px,
+ * para que no te quite el ajuste del iPhone 16 Plus.
+ */
+@media (max-height: 720px) and (max-width: 420px) {
+  html.pwa-standalone {
+    --app-header-height: 20px;
+    --app-tab-bar-height: 20px;
+    --app-page-top-space: calc(var(--app-header-height) + 4px + var(--app-safe-top));
+    --app-page-bottom-space: calc(var(--app-tab-bar-height) + var(--app-safe-bottom));
+  }
+}
+
+/*
+ * Evita que imágenes o elementos grandes se salgan horizontalmente.
+ */
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+/*
+ * Inputs y botones.
+ */
+button,
+input,
+select,
+textarea {
+  font-family: var(--app-font-family);
+}
+
+button,
+a,
+ion-button,
+ion-fab-button,
+ion-tab-button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * FAB global de agregar gasto.
+ * Se usa en Inicio y Gastos.
+ */
+ion-fab.app-expense-fab {
+  bottom: calc(100px + var(--app-safe-bottom)) !important;
+  margin: 0 !important;
+  position: fixed !important;
+  right: 18px !important;
+  z-index: 9999 !important;
+}
+
+ion-fab.app-expense-fab ion-fab-button {
+  --background: #0456c5;
+  --background-activated: #03429c;
+  --background-hover: #03429c;
+  --box-shadow: 0 14px 34px rgba(4, 86, 197, 0.32);
+  --color: #ffffff;
+  --border-radius: 18px;
+
+  height: 58px;
+  width: 58px;
+}
+
+ion-fab.app-expense-fab ion-icon {
+  font-size: 1.85rem;
+}
+
+@media (max-width: 420px) {
+  ion-fab.app-expense-fab {
+    bottom: calc(100px + var(--app-safe-bottom)) !important;
+    right: 16px !important;
+  }
+
+  ion-fab.app-expense-fab ion-fab-button {
+    height: 56px;
+    width: 56px;
+  }
+}
+
+html.pwa-standalone ion-fab.app-expense-fab {
+  bottom: calc(100px + var(--app-safe-bottom)) !important;
+  right: 18px !important;
 }

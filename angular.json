@@ -41,6 +41,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/GastoFacil/",
               "budgets": [
                 {
                   "type": "initial",
@@ -49,8 +50,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "15kb",
+                  "maximumError": "20kb"
                 }
               ],
               "fileReplacements": [

@@ -19,7 +19,7 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { personCircleOutline, qrCodeOutline, arrowBackOutline, chevronDownOutline } from 'ionicons/icons';
+import { arrowBackOutline, chevronDownOutline, qrCodeOutline } from 'ionicons/icons';
 import { GastosService } from '../services/gastos.service';
 
 export interface NuevoGastoFormValue {
@@ -35,6 +35,7 @@ export interface NuevoGastoFormValue {
   selector: 'app-nuevo-gasto',
   templateUrl: 'nuevo-gasto.page.html',
   styleUrls: ['nuevo-gasto.page.scss'],
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -60,9 +61,9 @@ export class NuevoGastoPage {
   private readonly gastosService = inject(GastosService);
   private readonly router = inject(Router);
 
-  // Se añade 'Otros' al arreglo de categorías obligatorias
   categorias = ['Comida', 'Transporte', 'Servicios', 'Ocio', 'Estudios', 'Salud', 'Otros'];
   metodosPago = ['Efectivo', 'Tarjeta', 'Transferencia'];
+
   guardando = false;
   errorGuardado = '';
 
@@ -71,12 +72,16 @@ export class NuevoGastoPage {
     monto: [null as number | null, Validators.required],
     fecha: [this.obtenerFechaActual(), Validators.required],
     categoria: ['', Validators.required],
-    metodo_pago: 'Efectivo',
+    metodo_pago: ['Efectivo', Validators.required],
     notas: [''],
   });
 
   constructor() {
-    addIcons({ personCircleOutline, qrCodeOutline, arrowBackOutline, chevronDownOutline });
+    addIcons({
+      arrowBackOutline,
+      chevronDownOutline,
+      qrCodeOutline,
+    });
   }
 
   obtenerFechaActual(): string {
@@ -96,14 +101,16 @@ export class NuevoGastoPage {
 
     this.guardando = true;
     this.errorGuardado = '';
+
     const formValue = this.gastoForm.getRawValue();
+
     const nuevoGasto: NuevoGastoFormValue = {
-      concepto: formValue.concepto ?? '',
+      concepto: formValue.concepto?.trim() ?? '',
       monto: formValue.monto,
       fecha: this.normalizarFecha(formValue.fecha ?? ''),
       categoria: formValue.categoria ?? '',
       metodo_pago: formValue.metodo_pago ?? '',
-      notas: formValue.notas || null,
+      notas: formValue.notas?.trim() || null,
     };
 
     try {
@@ -111,6 +118,7 @@ export class NuevoGastoPage {
         ...nuevoGasto,
         monto: Number(nuevoGasto.monto),
       });
+
       this.gastoForm.reset({
         concepto: '',
         monto: null,
@@ -119,6 +127,7 @@ export class NuevoGastoPage {
         metodo_pago: 'Efectivo',
         notas: '',
       });
+
       await this.router.navigate(['/gastos']);
     } catch (error) {
       console.error('No se pudo guardar el gasto:', error);

@@ -1,23 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-  <meta charset="utf-8"/>
-  <title>Ionic App</title>
+  <meta charset="utf-8" />
+  <title>GastoFácil</title>
 
-  <base href="/"/>
+  <base href="/" />
 
-  <meta name="color-scheme" content="light dark"/>
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <meta name="format-detection" content="telephone=no"/>
-  <meta name="msapplication-tap-highlight" content="no"/>
+  <meta
+    name="viewport"
+    content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
 
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png"/>
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
 
-  <!-- add to homescreen for ios -->
-  <meta name="mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="assets/manifest.webmanifest" />
+  <meta name="theme-color" content="#0456C5" />
+
+  <!-- iPhone / iOS -->
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="GastoFácil" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png" />
+
+  <!-- Detectar modo app instalada / PWA -->
+  <script>
+    (function () {
+      function setDisplayModeClass() {
+        var isStandalone =
+          window.matchMedia('(display-mode: standalone)').matches ||
+          window.matchMedia('(display-mode: fullscreen)').matches ||
+          window.navigator.standalone === true;
+
+        if (isStandalone) {
+          document.documentElement.classList.add('pwa-standalone');
+        } else {
+          document.documentElement.classList.remove('pwa-standalone');
+        }
+      }
+
+      setDisplayModeClass();
+
+      if (window.matchMedia) {
+        var standaloneQuery = window.matchMedia('(display-mode: standalone)');
+        var fullscreenQuery = window.matchMedia('(display-mode: fullscreen)');
+
+        if (standaloneQuery.addEventListener) {
+          standaloneQuery.addEventListener('change', setDisplayModeClass);
+          fullscreenQuery.addEventListener('change', setDisplayModeClass);
+        } else if (standaloneQuery.addListener) {
+          standaloneQuery.addListener(setDisplayModeClass);
+          fullscreenQuery.addListener(setDisplayModeClass);
+        }
+      }
+    })();
+  </script>
 </head>
 
 <body>

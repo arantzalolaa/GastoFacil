@@ -1,14 +1,65 @@
-// Variables globales de fuente (Asegúrate de que Plus Jakarta Sans esté importada en tu index.html)
 * {
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .home-wrapper {
-  padding: 24px 16px 80px; // Padding inferior para que el FAB/Tabs no tapen el contenido
-  background-color: #f7f9fb; // Color de fondo general
+  padding: 24px 16px 80px;
+  background-color: #f7f9fb;
 }
 
-// Main Card
+/* HEADER */
+.home-header {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  gap: 12px;
+  margin: 58px 0 18px;
+}
+
+.header-icon-button {
+  align-items: center;
+  background: #ffffff;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: none;
+  color: #0456C5;
+  display: inline-flex;
+  height: 48px;
+  justify-content: center;
+  width: 48px;
+
+  ion-icon {
+    font-size: 1.45rem;
+  }
+}
+
+.notification-button {
+  color: #424653;
+}
+
+.header-month-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  text-align: left;
+
+  span {
+    color: #737785;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  strong {
+    color: #191C1E;
+    font-size: 1.15rem;
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* MAIN CARD */
 .total-card {
   align-items: flex-start;
   background: #3470DF;
@@ -17,7 +68,7 @@
   color: #FEFCFF;
   display: flex;
   justify-content: space-between;
-  margin: 65px 0 24px;
+  margin: 0 0 24px;
   padding: 30px 24px;
   position: relative;
   overflow: hidden;
@@ -28,13 +79,13 @@
 
   .total-title {
     font-size: 14px;
-    font-weight: 600; // SemiBold
+    font-weight: 600;
     margin: 0 0 8px;
   }
 
   .total-amount {
     font-size: 40px;
-    font-weight: 700; // Bold
+    font-weight: 700;
     margin: 0 0 16px;
   }
 
@@ -44,7 +95,7 @@
     border-radius: 9999px;
     display: inline-flex;
     font-size: 0.88rem;
-    font-weight: 500; // Medium
+    font-weight: 500;
     gap: 4px;
     padding: 6px 12px;
     color: #FEFCFF;
@@ -56,16 +107,16 @@
 
   .trend-icon-bg {
     position: absolute;
-    right: 24px; // Alineado al borde derecho interno
-    top: 24px;   // Alineado al borde superior interno
-    font-size: 2.5rem; // Más pequeño
-    opacity: 1; // Ya no es transparente
-    color: #FFFFFF; // Totalmente blanco
+    right: 24px;
+    top: 24px;
+    font-size: 2.5rem;
+    opacity: 1;
+    color: #FFFFFF;
     z-index: 1;
   }
 }
 
-// Grid stats
+/* GRID STATS */
 .stats-grid {
   margin-bottom: 24px;
   padding: 0;
@@ -99,31 +150,46 @@
   span {
     color: #424653;
     font-size: 0.9rem;
-    font-weight: 500; // Medium
+    font-weight: 500;
   }
 
   strong {
     font-size: 1.1rem;
-    font-weight: 600; // SemiBold
+    font-weight: 600;
   }
 
   &--today {
-    ion-icon { color: #0456C5; }
-    strong { color: #0456C5; }
+    ion-icon {
+      color: #0456C5;
+    }
+
+    strong {
+      color: #0456C5;
+    }
   }
 
   &--expenses {
-    ion-icon { color: #006D3D; }
-    strong { color: #006D3D; }
+    ion-icon {
+      color: #006D3D;
+    }
+
+    strong {
+      color: #006D3D;
+    }
   }
 
   &--top {
-    ion-icon { color: #A13835; }
-    strong { color: #A13835; }
+    ion-icon {
+      color: #A13835;
+    }
+
+    strong {
+      color: #A13835;
+    }
   }
 }
 
-// Botón Escanear
+/* BOTÓN ESCANEAR */
 .scan-ticket {
   align-items: center;
   background: #ECEEF0;
@@ -140,7 +206,7 @@
 .scan-icon {
   align-items: center;
   background: rgba(4, 86, 197, 0.1);
-  border-radius: 50%; // Circular
+  border-radius: 50%;
   color: #0456C5;
   display: flex;
   justify-content: center;
@@ -161,13 +227,13 @@
   strong {
     color: #191C1E;
     font-size: 1rem;
-    font-weight: 600; // SemiBold
+    font-weight: 600;
   }
 
   span {
     color: #424653;
     font-size: 0.85rem;
-    font-weight: 500; // Medium
+    font-weight: 500;
   }
 }
 
@@ -176,7 +242,7 @@
   font-size: 1.5rem;
 }
 
-// Gastos recientes
+/* GASTOS RECIENTES */
 .section-title {
   align-items: center;
   display: flex;
@@ -186,14 +252,14 @@
   h2 {
     color: #191C1E;
     font-size: 1.25rem;
-    font-weight: 600; // SemiBold
+    font-weight: 600;
     margin: 0;
   }
 
   a {
     color: #0456C5;
     font-size: 0.95rem;
-    font-weight: 600; // SemiBold
+    font-weight: 600;
     text-decoration: none;
   }
 }
@@ -217,7 +283,7 @@
 .recent-icon {
   align-items: center;
   background: #ECEEF0;
-  border-radius: 16px; // Rectangular redondeado
+  border-radius: 16px;
   color: #424653;
   display: flex;
   justify-content: center;
@@ -239,7 +305,7 @@
   strong {
     color: #191C1E;
     font-size: 1rem;
-    font-weight: 600; // SemiBold
+    font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -248,7 +314,7 @@
   span {
     color: #424653;
     font-size: 0.85rem;
-    font-weight: 500; // Medium
+    font-weight: 500;
     margin-top: 2px;
   }
 }
@@ -256,11 +322,40 @@
 .recent-amount {
   color: #BA1A1A;
   font-size: 1.1rem;
-  font-weight: 600; // SemiBold
+  font-weight: 600;
   white-space: nowrap;
 }
 
-// Imagen y nota final
+.empty-month-card {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 28px;
+  color: #424653;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 26px 18px;
+  text-align: center;
+
+  ion-icon {
+    color: #0456C5;
+    font-size: 2rem;
+  }
+
+  strong {
+    color: #191C1E;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  span {
+    color: #737785;
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+}
+
+/* NOTA FINAL */
 .financial-note {
   align-items: center;
   display: flex;
@@ -280,14 +375,14 @@
   p {
     color: #424653;
     font-size: 0.9rem;
-    font-weight: 500; // Medium
+    font-weight: 500;
     max-width: 300px;
     opacity: 0.8;
     margin-bottom: 50px;
   }
 }
 
-// Botón FAB
+/* FAB */
 .app-expense-fab {
   margin-bottom: 16px;
   margin-right: 8px;
@@ -296,12 +391,249 @@
     --background: #0456C5;
     --background-activated: #03429c;
     --color: #FFFFFF;
-    --border-radius: 16px; // Cuadrado redondeado
+    --border-radius: 16px;
     width: 56px;
     height: 56px;
 
     ion-icon {
       font-size: 1.8rem;
+    }
+  }
+}
+
+/* MODAL SELECTOR DE MES */
+.month-modal-backdrop {
+  align-items: center;
+  background: rgba(25, 28, 30, 0.36);
+  backdrop-filter: blur(6px);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: calc(70px + var(--ion-safe-area-top)) 18px calc(96px + var(--ion-safe-area-bottom));
+  position: fixed;
+  z-index: 2147483647;
+}
+
+.month-modal-card {
+  background: #ffffff;
+  border-radius: 32px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+  padding: 22px;
+  width: min(100%, 420px);
+}
+
+.month-modal-header {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+
+  span {
+    color: #0456C5;
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    color: #191C1E;
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin: 4px 0 0;
+  }
+}
+
+.month-close-button {
+  align-items: center;
+  background: #F2F4F6;
+  border: 0;
+  border-radius: 14px;
+  color: #424653;
+  display: inline-flex;
+  flex: 0 0 42px;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+
+  ion-icon {
+    font-size: 1.25rem;
+  }
+}
+
+.year-selector {
+  align-items: center;
+  background: #F2F4F6;
+  border-radius: 22px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding: 8px;
+
+  strong {
+    color: #191C1E;
+    font-size: 1.2rem;
+    font-weight: 800;
+  }
+}
+
+.year-nav-button {
+  align-items: center;
+  background: #ffffff;
+  border: 0;
+  border-radius: 16px;
+  color: #0456C5;
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+
+  ion-icon {
+    font-size: 1.25rem;
+  }
+}
+
+.months-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.month-option {
+  background: #F2F4F6;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  color: #424653;
+  display: flex;
+  flex-direction: column;
+  min-height: 70px;
+  justify-content: center;
+  padding: 10px;
+
+  span {
+    font-size: 0.76rem;
+    font-weight: 700;
+    opacity: 0.8;
+  }
+
+  strong {
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin-top: 2px;
+  }
+
+  &--active {
+    background: #0456C5;
+    color: #ffffff;
+  }
+}
+
+@media (max-width: 420px) {
+  .home-wrapper {
+    padding-inline: 16px;
+  }
+
+  .home-header {
+    grid-template-columns: 46px 1fr 46px;
+    margin-top: 58px;
+  }
+
+  .header-icon-button {
+    border-radius: 15px;
+    height: 46px;
+    width: 46px;
+
+    ion-icon {
+      font-size: 1.35rem;
+    }
+  }
+
+  .header-month-info {
+    strong {
+      font-size: 1.02rem;
+    }
+  }
+
+  .total-card {
+    padding: 26px 20px;
+
+    .total-amount {
+      font-size: 33px;
+    }
+  }
+
+  .stat-card {
+    border-radius: 20px;
+    padding: 14px 6px;
+
+    span {
+      font-size: 0.8rem;
+    }
+
+    strong {
+      font-size: 0.95rem;
+    }
+
+    ion-icon {
+      font-size: 1.55rem;
+    }
+  }
+
+  .recent-item {
+    border-radius: 26px;
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .recent-amount {
+    font-size: 0.98rem;
+  }
+
+  .month-modal-backdrop {
+    padding: calc(70px + var(--ion-safe-area-top)) 14px calc(98px + var(--ion-safe-area-bottom));
+  }
+
+  .month-modal-card {
+    border-radius: 28px;
+    padding: 20px;
+  }
+
+  .month-modal-header {
+    h2 {
+      font-size: 1.25rem;
+    }
+  }
+
+  .months-grid {
+    gap: 8px;
+  }
+
+  .month-option {
+    border-radius: 16px;
+    min-height: 64px;
+    padding: 8px;
+
+    span {
+      font-size: 0.72rem;
+    }
+
+    strong {
+      font-size: 0.86rem;
+    }
+  }
+}
+
+@media (max-width: 350px) {
+  .months-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .total-card {
+    .total-amount {
+      font-size: 29px;
     }
   }
 }

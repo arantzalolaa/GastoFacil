@@ -160,7 +160,7 @@ export class ResumenPage {
       this.tituloFeedback = '¡Vas por buen camino!';
       this.mensajeFeedback = `Has ahorrado un ${absVariacion}% comparado con el mes anterior. Mantén el enfoque en tu categoría de ${nombreCategoria}.`;
     } else {
-      this.tituloFeedback = 'Cuidado con tus gastos';
+      this.tituloFeedback = '¡Cuidado con tus gastos!';
       this.mensajeFeedback = `Has gastado un ${absVariacion}% más comparado con el mes anterior. Revisa bien tus gastos en la categoría de ${nombreCategoria}.`;
     }
   }

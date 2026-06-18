@@ -1,16 +1,28 @@
-
 <ion-content class="home-content app-content" [fullscreen]="false">
   <section class="home-wrapper app-page-wrapper">
-    
+
+    <header class="home-header">
+      <button type="button" class="header-icon-button" (click)="abrirSelectorMes()">
+        <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+      </button>
+
+      <div class="header-month-info">
+        <span>Resumen de</span>
+        <strong>{{ etiquetaMesSeleccionado }}</strong>
+      </div>
+    </header>
+
     <ion-card class="total-card">
       <div class="total-info">
         <p class="total-title">Total del mes</p>
         <h1 class="total-amount">{{ totalMes | currency: 'USD' : 'symbol' : '1.2-2' }}</h1>
+
         <span class="trend-chip">
           <ion-icon [name]="tendenciaPositiva ? 'arrow-up' : 'arrow-down'" aria-hidden="true"></ion-icon>
           {{ variacionAbsoluta }}% vs mes anterior
         </span>
       </div>
+
       <ion-icon class="trend-icon-bg" name="trending-up-outline" aria-hidden="true"></ion-icon>
     </ion-card>
 
@@ -19,10 +31,11 @@
         <ion-col size="4">
           <ion-card class="stat-card stat-card--today">
             <ion-icon name="calendar" aria-hidden="true"></ion-icon>
-            <span>Hoy</span>
+            <span>{{ etiquetaDia }}</span>
             <strong>{{ totalHoy | currency: 'USD' : 'symbol' : '1.0-0' }}</strong>
           </ion-card>
         </ion-col>
+
         <ion-col size="4">
           <ion-card class="stat-card stat-card--expenses">
             <ion-icon name="receipt" aria-hidden="true"></ion-icon>
@@ -30,6 +43,7 @@
             <strong>{{ totalTransacciones }}</strong>
           </ion-card>
         </ion-col>
+
         <ion-col size="4">
           <ion-card class="stat-card stat-card--top">
             <ion-icon [name]="iconoTop" aria-hidden="true"></ion-icon>
@@ -44,10 +58,12 @@
       <div class="scan-icon">
         <ion-icon name="qr-code" aria-hidden="true"></ion-icon>
       </div>
+
       <div class="scan-copy">
         <strong>Escanear ticket</strong>
         <span>Añade gastos automáticamente</span>
       </div>
+
       <ion-icon class="scan-chevron" name="chevron-forward" aria-hidden="true"></ion-icon>
     </a>
 
@@ -56,18 +72,30 @@
       <a routerLink="/gastos">Ver más</a>
     </div>
 
-    <div class="recent-list">
+    <div class="recent-list" *ngIf="gastosRecientes.length > 0; else sinGastosDelMes">
       <article class="recent-item" *ngFor="let gasto of gastosRecientes">
         <div class="recent-icon">
           <ion-icon [name]="gasto.icono" aria-hidden="true"></ion-icon>
         </div>
+
         <div class="recent-copy">
           <strong>{{ gasto.concepto }}</strong>
           <span>{{ gasto.fechaRelativa }}</span>
         </div>
-        <strong class="recent-amount">-{{ gasto.monto | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
+
+        <strong class="recent-amount">
+          -{{ gasto.monto | currency: 'USD' : 'symbol' : '1.2-2' }}
+        </strong>
       </article>
     </div>
+
+    <ng-template #sinGastosDelMes>
+      <div class="empty-month-card">
+        <ion-icon name="receipt-outline" aria-hidden="true"></ion-icon>
+        <strong>Sin gastos en este mes</strong>
+        <span>Cuando agregues gastos, aparecerán aquí.</span>
+      </div>
+    </ng-template>
 
     <div class="financial-note" aria-hidden="true">
       <img src="assets/inicio.jpg" class="note-image" alt="Ilustración financiera" />
@@ -81,4 +109,45 @@
       <ion-icon name="add" aria-hidden="true"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
+  <!-- MODAL SELECTOR DE MES -->
+  <div class="month-modal-backdrop" *ngIf="selectorMesAbierto">
+    <section class="month-modal-card" role="dialog" aria-modal="true">
+      <header class="month-modal-header">
+        <div>
+          <span>Filtrar inicio</span>
+          <h2>Selecciona un mes</h2>
+        </div>
+
+        <button type="button" class="month-close-button" (click)="cerrarSelectorMes()">
+          <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+        </button>
+      </header>
+
+      <div class="year-selector">
+        <button type="button" class="year-nav-button" (click)="cambiarAnioSelector(-1)">
+          <ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon>
+        </button>
+
+        <strong>{{ anioSelector }}</strong>
+
+        <button type="button" class="year-nav-button" (click)="cambiarAnioSelector(1)">
+          <ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon>
+        </button>
+      </div>
+
+      <div class="months-grid">
+        <button
+          type="button"
+          class="month-option"
+          *ngFor="let mes of mesesDelAnio"
+          [class.month-option--active]="esMesActivo(mes.numero)"
+          (click)="seleccionarMes(mes.numero)"
+        >
+          <span>{{ mes.corto }}</span>
+          <strong>{{ mes.nombre }}</strong>
+        </button>
+      </div>
+    </section>
+  </div>
 </ion-content>

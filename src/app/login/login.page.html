@@ -1,0 +1,64 @@
+<ion-content class="auth-content" [fullscreen]="true">
+  <main class="auth-wrapper">
+    <section class="auth-card">
+      <div class="brand-badge">
+        <ion-icon name="wallet-outline" aria-hidden="true"></ion-icon>
+      </div>
+
+      <div class="auth-heading">
+        <span>Bienvenida</span>
+        <h1>Inicia sesión</h1>
+        <p>Entra a tu cuenta para seguir registrando y organizando tus gastos.</p>
+      </div>
+
+      <form class="auth-form" (ngSubmit)="iniciarSesion()">
+        <label class="auth-field">
+          <span>Correo electrónico</span>
+          <div class="input-wrapper">
+            <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
+            <input
+              type="email"
+              name="email"
+              placeholder="tu correo"
+              autocomplete="email"
+              [(ngModel)]="email"
+            />
+          </div>
+        </label>
+
+        <label class="auth-field">
+          <span>Contraseña</span>
+          <div class="input-wrapper">
+            <ion-icon name="lock-closed-outline" aria-hidden="true"></ion-icon>
+            <input
+              [type]="mostrarPassword ? 'text' : 'password'"
+              name="password"
+              placeholder="tu contraseña"
+              autocomplete="current-password"
+              [(ngModel)]="password"
+            />
+
+            <button
+              type="button"
+              class="password-toggle"
+              aria-label="Mostrar u ocultar contraseña"
+              (click)="alternarPassword()"
+            >
+              <ion-icon [name]="mostrarPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </button>
+          </div>
+        </label>
+
+        <button type="submit" class="auth-primary-button" [disabled]="cargando">
+          <span>{{ cargando ? 'Entrando...' : 'Entrar' }}</span>
+          <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+        </button>
+      </form>
+
+      <p class="auth-switch">
+        ¿Todavía no tienes cuenta?
+        <a routerLink="/registro">Crear cuenta</a>
+      </p>
+    </section>
+  </main>
+</ion-content>
