@@ -1,15 +1,16 @@
 {
   "name": "practica4REAL",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ionic build -- --base-href=./",
+    "start": "npm run env && ng serve",
+    "build": "npm run env && ionic build -- --base-href=./",
+    "build:prod": "npm run env && ionic build --prod -- --base-href=/GastoFacil/",
+    "env": "node scripts/set-env.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "deploy": "npm run build:prod && npx gh-pages -d www --no-history"
   },
   "private": true,
   "dependencies": {
@@ -52,10 +53,12 @@
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
     "angular-cli-ghpages": "^3.1.0",
+    "dotenv": "^17.4.2",
     "eslint": "^9.16.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsdoc": "^48.2.1",
     "eslint-plugin-prefer-arrow": "1.2.2",
+    "gh-pages": "^6.3.0",
     "jasmine-core": "~5.1.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.4.0",

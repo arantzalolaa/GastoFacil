@@ -68,13 +68,13 @@
               <span>Categoría</span>
 
               <ion-select
-                formControlName="categoria"
+                formControlName="categoria_id"
                 interface="popover"
                 placeholder="Seleccionar"
                 class="custom-select"
               >
-                <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">
-                  {{ categoria }}
+                <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">
+                  {{ categoria.nombre }}
                 </ion-select-option>
               </ion-select>
             </label>

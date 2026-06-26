@@ -1,52 +1,48 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnDestroy, ViewChild, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent, IonIcon } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { camera, image, sparkles, trash } from 'ionicons/icons';
+import { IonContent, IonIcon, ToastController, IonHeader, IonToolbar, IonButtons, IonTitle, IonBackButton } from '@ionic/angular/standalone';
 import { AnalisisTicketService } from '../services/analisis-ticket.service';
 
 @Component({
   selector: 'app-escanear',
   templateUrl: 'escanear.page.html',
   styleUrls: ['escanear.page.scss'],
-  imports: [CommonModule, IonContent, IonIcon],
+  imports: [IonButtons, IonToolbar, IonHeader, CommonModule, IonContent, IonIcon, IonTitle, IonBackButton],
 })
 export class EscanearPage implements OnDestroy {
-  // Referencias a los elementos HTML
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
   @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   private readonly router = inject(Router);
+  private readonly toastController = inject(ToastController);
   private stream: MediaStream | null = null;
   private readonly analisisService = inject(AnalisisTicketService);
 
   capturaReciente = false;
   nombreCaptura = '';
-  imagenRuta = ''; 
+  imagenRuta = '';
+  analizando = false;
 
-  constructor() {
-    addIcons({ camera, image, sparkles, trash });
-  }
+  constructor() {}
 
-  // Encender la cámara al entrar a la vista
   ionViewDidEnter(): void {
     void this.iniciarCamara();
   }
 
-  // Apagar la cámara al salir de la vista para no gastar batería
+  // 🔴 IMPORTANTE: Al salir de la vista, detener la cámara
   ionViewWillLeave(): void {
     this.detenerCamara();
   }
 
+  // 🔴 IMPORTANTE: Al destruir el componente, detener la cámara
   ngOnDestroy(): void {
     this.detenerCamara();
   }
 
   private async iniciarCamara(): Promise<void> {
     try {
-      // Solicita acceso a la cámara (preferiblemente la trasera en móviles)
       this.stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'environment' }
       });
@@ -56,6 +52,7 @@ export class EscanearPage implements OnDestroy {
       }
     } catch (error) {
       console.error('Error al acceder a la cámara:', error);
+      await this.mostrarToast('No se pudo acceder a la cámara.', 'warning');
     }
   }
 
@@ -63,6 +60,10 @@ export class EscanearPage implements OnDestroy {
     if (this.stream) {
       this.stream.getTracks().forEach(track => track.stop());
       this.stream = null;
+    }
+    // Limpiar el video element
+    if (this.videoElement && this.videoElement.nativeElement) {
+      this.videoElement.nativeElement.srcObject = null;
     }
   }
 
@@ -72,27 +73,22 @@ export class EscanearPage implements OnDestroy {
     const video = this.videoElement.nativeElement;
     const canvas = this.canvasElement.nativeElement;
     
-    // Ajustar el canvas a las dimensiones reales del video
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     
     const context = canvas.getContext('2d');
     if (context) {
-      // Capturar el fotograma actual
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
       
-      // Convertirlo a imagen Base64
       this.imagenRuta = canvas.toDataURL('image/jpeg', 0.9);
       this.nombreCaptura = `Ticket_${new Date().getTime()}.jpg`;
       this.capturaReciente = true;
       
-      // Opcional: Detener la cámara tras tomar la foto
-      this.detenerCamara(); 
+      this.detenerCamara();
     }
   }
 
   abrirGaleria(): void {
-    // Simula un clic en el input de tipo archivo oculto
     if (this.fileInput) {
       this.fileInput.nativeElement.click();
     }
@@ -108,7 +104,7 @@ export class EscanearPage implements OnDestroy {
         this.imagenRuta = e.target?.result as string;
         this.nombreCaptura = file.name;
         this.capturaReciente = true;
-        this.detenerCamara(); // Detenemos el video en vivo
+        this.detenerCamara();
       };
       
       reader.readAsDataURL(file);
@@ -119,16 +115,44 @@ export class EscanearPage implements OnDestroy {
     this.capturaReciente = false;
     this.imagenRuta = '';
     this.nombreCaptura = '';
-    // Volver a encender el escáner
     void this.iniciarCamara();
   }
 
-  analizarConIA(): void {
+  async analizarConIA(): Promise<void> {
     if (!this.capturaReciente || !this.imagenRuta) return;
     
-    // Guardar el Base64 en el servicio
-    this.analisisService.setImagen(this.imagenRuta);
+    this.analizando = true;
     
-    this.router.navigate(['/confirmar-gasto']);
+    try {
+      this.analisisService.setImagen(this.imagenRuta);
+      
+      const resultado = await this.analisisService.analizarTicket();
+      
+      if (!resultado || !resultado.monto || resultado.monto === 0) {
+        await this.mostrarToast('No se pudo analizar el ticket correctamente. Intenta con otra imagen.', 'danger');
+        this.analizando = false;
+        return;
+      }
+      
+      await this.router.navigate(['/confirmar-gasto']);
+    } catch (error) {
+      console.error('Error al analizar con IA:', error);
+      await this.mostrarToast('Error al analizar el ticket. Intenta nuevamente.', 'danger');
+      this.analizando = false;
+    }
+  }
+
+  private async mostrarToast(
+    mensaje: string,
+    color: 'success' | 'warning' | 'danger' = 'success'
+  ): Promise<void> {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2500,
+      position: 'bottom',
+      color
+    });
+
+    await toast.present();
   }
 }

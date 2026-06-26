@@ -37,7 +37,7 @@ export class AnalisisTicketService {
     const base64Data = this.imagenBase64.replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
 
     // Se utiliza el modelo 1.5-flash optimizado para multimodalidad rápida
-    const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
 
     const prompt = `
       Analiza el siguiente recibo o ticket de compra. Extrae la información y responde ÚNICAMENTE con un objeto JSON válido, sin bloques de código markdown ni texto adicional. 
@@ -62,10 +62,10 @@ export class AnalisisTicketService {
       const result = await model.generateContent([prompt, ...imageParts]);
       const response = await result.response;
       let text = response.text().trim();
-      
+
       // Limpieza de formato markdown por seguridad
       text = text.replace(/```json/g, '').replace(/```/g, '').trim();
-      
+
       return JSON.parse(text) as GastoIA;
     } catch (error) {
       console.error('Error procesando la imagen con Gemini:', error);

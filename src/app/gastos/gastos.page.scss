@@ -2,49 +2,158 @@
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+input::placeholder,
+select::placeholder,
+textarea::placeholder,
+.searchbar-input::placeholder {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 400 !important;
+}
+
 .expenses-wrapper {
   padding: 16px 16px 80px;
   background: #f7f9fb;
   min-height: 100vh;
 }
 
+.expenses-header-row {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-top: 70px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
 .page-title {
   color: #191c1e;
   font-size: 28px;
   font-weight: 700;
-  margin: 0 0 12px;
-  margin-top: 70px;
+  margin: 0;
 }
 
-/* BARRA DE BÚSQUEDA */
+/* ========================================== */
+/* MENÚ DE 3 PUNTOS */
+/* ========================================== */
+.menu-container {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.menu-button {
+  align-items: center;
+  background: #f2f4f6;
+  border: 0;
+  border-radius: 999px;
+  color: #191c1e;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  padding: 0 16px;
+  transition: opacity 0.2s;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 1.1rem;
+  }
+
+  &:active {
+    opacity: 0.7;
+  }
+}
+
+.menu-dropdown {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  padding: 6px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  transform: scale(0.9) translateY(-6px);
+  transform-origin: top right;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 999;
+  min-width: 210px;
+
+  &.menu-dropdown--open {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: all;
+  }
+}
+
+.menu-item {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #191C1E;
+  cursor: pointer;
+  display: flex;
+  font-size: 0.9rem;
+  font-weight: 500;
+  gap: 12px;
+  padding: 10px 14px;
+  transition: background 0.15s;
+  width: 100%;
+
+  ion-icon {
+    font-size: 1.2rem;
+    color: #424653;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: #f2f4f6;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+/* ========================================== */
+/* RESTO DEL CÓDIGO (sin cambios) */
+/* ========================================== */
+
 .expenses-search {
   --background: #f2f4f6;
-  --border-radius: 28px;
+  --border-radius: 36px;
   --box-shadow: none;
   --color: #191c1e;
   --icon-color: #737785;
   --placeholder-color: #737785;
   --placeholder-font-weight: 400;
-  height: 56px;
+  --min-height: 76px;
   margin-bottom: 24px;
-  padding: 0;
+  padding: 0 8px;
 
   .searchbar-input-container {
     height: 100%;
   }
 
   .searchbar-input {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 400;
   }
 }
 
-/* FILTROS HORIZONTALES */
+/* FILTROS */
+.filters-area {
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 50;
+}
+
 .filters-row {
   align-items: center;
   display: flex;
   gap: 12px;
-  margin-bottom: 24px;
+  margin-bottom: 0;
   overflow-x: auto;
   padding-bottom: 4px;
   scrollbar-width: none;
@@ -52,6 +161,10 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.date-filter-wrapper {
+  flex: 0 0 auto;
 }
 
 .filter-separator {
@@ -70,168 +183,217 @@
   color: #424653;
   display: inline-flex;
   flex: 0 0 auto;
-  font-size: 0.95rem;
-  font-weight: 400;
-  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  gap: 6px;
   height: 40px;
   padding: 0 16px;
   transition: all 0.2s ease;
+  position: relative;
+  cursor: pointer;
+  z-index: 2;
 
   ion-icon {
     font-size: 1.1rem;
   }
 
-  &--active {
-    background: #0456c5;
-    color: #ffffff;
-    font-weight: 400;
-  }
-}
+  .clear-date-icon {
+    font-size: 1rem;
+    margin-left: 2px;
+    margin-right: -6px;
+    color: #737785;
+    opacity: 0.6;
+    transition: opacity 0.2s;
 
-/* PANEL DE FECHA */
-.date-filter-panel {
-  background: #ffffff;
-  border-radius: 24px;
-  display: grid;
-  gap: 14px;
-  grid-template-columns: 1fr 1fr auto;
-  margin-bottom: 24px;
-  padding: 16px;
-  align-items: end;
-
-  label {
-    color: #424653;
-    display: flex;
-    flex-direction: column;
-    font-size: 0.85rem;
-    gap: 8px;
-  }
-
-  input {
-    background: #f2f4f6;
-    border: 0;
-    border-radius: 16px;
-    color: #191c1e;
-    font-family: inherit;
-    min-height: 46px;
-    padding: 0 12px;
-
-    &::-webkit-calendar-picker-indicator {
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%230456C5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
-      background-repeat: no-repeat;
-      background-position: center;
-      cursor: pointer;
+    &:hover {
+      opacity: 1;
     }
   }
 
-  .btn-clear {
-    background: #0456c5;
-    border: 0;
-    border-radius: 16px;
-    color: #ffffff;
-    font-weight: 500;
-    min-height: 46px;
-    padding: 0 16px;
+  &--active {
+    background: #0456C5;
+    color: #FFFFFF;
+
+    .clear-date-icon {
+      color: #FFFFFF;
+      opacity: 0.8;
+    }
   }
 }
 
-/* LISTA DE GASTOS */
+/* DROPDOWN MES Y AÑO */
+.date-dropdown {
+  background: #ffffff;
+  border: 1px solid rgba(195, 198, 214, 0.45);
+  border-radius: 6px;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.16);
+  left: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: calc(100% + 8px);
+  width: 232px;
+  z-index: 9999;
+}
+
+.calendar-year-bar {
+  align-items: center;
+  background: #f7f9fb;
+  border-bottom: 1px solid rgba(195, 198, 214, 0.55);
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  height: 42px;
+}
+
+.calendar-arrow {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: #191c1e;
+  cursor: pointer;
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  width: 40px;
+
+  ion-icon {
+    font-size: 1.4rem;
+    stroke-width: 48px;
+  }
+
+  &:disabled {
+    color: rgba(115, 119, 133, 0.35);
+    cursor: not-allowed;
+  }
+}
+
+.calendar-year-title {
+  color: #191c1e;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.calendar-year-title--disabled {
+  color: rgba(115, 119, 133, 0.48);
+}
+
+.calendar-month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.calendar-month-cell {
+  align-items: center;
+  background: #ffffff;
+  border: 0;
+  border-bottom: 1px solid rgba(195, 198, 214, 0.5);
+  border-right: 1px solid rgba(195, 198, 214, 0.5);
+  color: #191c1e;
+  cursor: pointer;
+  display: flex;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  height: 38px;
+  justify-content: center;
+  transition: all 0.15s ease;
+
+  &:nth-child(3n) {
+    border-right: 0;
+  }
+
+  &:nth-last-child(-n + 3) {
+    border-bottom: 0;
+  }
+
+  &:hover {
+    background: #f7f9fb;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.calendar-month-cell--active {
+  background: rgba(4, 86, 197, 0.1);
+  box-shadow: inset 0 0 0 1px #0456c5;
+  color: #0456c5;
+  font-weight: 800;
+}
+
+.calendar-month-cell--disabled {
+  color: rgba(115, 119, 133, 0.34);
+  cursor: not-allowed;
+}
+
+.calendar-month-cell--disabled:hover {
+  background: #ffffff;
+}
+
+.date-dropdown-empty {
+  color: #737785;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  margin: 0;
+  padding: 14px;
+  text-align: center;
+}
+
+/* TARJETAS DE GASTOS */
 .expenses-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .expense-card {
   align-items: center;
   background: #ffffff;
-  border-radius: 24px;
-  box-shadow: none;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
   display: flex;
-  gap: 12px;
-  min-height: 94px;
-  padding: 14px;
+  gap: 16px;
+  min-height: 72px;
+  padding: 12px 16px;
+  position: relative;
 }
 
-/* ICONOS DE CATEGORÍA */
 .expense-icon {
   align-items: center;
-  border-radius: 16px;
+  border-radius: 14px;
   display: flex;
-  flex: 0 0 48px;
-  height: 48px;
+  flex: 0 0 52px;
+  height: 52px;
   justify-content: center;
-  width: 48px;
+  width: 52px;
 
   ion-icon {
-    font-size: 1.4rem;
-  }
-
-  &--servicios {
-    background: #fde8e8;
-    color: #9b1c1c;
-  }
-
-  &--salud {
-    background: #def7ec;
-    color: #03543f;
-  }
-
-  &--transporte {
-    background: #e1effe;
-    color: #1e429f;
-  }
-
-  &--comida {
-    background: #fef3c7;
-    color: #9f580a;
-  }
-
-  &--ocio {
-    background: #edebfe;
-    color: #5521b5;
-  }
-
-  &--estudios {
-    background: #fce8f3;
-    color: #99154b;
-  }
-
-  &--otros {
-    background: #f3f4f6;
-    color: #4b5563;
+    font-size: 1.8rem;
   }
 }
 
-/* CONTENIDO DE LA TARJETA */
 .expense-content {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   min-width: 0;
 }
 
 .expense-top {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 
   .expense-title {
     color: #191c1e;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 500;
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .expense-amount {
-    color: #191c1e;
-    font-size: 1.05rem;
-    font-weight: 400;
-    margin-left: 10px;
     white-space: nowrap;
   }
 }
@@ -239,48 +401,13 @@
 .expense-bottom {
   align-items: center;
   display: flex;
-  gap: 12px;
+  gap: 10px;
 
   .category-tag {
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    padding: 2px 8px;
-
-    &--servicios {
-      background: #fde8e8;
-      color: #9b1c1c;
-    }
-
-    &--salud {
-      background: #def7ec;
-      color: #03543f;
-    }
-
-    &--transporte {
-      background: #e1effe;
-      color: #1e429f;
-    }
-
-    &--comida {
-      background: #fef3c7;
-      color: #9f580a;
-    }
-
-    &--ocio {
-      background: #edebfe;
-      color: #5521b5;
-    }
-
-    &--estudios {
-      background: #fce8f3;
-      color: #99154b;
-    }
-
-    &--otros {
-      background: #f3f4f6;
-      color: #4b5563;
-    }
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    padding: 3px 10px;
   }
 
   .expense-date {
@@ -290,49 +417,101 @@
   }
 }
 
-/* BOTONES EDITAR / ELIMINAR */
-.expense-actions {
-  align-items: center;
+.expense-right-col {
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
   flex: 0 0 auto;
-  gap: 8px;
+  height: 100%;
 }
 
-.expense-action-button {
-  align-items: center;
-  border: 0;
-  border-radius: 14px;
-  display: inline-flex;
-  height: 40px;
-  justify-content: center;
-  transition: background 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
-  width: 40px;
+.expense-amount {
+  color: #BA1A1A;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.expense-more-btn {
+  background: transparent;
+  border: none;
+  color: #737785;
+  padding: 2px;
+  line-height: 0;
+  transition: opacity 0.2s;
+  cursor: pointer;
 
   ion-icon {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
   }
 
-  &:active:not(:disabled) {
-    transform: scale(0.96);
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.55;
+  &:active {
+    opacity: 0.5;
   }
 }
 
-.expense-edit-button {
-  background: #e1effe;
-  color: #1e429f;
+.expense-actions {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  padding: 6px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  transform: scale(0.9) translateY(-6px);
+  transform-origin: top right;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 10;
+  min-width: 130px;
+
+  &.expense-actions--visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: all;
+  }
+
+  .action-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .action-text-btn {
+    align-items: center;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: #191C1E;
+    display: flex;
+    font-size: 0.9rem;
+    font-weight: 400;
+    justify-content: flex-start;
+    padding: 8px 12px;
+    transition: background 0.15s;
+    width: 100%;
+    cursor: pointer;
+
+    &:hover {
+      background: #f2f4f6;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &--delete {
+      color: #BA1A1A;
+
+      &:hover {
+        background: #fde8e8;
+      }
+    }
+  }
 }
 
-.expense-delete-button {
-  background: #fde8e8;
-  color: #9b1c1c;
-}
-
-/* ESTADO FINAL / IMAGEN */
 .end-of-list {
   align-items: center;
   display: flex;
@@ -346,7 +525,7 @@
     width: 100px;
     object-fit: cover;
     margin-bottom: 24px;
-    background-color: #e6e8ea;
+    background-color: #E6E8EA;
   }
 
   p {
@@ -364,7 +543,7 @@
   }
 }
 
-/* BOTÓN FAB */
+/* FAB */
 .app-expense-fab {
   margin-bottom: 16px;
   margin-right: 8px;
@@ -383,7 +562,7 @@
   }
 }
 
-/* MODALES PERSONALIZADOS */
+/* MODALES */
 .app-modal-backdrop {
   align-items: center;
   background: rgba(25, 28, 30, 0.36);
@@ -391,10 +570,7 @@
   display: flex;
   inset: 0;
   justify-content: center;
-  padding-top: calc(86px + var(--ion-safe-area-top));
-  padding-right: 18px;
-  padding-bottom: calc(98px + var(--ion-safe-area-bottom));
-  padding-left: 18px;
+  padding: calc(86px + var(--ion-safe-area-top)) 18px calc(98px + var(--ion-safe-area-bottom));
   position: fixed;
   z-index: 2147483647;
 }
@@ -448,13 +624,13 @@
   height: 40px;
   justify-content: center;
   width: 40px;
+  cursor: pointer;
 
   ion-icon {
     font-size: 1.25rem;
   }
 }
 
-/* Modal editar */
 .edit-expense-modal {
   height: auto;
   max-height: calc(100dvh - 184px - var(--ion-safe-area-top) - var(--ion-safe-area-bottom));
@@ -525,13 +701,8 @@
     padding: 10px 12px;
     resize: none;
   }
-
-  select {
-    appearance: none;
-  }
 }
 
-/* Monto con signo de peso */
 .money-input-wrapper {
   align-items: center;
   background: #f2f4f6;
@@ -575,7 +746,6 @@
   }
 }
 
-/* Botones */
 .modal-actions {
   display: grid;
   gap: 12px;
@@ -589,6 +759,7 @@
     font-weight: 700;
     min-height: 50px;
     padding: 0 14px;
+    cursor: pointer;
   }
 }
 
@@ -614,7 +785,6 @@
   color: #9b1c1c;
 }
 
-/* Modal eliminar */
 .delete-expense-modal {
   max-height: calc(100dvh - 184px - var(--ion-safe-area-top) - var(--ion-safe-area-bottom));
   padding: 24px 22px;
@@ -669,195 +839,11 @@
 }
 
 @media (max-width: 420px) {
-  .date-filter-panel {
-    grid-template-columns: 1fr;
+  .expenses-header-row {
+    flex-direction: row;
   }
 
-  .expense-card {
-    gap: 10px;
-    padding: 12px;
-  }
-
-  .expense-icon {
-    flex-basis: 44px;
-    height: 44px;
-    width: 44px;
-  }
-
-  .expense-action-button {
-    height: 36px;
-    width: 36px;
-  }
-
-  .expense-actions {
-    gap: 6px;
-  }
-
-  .expense-top .expense-title {
-    font-size: 0.95rem;
-  }
-
-  .expense-top .expense-amount {
-    font-size: 0.95rem;
-  }
-
-  .app-modal-backdrop {
-    align-items: center;
-    justify-content: center;
-    padding-top: calc(74px + var(--ion-safe-area-top));
-    padding-right: 12px;
-    padding-bottom: calc(102px + var(--ion-safe-area-bottom));
-    padding-left: 12px;
-  }
-
-  .app-modal-card {
-    border-radius: 26px;
-    width: 100%;
-  }
-
-  .app-modal-header {
-    padding: 16px 18px 10px;
-
-    h2 {
-      font-size: 1.24rem;
-    }
-  }
-
-  .app-modal-eyebrow {
-    font-size: 0.74rem;
-  }
-
-  .edit-expense-modal {
-    max-height: calc(100dvh - 176px - var(--ion-safe-area-top) - var(--ion-safe-area-bottom));
-  }
-
-  .edit-expense-fields {
-    gap: 10px;
-    padding: 0 18px 12px;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .form-field {
-    gap: 5px;
-
-    span {
-      font-size: 0.82rem;
-    }
-
-    input,
-    select,
-    textarea {
-      border-radius: 14px;
-      font-size: 0.88rem;
-      min-height: 40px;
-      padding: 0 10px;
-    }
-
-    textarea {
-      font-size: 0.88rem;
-      min-height: 52px;
-      padding: 9px 10px;
-    }
-  }
-
-  .money-input-wrapper {
-    border-radius: 14px;
-    min-height: 40px;
-
-    .money-symbol {
-      flex-basis: 30px;
-      font-size: 0.98rem;
-    }
-
-    input {
-      font-size: 0.88rem;
-      min-height: 38px;
-      padding-right: 8px;
-    }
-  }
-
-  .modal-actions {
-    gap: 10px;
-    grid-template-columns: 1fr 1fr;
-
-    button {
-      border-radius: 16px;
-      font-size: 0.9rem;
-      min-height: 46px;
-      padding: 0 10px;
-    }
-  }
-
-  .modal-actions--fixed {
-    padding: 10px 18px calc(12px + var(--ion-safe-area-bottom));
-  }
-
-  .delete-expense-modal {
-    max-height: calc(100dvh - 200px - var(--ion-safe-area-top) - var(--ion-safe-area-bottom));
-    padding: 22px 18px calc(22px + var(--ion-safe-area-bottom));
-  }
-}
-
-@media (max-width: 340px) {
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .modal-actions {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-height: 720px) {
-  .app-modal-backdrop {
-    padding-top: calc(66px + var(--ion-safe-area-top));
-    padding-bottom: calc(88px + var(--ion-safe-area-bottom));
-  }
-
-  .edit-expense-modal {
-    max-height: calc(100dvh - 154px - var(--ion-safe-area-top) - var(--ion-safe-area-bottom));
-  }
-
-  .app-modal-header {
-    padding: 14px 18px 9px;
-  }
-
-  .edit-expense-fields {
-    gap: 9px;
-    padding: 0 18px 10px;
-  }
-
-  .form-field {
-    gap: 5px;
-
-    input,
-    select,
-    textarea {
-      min-height: 38px;
-    }
-
-    textarea {
-      min-height: 48px;
-    }
-  }
-
-  .money-input-wrapper {
-    min-height: 38px;
-
-    input {
-      min-height: 36px;
-    }
-  }
-
-  .modal-actions--fixed {
-    padding: 9px 18px calc(10px + var(--ion-safe-area-bottom));
-  }
-
-  .modal-actions button {
-    min-height: 44px;
+  .date-dropdown {
+    width: 232px;
   }
 }

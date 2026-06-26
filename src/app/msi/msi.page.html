@@ -1,0 +1,121 @@
+<ion-header class="msi-header ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/gastos" text="" icon="arrow-back-outline" aria-label="Regresar"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Meses sin intereses</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="msi-content app-content" [fullscreen]="false">
+  <div class="msi-wrapper">
+    <main class="main-white-card">
+
+      <!-- Header del simulador -->
+      <div class="simulator-header">
+        <div class="icon-circle">
+          <ion-icon name="cash-outline" aria-hidden="true"></ion-icon>
+        </div>
+        <h1>Simulador MSI</h1>
+        <p>Calcula cuánto pagarías mensualmente</p>
+      </div>
+
+      <form [formGroup]="msiForm" (ngSubmit)="guardarMSI()">
+
+        <!-- Concepto -->
+        <label class="field-group">
+          <span>Concepto</span>
+          <ion-input formControlName="concepto" placeholder="Ej. Computadora, Teléfono" type="text" class="custom-input"></ion-input>
+        </label>
+
+        <!-- Monto y meses -->
+        <div class="row-grid">
+          <div class="field-group">
+            <span>Total de la compra</span>
+            <div class="amount-input">
+              <span class="currency-symbol">$</span>
+              <ion-input formControlName="monto_total" inputmode="decimal" placeholder="0.00" type="number" class="custom-amount-input" (ionChange)="calcularSimulacion()"></ion-input>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <span>Meses</span>
+            <div class="meses-options">
+              <button type="button" class="mes-pill" *ngFor="let m of mesesOpciones" [class.mes-pill--active]="msiForm.value.meses === m" (click)="seleccionarMeses(m)">
+                {{ m }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fecha y categoría -->
+        <div class="row-grid">
+          <div class="field-group">
+            <span>Fecha de compra</span>
+            <ion-input formControlName="fecha_compra" type="date" class="custom-input date-input"></ion-input>
+          </div>
+
+          <div class="field-group">
+            <span>Categoría</span>
+            <ion-select formControlName="categoria_id" interface="popover" placeholder="Seleccionar" class="custom-select">
+              <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">
+                {{ categoria.nombre }}
+              </ion-select-option>
+            </ion-select>
+          </div>
+        </div>
+
+        <!-- Método de pago -->
+        <div class="field-group">
+          <span>Método de pago</span>
+          <div class="payment-options">
+            <button type="button" class="payment-pill" *ngFor="let metodo of metodosPago" [class.payment-pill--selected]="msiForm.value.metodo_pago === metodo" (click)="seleccionarMetodoPago(metodo)">
+              {{ metodo }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Notas -->
+        <label class="field-group">
+          <span>Notas (opcional)</span>
+          <ion-textarea formControlName="notas" placeholder="Agrega más detalles..." rows="2" class="custom-textarea"></ion-textarea>
+        </label>
+
+        <!-- Resultado de simulación -->
+        <div class="simulation-result" *ngIf="simulacion">
+          <h3>📊 Resumen estimado</h3>
+          <div class="result-item">
+            <span>Pago mensual MSI</span>
+            <strong>{{ simulacion.pagoMensual | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
+          </div>
+          <div class="result-item">
+            <span>Promedio de gastos mensuales</span>
+            <strong>{{ simulacion.promedioGastos | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
+          </div>
+          <div class="result-item result-total">
+            <span>Total mensual estimado</span>
+            <strong>{{ simulacion.totalMensual | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
+          </div>
+          <p class="result-note">Este cálculo incluye el promedio de tus gastos mensuales de los últimos 6 meses.</p>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="action-buttons">
+          <button type="button" class="btn-cancel" (click)="irAGastos()">Cancelar</button>
+          <button type="submit" class="btn-save" [disabled]="guardando">
+            {{ guardando ? 'Guardando...' : 'Agregar compra' }}
+          </button>
+        </div>
+
+      </form>
+
+      <!-- Ver historial -->
+      <div class="historial-link" (click)="irHistorial()">
+        <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+        <span>Ver historial de compras MSI</span>
+        <ion-icon name="chevron-forward-outline" class="link-arrow" aria-hidden="true"></ion-icon>
+      </div>
+
+    </main>
+  </div>
+</ion-content>

@@ -17,6 +17,16 @@ export const routes: Routes = [
           import('../gastos/gastos.page').then((m) => m.GastosPage),
       },
       {
+        path: 'resumen',
+        loadComponent: () =>
+          import('../resumen/resumen.page').then((m) => m.ResumenPage),
+      },
+      {
+        path: 'categorias',
+        loadComponent: () =>
+          import('../categorias/categorias.page').then((m) => m.CategoriasPage),
+      },
+      {
         path: 'escanear',
         loadComponent: () =>
           import('../escanear/escanear.page').then((m) => m.EscanearPage),

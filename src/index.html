@@ -7,28 +7,52 @@
 
   <base href="/" />
 
-  <meta
-    name="viewport"
-    content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  />
+  <meta name="viewport"
+    content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
 
+  <!-- ========================================== -->
+  <!-- 🔵 ICONO GENERAL                           -->
+  <!-- ========================================== -->
   <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
 
-  <!-- PWA -->
-  <link rel="manifest" href="assets/manifest.webmanifest" />
+  <!-- ========================================== -->
+  <!-- 📱 PWA MANIFEST                            -->
+  <!-- ========================================== -->
+  <link rel="manifest" href="manifest.webmanifest" />
   <meta name="theme-color" content="#0456C5" />
 
-  <!-- iPhone / iOS -->
+  <!-- ========================================== -->
+  <!-- 🍎 APPLE TOUCH ICONS - Pantalla de inicio   -->
+  <!-- ========================================== -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon-180x180.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="assets/icons/apple-touch-icon-167x167.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/icons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/icons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="87x87" href="assets/icons/apple-touch-icon-87x87.png">
+  <link rel="apple-touch-icon" sizes="80x80" href="assets/icons/apple-touch-icon-80x80.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/icons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="assets/icons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="58x58" href="assets/icons/apple-touch-icon-58x58.png">
+  <link rel="apple-touch-icon" sizes="40x40" href="assets/icons/apple-touch-icon-40x40.png">
+  <link rel="apple-touch-icon" sizes="1024x1024" href="assets/icons/apple-touch-icon-1024x1024.png">
+
+  <!-- Fallback por si no encuentra el tamaño exacto -->
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180x180.png">
+
+  <!-- ========================================== -->
+  <!-- 📱 CONFIGURACIÓN PARA iOS Safari           -->
+  <!-- ========================================== -->
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="GastoFácil" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png" />
 
-  <!-- Detectar modo app instalada / PWA -->
+  <!-- ========================================== -->
+  <!-- 🧠 Detectar modo PWA / App instalada       -->
+  <!-- ========================================== -->
   <script>
     (function () {
       function setDisplayModeClass() {

@@ -1,0 +1,111 @@
+import { Injectable } from '@angular/core';
+import { addIcons } from 'ionicons';
+import * as Icons from 'ionicons/icons';
+
+@Injectable({ providedIn: 'root' })
+export class IconosService {
+  private iconosCargados = false;
+
+  cargarIconos(): void {
+    if (this.iconosCargados) {
+      console.log('ℹ️ Iconos ya cargados previamente');
+      return;
+    }
+    
+    try {
+      // Cargar TODOS los iconos de ionicons
+      addIcons({ ...Icons });
+      this.iconosCargados = true;
+      console.log('✅ Todos los iconos de Ionic han sido cargados globalmente');
+    } catch (error) {
+      console.error('❌ Error cargando iconos:', error);
+    }
+  }
+
+  // Método para verificar si los iconos están cargados
+  estanCargados(): boolean {
+    return this.iconosCargados;
+  }
+
+  // Método para obtener lista de iconos disponibles (para categorías)
+  getListaIconos(): string[] {
+    return [
+      'game-controller-outline', 'medkit-outline', 'car-outline', 'restaurant-outline',
+      'flash-outline', 'pricetag-outline', 'add-outline', 'airplane-outline', 'alarm-outline',
+      'basket-outline', 'beer-outline', 'bicycle-outline', 'book-outline', 'brush-outline',
+      'bug-outline', 'build-outline', 'business-outline', 'cafe-outline', 'call-outline',
+      'camera-outline', 'cart-outline', 'chatbubbles-outline', 'checkbox-outline',
+      'cloud-outline', 'code-outline', 'color-palette-outline', 'compass-outline',
+      'construct-outline', 'desktop-outline', 'diamond-outline', 'document-outline',
+      'download-outline', 'earth-outline', 'egg-outline', 'eye-outline', 'fast-food-outline',
+      'film-outline', 'filter-outline', 'finger-print-outline', 'fish-outline',
+      'flag-outline', 'flower-outline', 'folder-outline', 'football-outline', 'gift-outline',
+      'glasses-outline', 'globe-outline', 'golf-outline', 'grid-outline', 'hammer-outline',
+      'headset-outline', 'heart-outline', 'help-outline', 'home-outline', 'image-outline',
+      'key-outline', 'keypad-outline', 'laptop-outline', 'leaf-outline', 'library-outline',
+      'link-outline', 'list-outline', 'location-outline', 'lock-closed-outline', 'mail-outline',
+      'map-outline', 'medal-outline', 'medical-outline', 'moon-outline', 'newspaper-outline',
+      'notifications-outline', 'nutrition-outline', 'paper-plane-outline', 'people-outline',
+      'person-outline', 'phone-portrait-outline', 'pie-chart-outline', 'pizza-outline',
+      'planet-outline', 'play-outline', 'podium-outline', 'prism-outline', 'pulse-outline',
+      'qr-code-outline', 'radio-outline', 'rainy-outline', 'receipt-outline', 'refresh-outline',
+      'ribbon-outline', 'rocket-outline', 'rose-outline', 'sad-outline', 'save-outline',
+      'scan-outline', 'school-outline', 'search-outline', 'send-outline', 'server-outline',
+      'settings-outline', 'share-outline', 'shield-outline', 'shirt-outline', 'shuffle-outline',
+      'skull-outline', 'snow-outline', 'sparkles-outline', 'speedometer-outline', 'star-outline',
+      'stats-chart-outline', 'stopwatch-outline', 'storefront-outline', 'subway-outline',
+      'sunny-outline', 'tablet-portrait-outline', 'telescope-outline',
+      'tennisball-outline', 'terminal-outline', 'thermometer-outline', 'thumbs-down-outline',
+      'thumbs-up-outline', 'ticket-outline', 'time-outline', 'timer-outline', 'toggle-outline',
+      'train-outline', 'trash-outline', 'trending-up-outline', 'trophy-outline', 'tv-outline',
+      'umbrella-outline', 'unlink-outline', 'videocam-outline', 'wallet-outline', 'warning-outline',
+      'watch-outline', 'water-outline', 'wifi-outline', 'wine-outline', 'woman-outline'
+    ];
+  }
+
+  // Método para obtener iconos comunes agrupados por categoría
+  getIconosPorCategoria(): { categoria: string; iconos: string[] }[] {
+    return [
+      {
+        categoria: 'Comida y Bebidas',
+        iconos: ['restaurant-outline', 'cafe-outline', 'beer-outline', 'wine-outline', 'pizza-outline', 'fast-food-outline', 'egg-outline', 'fish-outline']
+      },
+      {
+        categoria: 'Transporte',
+        iconos: ['car-outline', 'bus-outline', 'subway-outline', 'train-outline', 'bicycle-outline', 'airplane-outline', 'walk-outline']
+      },
+      {
+        categoria: 'Entretenimiento',
+        iconos: ['game-controller-outline', 'ticket-outline', 'film-outline', 'musical-notes-outline', 'tv-outline', 'football-outline', 'golf-outline', 'tennisball-outline']
+      },
+      {
+        categoria: 'Salud',
+        iconos: ['medkit-outline', 'heart-outline', 'thermometer-outline', 'medical-outline', 'pulse-outline', 'fitness-outline']
+      },
+      {
+        categoria: 'Educación',
+        iconos: ['school-outline', 'book-outline', 'library-outline', 'code-outline', 'desktop-outline']
+      },
+      {
+        categoria: 'Hogar',
+        iconos: ['home-outline', 'construct-outline', 'hammer-outline', 'color-palette-outline', 'flower-outline', 'leaf-outline']
+      },
+      {
+        categoria: 'Compras',
+        iconos: ['cart-outline', 'bag-outline', 'basket-outline', 'storefront-outline', 'gift-outline', 'diamond-outline']
+      },
+      {
+        categoria: 'Tecnología',
+        iconos: ['phone-portrait-outline', 'laptop-outline', 'tablet-portrait-outline', 'watch-outline', 'camera-outline', 'headset-outline', 'keypad-outline']
+      },
+      {
+        categoria: 'Viajes',
+        iconos: ['globe-outline', 'compass-outline', 'map-outline', 'airplane-outline', 'umbrella-outline', 'sunny-outline', 'moon-outline']
+      },
+      {
+        categoria: 'Finanzas',
+        iconos: ['wallet-outline', 'cash-outline', 'card-outline', 'pie-chart-outline', 'stats-chart-outline', 'trending-up-outline']
+      }
+    ];
+  }
+}

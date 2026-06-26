@@ -18,18 +18,8 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { arrowBackOutline, chevronDownOutline, qrCodeOutline } from 'ionicons/icons';
 import { GastosService } from '../services/gastos.service';
-
-export interface NuevoGastoFormValue {
-  concepto: string;
-  monto: number | null;
-  fecha: string;
-  categoria: string;
-  metodo_pago: string;
-  notas: string | null;
-}
+import { Categoria, CategoriasService } from '../services/categorias.service';
 
 @Component({
   selector: 'app-nuevo-gasto',
@@ -60,8 +50,9 @@ export class NuevoGastoPage {
   private readonly formBuilder = inject(FormBuilder);
   private readonly gastosService = inject(GastosService);
   private readonly router = inject(Router);
+  private readonly categoriasService = inject(CategoriasService);
 
-  categorias = ['Comida', 'Transporte', 'Servicios', 'Ocio', 'Estudios', 'Salud', 'Otros'];
+  categorias: Categoria[] = [];
   metodosPago = ['Efectivo', 'Tarjeta', 'Transferencia'];
 
   guardando = false;
@@ -71,17 +62,25 @@ export class NuevoGastoPage {
     concepto: ['', Validators.required],
     monto: [null as number | null, Validators.required],
     fecha: [this.obtenerFechaActual(), Validators.required],
-    categoria: ['', Validators.required],
+    categoria_id: [null as number | null, Validators.required],
     metodo_pago: ['Efectivo', Validators.required],
     notas: [''],
   });
 
-  constructor() {
-    addIcons({
-      arrowBackOutline,
-      chevronDownOutline,
-      qrCodeOutline,
-    });
+  constructor() {}
+
+  async ionViewWillEnter(): Promise<void> {
+    await this.cargarCategorias();
+  }
+
+  private async cargarCategorias(): Promise<void> {
+    try {
+      this.categorias = await this.categoriasService.obtenerCategorias({ incluirInactivas: false });
+    } catch (error) {
+      console.error('No se pudieron cargar las categorías:', error);
+      this.categorias = [];
+      this.errorGuardado = 'No se pudieron cargar tus categorías.';
+    }
   }
 
   obtenerFechaActual(): string {
@@ -104,26 +103,21 @@ export class NuevoGastoPage {
 
     const formValue = this.gastoForm.getRawValue();
 
-    const nuevoGasto: NuevoGastoFormValue = {
-      concepto: formValue.concepto?.trim() ?? '',
-      monto: formValue.monto,
-      fecha: this.normalizarFecha(formValue.fecha ?? ''),
-      categoria: formValue.categoria ?? '',
-      metodo_pago: formValue.metodo_pago ?? '',
-      notas: formValue.notas?.trim() || null,
-    };
-
     try {
       await this.gastosService.crearGasto({
-        ...nuevoGasto,
-        monto: Number(nuevoGasto.monto),
+        concepto: formValue.concepto?.trim() ?? '',
+        monto: Number(formValue.monto),
+        fecha: this.normalizarFecha(formValue.fecha ?? ''),
+        categoria_id: formValue.categoria_id,
+        metodo_pago: formValue.metodo_pago ?? '',
+        notas: formValue.notas?.trim() || null,
       });
 
       this.gastoForm.reset({
         concepto: '',
         monto: null,
         fecha: this.obtenerFechaActual(),
-        categoria: '',
+        categoria_id: null,
         metodo_pago: 'Efectivo',
         notas: '',
       });

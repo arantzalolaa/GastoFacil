@@ -163,9 +163,5 @@ export class TabsPage implements OnInit {
 
   private actualizarVisibilidadHeader(url: string): void {
     this.ocultarHeaderGlobal = url.includes('/nuevo-gasto');
-
-    if (this.ocultarHeaderGlobal) {
-      this.mostrarPerfil = false;
-    }
   }
 }

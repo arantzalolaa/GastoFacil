@@ -1,0 +1,246 @@
+<ion-content class="categories-content app-content" [fullscreen]="false">
+  <section class="categories-wrapper app-page-wrapper">
+
+    <!-- HEADER LOCAL -->
+    <div class="categories-header-row">
+      <button
+        type="button"
+        class="inline-back-button"
+        routerLink="/gastos"
+        aria-label="Volver a gastos">
+        <ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon>
+      </button>
+
+      <h1 class="page-title">Mis categorías</h1>
+
+      <button type="button" class="create-button" (click)="abrirFormulario()">
+        <ion-icon name="add" aria-hidden="true"></ion-icon>
+        Crear
+      </button>
+    </div>
+
+    <!-- MODAL FLOTANTE (Editar / Crear / Reactivar) -->
+    <div class="app-modal-backdrop" *ngIf="mostrandoFormulario">
+      <section class="app-modal-card" role="dialog" aria-modal="true">
+        <header class="app-modal-header">
+          <div>
+            <span class="app-modal-eyebrow">Categorías</span>
+            <h2>
+              {{ esReactivacion ? 'Reactivar categoría' : categoriaEditando ? 'Editar categoría' : 'Nueva categoría' }}
+            </h2>
+          </div>
+
+          <button type="button" class="modal-close-button" (click)="cerrarFormulario()">
+            <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+          </button>
+        </header>
+
+        <form class="edit-expense-form" [formGroup]="categoriaForm" (ngSubmit)="guardar()">
+          <div class="edit-expense-fields">
+
+            <label class="form-field">
+              <span>Nombre</span>
+              <ion-input formControlName="nombre" placeholder="Ej. Mascotas, Ropa"></ion-input>
+            </label>
+
+            <div class="form-field">
+              <span>Icono</span>
+
+              <div class="choices-grid">
+                <button
+                  type="button"
+                  class="choice-button"
+                  *ngFor="let icono of iconos"
+                  [class.choice-button--active]="categoriaForm.value.icono === icono"
+                  (click)="seleccionarIcono(icono)">
+                  <ion-icon [name]="icono"></ion-icon>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <span>Color</span>
+
+              <div class="choices-grid">
+                <button
+                  type="button"
+                  class="color-button"
+                  *ngFor="let color of colores"
+                  [class.color-button--active]="categoriaForm.value.color === color"
+                  [style.background]="color"
+                  (click)="seleccionarColor(color)">
+                </button>
+              </div>
+            </div>
+
+            <p class="form-error" *ngIf="error">{{ error }}</p>
+          </div>
+
+          <div class="modal-actions modal-actions--fixed">
+            <button type="button" class="btn-secondary" (click)="cerrarFormulario()">Cancelar</button>
+
+            <button type="button" class="btn-primary" (click)="guardar()" [disabled]="guardando">
+              {{ guardando ? 'Guardando...' : (esReactivacion ? 'Reactivar' : 'Guardar') }}
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <!-- MODAL CONFIRMAR GUARDAR -->
+    <div class="app-modal-backdrop" *ngIf="mostrandoConfirmacionGuardar">
+      <section class="app-modal-card confirm-expense-modal" role="dialog" aria-modal="true">
+        <div class="confirm-icon-wrapper">
+          <ion-icon name="create-outline" aria-hidden="true"></ion-icon>
+        </div>
+
+        <h2>Confirmar cambios</h2>
+
+        <p>
+          {{ esReactivacion ? '¿Estás seguro/a de reactivar esta categoría?' : '¿Estás seguro/a de guardar esta categoría?' }}
+        </p>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="cancelarGuardarCategoria()">Cancelar</button>
+          <button type="button" class="btn-primary" (click)="confirmarGuardarCategoria()">
+            {{ esReactivacion ? 'Reactivar' : 'Guardar' }}
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- ESTADO DE CARGA -->
+    <p class="form-error" *ngIf="error && !mostrandoFormulario">{{ error }}</p>
+    <p class="loading-text" *ngIf="cargando">Cargando categorías...</p>
+
+    <!-- CATEGORÍAS ACTIVAS -->
+    <div *ngIf="!cargando && categoriasActivas.length > 0">
+      <h2 class="section-subtitle">Categorías activas</h2>
+
+      <div class="expenses-list">
+        <article class="expense-card category-card" *ngFor="let categoria of categoriasActivas">
+          <div
+            class="expense-icon"
+            [style.background]="categoria.bgColor"
+            [style.color]="categoria.iconColor">
+            <ion-icon [name]="categoria.icono || 'pricetag-outline'"></ion-icon>
+          </div>
+
+          <div class="expense-content">
+            <div class="expense-top">
+              <h2 class="expense-title">{{ categoria.nombre }}</h2>
+            </div>
+
+            <div class="expense-bottom">
+              <span
+                class="category-tag"
+                [style.background]="categoria.bgColor"
+                [style.color]="categoria.iconColor">
+                Activa
+              </span>
+            </div>
+          </div>
+
+          <div class="expense-actions-wrapper">
+            <button type="button" class="expense-more-btn" (click)="toggleAcciones(categoria.id)">
+              <ion-icon name="ellipsis-horizontal" aria-hidden="true"></ion-icon>
+            </button>
+
+            <div class="expense-actions" [class.expense-actions--visible]="categoria.mostrarAcciones">
+              <div class="action-list">
+                <button type="button" class="action-text-btn" (click)="editar(categoria)">
+                  <span>Editar</span>
+                </button>
+
+                <button type="button" class="action-text-btn action-text-btn--delete" (click)="eliminar(categoria)">
+                  <span>Eliminar</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- CATEGORÍAS INACTIVAS -->
+    <div *ngIf="!cargando && categoriasInactivas.length > 0">
+      <h2 class="section-subtitle section-subtitle--inactive">Categorías eliminadas</h2>
+      <p class="inactive-hint">Estas categorías ya no están disponibles para nuevos gastos, pero se mantienen en el historial.</p>
+
+      <div class="expenses-list">
+        <article class="expense-card category-card category-card--inactive" *ngFor="let categoria of categoriasInactivas">
+          <div
+            class="expense-icon"
+            [style.background]="categoria.bgColor"
+            [style.color]="categoria.iconColor">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+          </div>
+
+          <div class="expense-content">
+            <div class="expense-top">
+              <h2 class="expense-title">{{ categoria.nombre }}</h2>
+            </div>
+
+            <div class="expense-bottom">
+              <span
+                class="category-tag category-tag--inactive"
+                [style.background]="categoria.bgColor"
+                [style.color]="categoria.iconColor">
+                Eliminada
+              </span>
+            </div>
+          </div>
+
+          <div class="expense-actions-wrapper">
+            <button type="button" class="expense-more-btn" (click)="toggleAcciones(categoria.id)">
+              <ion-icon name="ellipsis-horizontal" aria-hidden="true"></ion-icon>
+            </button>
+
+            <div class="expense-actions" [class.expense-actions--visible]="categoria.mostrarAcciones">
+              <div class="action-list">
+                <button type="button" class="action-text-btn action-text-btn--reactivate" (click)="reactivar(categoria)">
+                  <span>Reactivar</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- MENSAJE CUANDO NO HAY CATEGORÍAS -->
+    <div *ngIf="!cargando && categorias.length === 0" class="empty-state">
+      <p>No tienes categorías aún.</p>
+      <p class="empty-hint">Crea tu primera categoría para organizar tus gastos.</p>
+    </div>
+
+    <!-- ESPACIADOR FINAL -->
+    <div class="list-spacer"></div>
+
+    <!-- MODAL CONFIRMAR ELIMINAR -->
+    <div class="app-modal-backdrop" *ngIf="mostrandoConfirmacionEliminar">
+      <section class="app-modal-card delete-expense-modal" role="dialog" aria-modal="true">
+        <div class="delete-icon-wrapper">
+          <ion-icon name="trash-outline" aria-hidden="true"></ion-icon>
+        </div>
+
+        <h2>¿Eliminar categoría?</h2>
+
+        <p>
+          Estás a punto de eliminar
+          <strong>{{ categoriaPendienteEliminar?.nombre }}</strong>.
+        </p>
+
+        <span class="delete-warning">
+          Tus gastos anteriores no se modificarán.
+        </span>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="cancelarEliminarCategoria()">Cancelar</button>
+          <button type="button" class="btn-danger" (click)="eliminarCategoriaConfirmado()">Sí, eliminar</button>
+        </div>
+      </section>
+    </div>
+
+  </section>
+</ion-content>

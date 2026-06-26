@@ -1,79 +1,124 @@
-<ion-content class="scan-content app-content" [fullscreen]="false">
-  <section class="scan-wrapper app-page-wrapper">
+<ion-header class="new-expense-header ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/nuevo-gasto"
+        text=""
+        icon="arrow-back-outline"
+        aria-label="Regresar"
+      ></ion-back-button>
+    </ion-buttons>
 
-    <article class="camera-container">
-      
-      <video 
-        #videoElement 
-        class="camera-feed" 
-        autoplay 
-        playsinline 
-        muted 
-        [hidden]="capturaReciente">
-      </video>
+    <ion-title>Escanear Ticket</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-      <img 
-        *ngIf="capturaReciente" 
-        [src]="imagenRuta" 
-        class="camera-feed" 
-        alt="Foto capturada">
+<ion-content class="new-expense-content app-content" [fullscreen]="false">
+  <div class="new-expense-wrapper scan-wrapper">
+    <main class="main-white-card">
 
-      <div class="scan-frame" *ngIf="!capturaReciente">
-        <div class="corner top-left"></div>
-        <div class="corner top-right"></div>
-        <div class="corner bottom-left"></div>
-        <div class="corner bottom-right"></div>
-        <div class="scan-line"></div>
+      <!-- CONTENEDOR DE LA CÁMARA -->
+      <div class="camera-container">
+        <!-- Video en vivo -->
+        <video 
+          #videoElement 
+          class="camera-feed" 
+          autoplay 
+          playsinline
+          [hidden]="capturaReciente"
+        ></video>
+
+        <!-- Imagen capturada -->
+        <img 
+          *ngIf="capturaReciente && imagenRuta"
+          [src]="imagenRuta" 
+          class="camera-feed captured-image"
+          alt="Ticket capturado"
+        />
+
+        <!-- Canvas para capturar la foto (oculto) -->
+        <canvas #canvasElement class="camera-feed" style="display:none"></canvas>
+
+        <!-- Marco del escáner - solo visible cuando NO hay captura -->
+        <div class="scan-frame" *ngIf="!capturaReciente">
+          <div class="corner top-left"></div>
+          <div class="corner top-right"></div>
+          <div class="corner bottom-left"></div>
+          <div class="corner bottom-right"></div>
+          <div class="scan-line"></div>
+        </div>
+
+        <!-- Marco cuando hay captura (sin línea animada) -->
+        <div class="scan-frame scan-frame--captured" *ngIf="capturaReciente">
+          <div class="corner top-left"></div>
+          <div class="corner top-right"></div>
+          <div class="corner bottom-left"></div>
+          <div class="corner bottom-right"></div>
+        </div>
+
+        <!-- Texto de ayuda -->
+        <div class="scan-hint" *ngIf="!capturaReciente">
+          Coloca el ticket dentro del marco
+        </div>
       </div>
 
-      <div class="scan-hint" *ngIf="!capturaReciente">
-        Alinea el ticket con el recuadro
-      </div>
-    </article>
+      <!-- BOTONES DE CÁMARA Y GALERÍA -->
+      <div class="camera-actions">
+        <button 
+          class="btn-take-photo" 
+          (click)="tomarFoto()" 
+          [disabled]="capturaReciente"
+        >
+          <ion-icon name="camera" aria-hidden="true"></ion-icon>
+          Tomar foto
+        </button>
 
-    <div class="camera-actions">
-      <button class="btn-take-photo" (click)="tomarFoto()" [disabled]="capturaReciente">
-        <ion-icon name="camera" aria-hidden="true"></ion-icon>
-        Tomar foto
+        <button class="btn-gallery" (click)="abrirGaleria()">
+          <ion-icon name="image" aria-hidden="true"></ion-icon>
+          Galería
+        </button>
+      </div>
+
+      <!-- Input oculto para galería -->
+      <input 
+        #fileInput 
+        type="file" 
+        accept="image/*" 
+        style="display: none" 
+        (change)="cargarDesdeGaleria($event)"
+      />
+
+      <!-- CAPTURA RECIENTE -->
+      <div class="recent-capture" *ngIf="capturaReciente">
+        <div class="capture-thumb">
+          <img [src]="imagenRuta" alt="Vista previa del ticket" />
+        </div>
+
+        <div class="capture-info">
+          <strong>Ticket capturado</strong>
+          <span>{{ nombreCaptura }}</span>
+        </div>
+
+        <button class="btn-delete" (click)="eliminarCaptura()" aria-label="Eliminar captura">
+          <ion-icon name="trash" aria-hidden="true"></ion-icon>
+        </button>
+      </div>
+
+      <!-- BOTÓN DE IA -->
+      <button 
+        class="btn-ai" 
+        (click)="analizarConIA()" 
+        [disabled]="!capturaReciente || analizando"
+      >
+        <ion-icon name="sparkles" class="ai-icon" aria-hidden="true"></ion-icon>
+        <span>{{ analizando ? 'Analizando...' : 'Analizar con IA' }}</span>
       </button>
 
-      <button class="btn-gallery" (click)="abrirGaleria()">
-        <ion-icon name="image" aria-hidden="true"></ion-icon>
-        Galería
-      </button>
-    </div>
+      <!-- TEXTO DE PIE -->
+      <p class="scan-footer-text">
+        La IA analizará tu ticket y extraerá los datos automáticamente.
+      </p>
 
-    <canvas #canvasElement style="display: none;"></canvas>
-    <input 
-      #fileInput 
-      type="file" 
-      accept="image/*" 
-      style="display: none;" 
-      (change)="cargarDesdeGaleria($event)">
-
-    <article class="recent-capture" *ngIf="capturaReciente">
-      <div class="capture-thumb">
-        <img [src]="imagenRuta" alt="Miniatura del ticket" />
-      </div>
-
-      <div class="capture-info">
-        <strong>Captura reciente</strong>
-        <span>{{ nombreCaptura }}</span>
-      </div>
-
-      <button class="btn-delete" (click)="eliminarCaptura()" aria-label="Eliminar captura">
-        <ion-icon name="trash" aria-hidden="true"></ion-icon>
-      </button>
-    </article>
-
-    <button class="btn-ai" (click)="analizarConIA()" [disabled]="!capturaReciente">
-      <ion-icon name="sparkles" class="ai-icon" aria-hidden="true"></ion-icon>
-      Analizar con IA
-    </button>
-
-    <p class="scan-footer-text">
-      Nuestra IA detectará automáticamente montos, fechas y categorías para ti.
-    </p>
-
-  </section>
+    </main>
+  </div>
 </ion-content>

@@ -1,29 +1,38 @@
 <ion-content class="home-content app-content" [fullscreen]="false">
   <section class="home-wrapper app-page-wrapper">
 
-    <header class="home-header">
-      <button type="button" class="header-icon-button" (click)="abrirSelectorMes()">
-        <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
-      </button>
-
-      <div class="header-month-info">
-        <span>Resumen de</span>
-        <strong>{{ etiquetaMesSeleccionado }}</strong>
-      </div>
-    </header>
-
     <ion-card class="total-card">
+      <div class="month-navigator">
+        <button type="button" 
+                class="nav-btn" 
+                [class.nav-btn--disabled]="!puedeIrAnterior()" 
+                [disabled]="!puedeIrAnterior()" 
+                (click)="mesAnterior()">
+          <ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon>
+        </button>
+        
+        <button type="button" class="month-label" (click)="abrirSelectorMes()">
+          <strong>{{ etiquetaMesSeleccionado }}</strong>
+        </button>
+        
+        <button type="button" 
+                class="nav-btn" 
+                [class.nav-btn--disabled]="!puedeIrSiguiente()" 
+                [disabled]="!puedeIrSiguiente()" 
+                (click)="mesSiguiente()">
+          <ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon>
+        </button>
+      </div>
+
       <div class="total-info">
         <p class="total-title">Total del mes</p>
         <h1 class="total-amount">{{ totalMes | currency: 'USD' : 'symbol' : '1.2-2' }}</h1>
 
         <span class="trend-chip">
-          <ion-icon [name]="tendenciaPositiva ? 'arrow-up' : 'arrow-down'" aria-hidden="true"></ion-icon>
-          {{ variacionAbsoluta }}% vs mes anterior
+          <ion-icon *ngIf="hayDatosMesAnterior" [name]="tendenciaPositiva ? 'arrow-up' : 'arrow-down'" aria-hidden="true"></ion-icon>
+          {{ mensajeTendencia }}
         </span>
       </div>
-
-      <ion-icon class="trend-icon-bg" name="trending-up-outline" aria-hidden="true"></ion-icon>
     </ion-card>
 
     <ion-grid class="stats-grid">
@@ -73,8 +82,8 @@
     </div>
 
     <div class="recent-list" *ngIf="gastosRecientes.length > 0; else sinGastosDelMes">
-      <article class="recent-item" *ngFor="let gasto of gastosRecientes">
-        <div class="recent-icon">
+      <article class="recent-item" *ngFor="let gasto of gastosRecientes" [class.recent-item--msi]="gasto.esMSI">
+        <div class="recent-icon" [style.background]="gasto.bgColor" [style.color]="gasto.iconColor">
           <ion-icon [name]="gasto.icono" aria-hidden="true"></ion-icon>
         </div>
 
@@ -83,7 +92,7 @@
           <span>{{ gasto.fechaRelativa }}</span>
         </div>
 
-        <strong class="recent-amount">
+        <strong class="recent-amount" [class.recent-amount--msi]="gasto.esMSI">
           -{{ gasto.monto | currency: 'USD' : 'symbol' : '1.2-2' }}
         </strong>
       </article>
@@ -125,13 +134,21 @@
       </header>
 
       <div class="year-selector">
-        <button type="button" class="year-nav-button" (click)="cambiarAnioSelector(-1)">
+        <button type="button" 
+                class="year-nav-button" 
+                [class.year-nav-button--disabled]="!hayRegistrosEnAnio(anioSelector - 1)"
+                [disabled]="!hayRegistrosEnAnio(anioSelector - 1)" 
+                (click)="cambiarAnioSelector(-1)">
           <ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon>
         </button>
 
         <strong>{{ anioSelector }}</strong>
 
-        <button type="button" class="year-nav-button" (click)="cambiarAnioSelector(1)">
+        <button type="button" 
+                class="year-nav-button" 
+                [class.year-nav-button--disabled]="!hayRegistrosEnAnio(anioSelector + 1)"
+                [disabled]="!hayRegistrosEnAnio(anioSelector + 1)" 
+                (click)="cambiarAnioSelector(1)">
           <ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon>
         </button>
       </div>
@@ -142,6 +159,8 @@
           class="month-option"
           *ngFor="let mes of mesesDelAnio"
           [class.month-option--active]="esMesActivo(mes.numero)"
+          [class.month-option--disabled]="!hayGastosEnMes(mes.numero, anioSelector)"
+          [disabled]="!hayGastosEnMes(mes.numero, anioSelector)"
           (click)="seleccionarMes(mes.numero)"
         >
           <span>{{ mes.corto }}</span>

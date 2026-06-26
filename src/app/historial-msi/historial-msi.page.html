@@ -1,0 +1,89 @@
+<ion-header class="msi-header ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/msi" text="" icon="arrow-back-outline" aria-label="Regresar"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Historial MSI</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="msi-content app-content" [fullscreen]="false">
+  <div class="historial-wrapper">
+
+    <!-- Filtro -->
+    <div class="filter-row">
+      <button type="button" class="filter-chip" [class.filter-chip--active]="mostrarLiquidadas" (click)="toggleMostrarLiquidadas()">
+        <ion-icon name="eye-outline" aria-hidden="true"></ion-icon>
+        <span>Mostrar liquidadas</span>
+      </button>
+      <span class="total-badge">{{ comprasMSI.length }} compras</span>
+    </div>
+
+    <!-- Estado de carga -->
+    <div class="loading-state" *ngIf="cargando">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando historial...</p>
+    </div>
+
+    <!-- Lista de compras -->
+    <div class="compras-list" *ngIf="!cargando">
+      <div class="empty-state" *ngIf="comprasMSI.length === 0">
+        <ion-icon name="receipt-outline" aria-hidden="true"></ion-icon>
+        <h3>Sin compras a MSI</h3>
+        <p>Todavía no has registrado ninguna compra a meses sin intereses.</p>
+        <ion-button routerLink="/msi" fill="outline" size="small">Agregar compra</ion-button>
+      </div>
+
+      <article class="compra-card" *ngFor="let compra of comprasMSI" [class.compra-card--liquidada]="compra.liquidada">
+        <div class="compra-header">
+          <div class="compra-info">
+            <h3>{{ compra.concepto }}</h3>
+            <span class="compra-fecha">{{ compra.fecha_compra | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <span class="compra-total">${{ compra.monto_total | number:'1.2-2' }}</span>
+        </div>
+
+        <div class="compra-details">
+          <div class="detail-item">
+            <span>Pago mensual</span>
+            <strong>${{ compra.pago_mensual | number:'1.2-2' }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>Progreso</span>
+            <strong>{{ getPorcentajeCompletado(compra) }}%</strong>
+          </div>
+          <div class="detail-item">
+            <span>Estado</span>
+            <strong [style.color]="compra.liquidada ? '#10b981' : '#f59e0b'">
+              {{ compra.liquidada ? '✅ Liquidada' : calcularMesesRestantes(compra) }}
+            </strong>
+          </div>
+        </div>
+
+        <!-- Barra de progreso -->
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="getPorcentajeCompletado(compra)" [style.background]="getColorProgreso(compra)"></div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="compra-actions" *ngIf="!compra.liquidada">
+          <button type="button" class="action-btn action-btn--liquidar" (click)="liquidarCompra(compra)">
+            <ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon>
+            Liquidar
+          </button>
+          <button type="button" class="action-btn action-btn--delete" (click)="eliminarCompra(compra.id)">
+            <ion-icon name="trash-outline" aria-hidden="true"></ion-icon>
+            Eliminar
+          </button>
+        </div>
+
+        <!-- Badge liquidada -->
+        <div class="liquidada-badge" *ngIf="compra.liquidada">
+          <ion-icon name="checkmark-circle" aria-hidden="true"></ion-icon>
+          Liquidada
+        </div>
+      </article>
+    </div>
+
+  </div>
+</ion-content>

@@ -1,81 +1,146 @@
 <ion-content class="expenses-content app-content" [fullscreen]="false">
-  <section class="expenses-wrapper app-page-wrapper">
-    <h1 class="page-title">Mis gastos</h1>
+  <section class="expenses-wrapper app-page-wrapper" (click)="cerrarDropdownFecha()">
+
+    <div class="expenses-header-row">
+      <h1 class="page-title">Mis gastos</h1>
+
+      <div class="menu-container">
+        <button type="button" class="menu-button" (click)="toggleMenu($event)" aria-label="Menú">
+          <ion-icon name="ellipsis-vertical" aria-hidden="true"></ion-icon>
+        </button>
+
+        <div class="menu-dropdown" [class.menu-dropdown--open]="menuAbierto">
+          <button type="button" class="menu-item" (click)="irACategorias()">
+            <ion-icon name="create-outline" aria-hidden="true"></ion-icon>
+            <span>Crear categoría</span>
+          </button>
+          <button type="button" class="menu-item" (click)="irAMSI()">
+            <ion-icon name="cash-outline" aria-hidden="true"></ion-icon>
+            <span>Meses sin intereses</span>
+          </button>
+        </div>
+      </div>
+    </div>
 
     <ion-searchbar
       class="expenses-search"
       [(ngModel)]="terminoBusqueda"
       placeholder="¿En qué gastaste hoy?"
       search-icon="search"
-      show-clear-button="focus"
-    ></ion-searchbar>
+      show-clear-button="focus">
+    </ion-searchbar>
 
-    <div class="filters-row" aria-label="Filtros de gastos">
-      <button
-        type="button"
-        class="filter-pill"
-        [class.filter-pill--active]="categoriaSeleccionada === 'Fecha'"
-        (click)="seleccionarFiltro('Fecha')"
-      >
-        <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
-        <span>Fecha</span>
-      </button>
+    <div class="filters-area" (click)="$event.stopPropagation()">
+      <div class="filters-row" aria-label="Filtros de gastos">
 
-      <div class="filter-separator"></div>
+        <div class="date-filter-wrapper">
+          <button
+            type="button"
+            class="filter-pill"
+            [class.filter-pill--active]="filtroMes !== null"
+            (click)="toggleDropdownFecha($event)">
 
-      <button
-        type="button"
-        class="filter-pill"
-        [class.filter-pill--active]="categoriaSeleccionada === 'Todos'"
-        (click)="seleccionarFiltro('Todos')"
-      >
-        <span>Todos</span>
-      </button>
+            <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
 
-      <button
-        type="button"
-        class="filter-pill"
-        *ngFor="let cat of categoriasOrdenadas"
-        [class.filter-pill--active]="categoriaSeleccionada === cat.etiqueta"
-        (click)="seleccionarFiltro(cat.etiqueta)"
-      >
-        <span>{{ cat.etiqueta }}</span>
-      </button>
-    </div>
+            <span>
+              {{ filtroMes !== null ? (mesesOpciones[filtroMes].corto + ' ' + filtroAnio) : 'Fecha' }}
+            </span>
 
-    <div class="date-filter-panel" *ngIf="mostrarFiltroFecha">
-      <label>
-        <span>Desde</span>
-        <input type="date" [(ngModel)]="fechaDesde" />
-      </label>
+            <ion-icon
+              *ngIf="filtroMes !== null"
+              name="close-circle-outline"
+              class="clear-date-icon"
+              (click)="$event.stopPropagation(); limpiarFiltroFecha()">
+            </ion-icon>
+          </button>
+        </div>
 
-      <label>
-        <span>Hasta</span>
-        <input type="date" [(ngModel)]="fechaHasta" />
-      </label>
+        <div class="filter-separator"></div>
 
-      <button type="button" class="btn-clear" (click)="limpiarFiltroFecha()">
-        Limpiar
-      </button>
+        <button
+          type="button"
+          class="filter-pill"
+          [class.filter-pill--active]="categoriaSeleccionada === 'Todos'"
+          (click)="seleccionarFiltro('Todos', $event)">
+          <span>Todos</span>
+        </button>
+
+        <button
+          type="button"
+          class="filter-pill"
+          *ngFor="let cat of categoriasOrdenadas"
+          [class.filter-pill--active]="categoriaSeleccionada === cat.id"
+          (click)="seleccionarFiltro(cat.id, $event)">
+          <span>{{ cat.nombre }}</span>
+        </button>
+      </div>
+
+      <div
+        class="date-dropdown calendar-dropdown"
+        *ngIf="isDateDropdownOpen"
+        (click)="$event.stopPropagation()">
+
+        <div class="calendar-year-bar">
+          <button
+            type="button"
+            class="calendar-arrow"
+            [disabled]="!puedeMoverAnio(-1)"
+            (click)="moverAnio(-1)">
+            <ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon>
+          </button>
+
+          <div class="calendar-year-title" [class.calendar-year-title--disabled]="!anioActualHabilitado">
+            {{ anioPickerActual }}
+          </div>
+
+          <button
+            type="button"
+            class="calendar-arrow"
+            [disabled]="!puedeMoverAnio(1)"
+            (click)="moverAnio(1)">
+            <ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon>
+          </button>
+        </div>
+
+        <div class="calendar-month-grid" *ngIf="aniosConRegistros.length > 0">
+          <button
+            type="button"
+            class="calendar-month-cell"
+            *ngFor="let mes of mesesSelector"
+            [class.calendar-month-cell--active]="mes.seleccionado"
+            [class.calendar-month-cell--disabled]="!mes.habilitado"
+            [disabled]="!mes.habilitado"
+            (click)="seleccionarMes(mes.numero)">
+            {{ mes.corto }}
+          </button>
+        </div>
+
+        <p class="date-dropdown-empty" *ngIf="aniosConRegistros.length === 0">
+          Todavía no hay meses con gastos registrados.
+        </p>
+      </div>
     </div>
 
     <div class="expenses-list">
       <article class="expense-card" *ngFor="let gasto of gastosFiltrados">
-        <div class="expense-icon" [ngClass]="iconBackgroundClass(gasto.categoria)">
+
+        <div
+          class="expense-icon"
+          [style.background]="gasto.bgColor"
+          [style.color]="gasto.iconColor">
           <ion-icon [name]="gasto.icono" aria-hidden="true"></ion-icon>
         </div>
 
         <div class="expense-content">
           <div class="expense-top">
             <h2 class="expense-title">{{ gasto.concepto }}</h2>
-
-            <strong class="expense-amount">
-              {{ gasto.monto | currency: 'USD' : 'symbol' : '1.2-2' }}
-            </strong>
           </div>
 
           <div class="expense-bottom">
-            <span class="category-tag" [ngClass]="tagClass(gasto.categoria)">
+            <span
+              class="category-tag"
+              [style.background]="gasto.bgColor"
+              [style.color]="gasto.textColor">
               {{ gasto.categoriaFormateada }}
             </span>
 
@@ -83,36 +148,58 @@
           </div>
         </div>
 
-        <div class="expense-actions">
-          <button
-            type="button"
-            class="expense-action-button expense-edit-button"
-            aria-label="Editar gasto"
-            (click)="editarGasto(gasto)"
-          >
-            <ion-icon name="create-outline" aria-hidden="true"></ion-icon>
-          </button>
+        <div class="expense-right-col">
+          <strong class="expense-amount">
+            -{{ gasto.monto | currency: 'USD' : 'symbol' : '1.2-2' }}
+          </strong>
 
           <button
             type="button"
-            class="expense-action-button expense-delete-button"
-            aria-label="Eliminar gasto"
-            (click)="confirmarEliminarGasto(gasto)"
-          >
-            <ion-icon name="trash-outline" aria-hidden="true"></ion-icon>
+            class="expense-more-btn"
+            (click)="toggleAcciones(gasto)">
+            <ion-icon name="ellipsis-horizontal" aria-hidden="true"></ion-icon>
           </button>
+
+          <div
+            class="expense-actions"
+            [class.expense-actions--visible]="gasto.mostrarAcciones">
+
+            <div class="action-list">
+              <button
+                type="button"
+                class="action-text-btn"
+                (click)="editarGasto(gasto)">
+                <span>Editar</span>
+              </button>
+
+              <button
+                type="button"
+                class="action-text-btn action-text-btn--delete"
+                (click)="confirmarEliminarGasto(gasto)">
+                <span>Eliminar</span>
+              </button>
+            </div>
+          </div>
         </div>
       </article>
     </div>
 
     <div class="end-of-list">
-      <img src="assets/gastos.jpg" alt="No encuentras lo que buscas" class="end-image" />
+      <img
+        src="assets/gastos.jpg"
+        alt="No encuentras lo que buscas"
+        class="end-image" />
+
       <p>¿No encuentras lo que buscas?</p>
       <a href="#">Revisar otros meses</a>
     </div>
   </section>
 
-  <ion-fab class="app-expense-fab" slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab
+    class="app-expense-fab"
+    slot="fixed"
+    vertical="bottom"
+    horizontal="end">
     <ion-fab-button routerLink="/nuevo-gasto" aria-label="Agregar gasto">
       <ion-icon name="add" aria-hidden="true"></ion-icon>
     </ion-fab-button>
@@ -127,21 +214,24 @@
           <h2>Editar gasto</h2>
         </div>
 
-        <button type="button" class="modal-close-button" (click)="cerrarModalEditar()">
+        <button
+          type="button"
+          class="modal-close-button"
+          (click)="cerrarModalEditar()">
           <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
         </button>
       </header>
 
       <form class="edit-expense-form" (ngSubmit)="guardarEdicionGasto()">
         <div class="edit-expense-fields">
+
           <label class="form-field">
             <span>Concepto</span>
             <input
               type="text"
               name="concepto"
               [(ngModel)]="formEditar.concepto"
-              placeholder="Ej. Café, comida, gasolina"
-            />
+              placeholder="Ej. Café, comida, gasolina" />
           </label>
 
           <div class="form-row">
@@ -150,23 +240,24 @@
 
               <div class="money-input-wrapper">
                 <span class="money-symbol">$</span>
+
                 <input
                   type="number"
                   name="monto"
                   [(ngModel)]="formEditar.monto"
                   placeholder="0.00"
                   min="0"
-                  step="0.01"
-                />
+                  step="0.01" />
               </div>
             </label>
 
             <label class="form-field">
               <span>Categoría</span>
-              <select name="categoria" [(ngModel)]="formEditar.categoria">
+
+              <select name="categoria" [(ngModel)]="formEditar.categoria_id">
                 <option value="" disabled>Selecciona</option>
-                <option *ngFor="let cat of categoriasOrdenadas" [value]="cat.etiqueta">
-                  {{ cat.etiqueta }}
+                <option *ngFor="let cat of categoriasOrdenadas" [value]="cat.id">
+                  {{ cat.nombre }}
                 </option>
               </select>
             </label>
@@ -175,15 +266,16 @@
           <div class="form-row">
             <label class="form-field">
               <span>Fecha</span>
+
               <input
                 type="date"
                 name="fecha"
-                [(ngModel)]="formEditar.fecha"
-              />
+                [(ngModel)]="formEditar.fecha" />
             </label>
 
             <label class="form-field">
               <span>Método de pago</span>
+
               <select name="metodo_pago" [(ngModel)]="formEditar.metodo_pago">
                 <option value="" disabled>Selecciona</option>
                 <option value="Efectivo">Efectivo</option>
@@ -195,17 +287,21 @@
 
           <label class="form-field form-field--textarea">
             <span>Notas</span>
+
             <textarea
               name="notas"
               [(ngModel)]="formEditar.notas"
               placeholder="Agrega una nota opcional"
-              rows="2"
-            ></textarea>
+              rows="2">
+            </textarea>
           </label>
         </div>
 
         <div class="modal-actions modal-actions--fixed">
-          <button type="button" class="btn-secondary" (click)="cerrarModalEditar()">
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="cerrarModalEditar()">
             Cancelar
           </button>
 
@@ -230,7 +326,9 @@
         Estás a punto de eliminar
         <strong>{{ gastoPendienteEliminar.concepto }}</strong>
         por
-        <strong>{{ gastoPendienteEliminar.monto | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>.
+        <strong>
+          {{ gastoPendienteEliminar.monto | currency: 'USD' : 'symbol' : '1.2-2' }}
+        </strong>.
       </p>
 
       <span class="delete-warning">
@@ -238,11 +336,17 @@
       </span>
 
       <div class="modal-actions">
-        <button type="button" class="btn-secondary" (click)="cancelarEliminarGasto()">
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="cancelarEliminarGasto()">
           Cancelar
         </button>
 
-        <button type="button" class="btn-danger" (click)="eliminarGastoConfirmado()">
+        <button
+          type="button"
+          class="btn-danger"
+          (click)="eliminarGastoConfirmado()">
           Sí, eliminar
         </button>
       </div>

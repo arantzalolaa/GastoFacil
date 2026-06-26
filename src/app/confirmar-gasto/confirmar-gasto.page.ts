@@ -2,27 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import {
-  bagHandleOutline,
-  calendarOutline,
-  cashOutline,
-  chevronDownOutline,
-  documentTextOutline,
-  eyeOutline,
-  restaurantOutline,
-  sparkles,
-  storefrontOutline,
-  bulbOutline,
-  carOutline,
-  gameControllerOutline,
-  schoolOutline,
-  medkitOutline,
-  shapesOutline,
-  closeOutline // <-- Agregamos el icono de cerrar
-} from 'ionicons/icons';
 import { GastosService } from '../services/gastos.service';
 import { AnalisisTicketService, GastoIA } from '../services/analisis-ticket.service';
+import { CategoriasService } from '../services/categorias.service';
 import { normalizarCategoria } from '../services/categorias.util';
 
 @Component({
@@ -35,11 +17,12 @@ export class ConfirmarGastoPage {
   private readonly router = inject(Router);
   private readonly gastosService = inject(GastosService);
   private readonly analisisService = inject(AnalisisTicketService);
+  private readonly categoriasService = inject(CategoriasService);
 
   cargando = true;
   errorAnalisis = false;
   imagenTicketBase64: string | null = null;
-  mostrarVisor = false; // <-- Controla si se ve el visor o no
+  mostrarVisor = false;
 
   gastoDetectado: GastoIA = {
     establecimiento: '',
@@ -51,29 +34,24 @@ export class ConfirmarGastoPage {
     notas: '',
   };
 
+  private nombreCategoriaMap = new Map<string, number>();
+
   constructor() {
-    addIcons({
-      bagHandleOutline,
-      calendarOutline,
-      cashOutline,
-      chevronDownOutline,
-      documentTextOutline,
-      eyeOutline,
-      restaurantOutline,
-      sparkles,
-      storefrontOutline,
-      bulbOutline,
-      carOutline,
-      gameControllerOutline,
-      schoolOutline,
-      medkitOutline,
-      shapesOutline,
-      closeOutline // <-- Registramos el icono
-    });
+    // Ya no es necesario addIcons aquí
   }
 
-  ionViewWillEnter(): void {
-    void this.iniciarAnalisis();
+  async ionViewWillEnter(): Promise<void> {
+    await this.cargarMapaCategorias();
+    await this.iniciarAnalisis();
+  }
+
+  private async cargarMapaCategorias(): Promise<void> {
+    try {
+      const cats = await this.categoriasService.obtenerCategorias({ incluirInactivas: false });
+      cats.forEach(c => this.nombreCategoriaMap.set(c.nombre.toLowerCase().trim(), c.id));
+    } catch (error) {
+      console.error('No se pudo cargar el mapa de categorías:', error);
+    }
   }
 
   private async iniciarAnalisis(): Promise<void> {
@@ -87,45 +65,45 @@ export class ConfirmarGastoPage {
     }
 
     try {
-      this.gastoDetectado = await this.analisisService.analizarTicket();
+      const resultado = await this.analisisService.analizarTicket();
+      
+      if (!resultado || !resultado.monto || resultado.monto === 0) {
+        this.errorAnalisis = true;
+        console.error('La IA no pudo analizar correctamente el ticket');
+        return;
+      }
+      
+      this.gastoDetectado = resultado;
     } catch (error) {
       this.errorAnalisis = true;
-      console.error(error);
+      console.error('Error al analizar con IA:', error);
     } finally {
       this.cargando = false;
     }
   }
 
-  // Funciones para controlar el visor
-  abrirVisor(): void {
-    this.mostrarVisor = true;
-  }
-
-  cerrarVisor(): void {
-    this.mostrarVisor = false;
-  }
+  abrirVisor(): void { this.mostrarVisor = true; }
+  cerrarVisor(): void { this.mostrarVisor = false; }
 
   obtenerIconoCategoria(categoria: string): string {
     const cat = normalizarCategoria(categoria);
     const mapaIconos: Record<string, string> = {
-      comida: 'restaurant-outline',
-      servicios: 'bulb-outline',
-      transporte: 'car-outline',
-      ocio: 'game-controller-outline',
-      estudios: 'school-outline',
-      salud: 'medkit-outline',
+      comida: 'restaurant-outline', servicios: 'bulb-outline', transporte: 'car-outline',
+      ocio: 'game-controller-outline', estudios: 'school-outline', salud: 'medkit-outline',
       otros: 'shapes-outline'
     };
-
     return mapaIconos[cat] || 'shapes-outline';
   }
 
   async confirmarYGuardar(): Promise<void> {
+    const nombreCatIa = this.gastoDetectado.categoria.toLowerCase().trim();
+    const categoriaIdTraducido = this.nombreCategoriaMap.get(nombreCatIa) ?? null;
+
     await this.gastosService.crearGasto({
       concepto: this.gastoDetectado.concepto,
       monto: this.gastoDetectado.monto,
       fecha: this.normalizarFechaDetectada(this.gastoDetectado.fecha),
-      categoria: this.gastoDetectado.categoria,
+      categoria_id: categoriaIdTraducido,
       metodo_pago: this.gastoDetectado.metodo_pago,
       notas: this.gastoDetectado.notas,
     });

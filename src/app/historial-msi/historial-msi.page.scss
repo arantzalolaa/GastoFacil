@@ -1,0 +1,318 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.msi-header {
+  background: #f7f9fb;
+  box-shadow: none;
+
+  ion-toolbar {
+    --background: #f7f9fb;
+    --border-width: 0;
+    --min-height: 64px;
+    --padding-end: 16px;
+    --padding-start: 8px;
+  }
+
+  ion-back-button {
+    --color: #0456c5;
+    --icon-font-size: 24px;
+    --padding-end: 0;
+    --padding-start: 0;
+    --ripple-color: rgba(4, 86, 197, 0.14);
+    margin-left: 8px;
+    margin-right: 4px;
+  }
+
+  ion-title {
+    color: #0456c5;
+    font-size: 22px;
+    font-weight: 700;
+    padding-inline: 0;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    max-width: 60%;
+  }
+}
+
+.msi-content {
+  --background: #f7f9fb;
+}
+
+.historial-wrapper {
+  padding: 16px 18px 96px;
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px 0 16px;
+
+  .filter-chip {
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #e6e8ea;
+    border-radius: 999px;
+    color: #424653;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 0.85rem;
+    font-weight: 500;
+    gap: 6px;
+    padding: 8px 16px;
+    transition: all 0.2s;
+
+    ion-icon {
+      font-size: 1rem;
+    }
+
+    &--active {
+      background: #0456c5;
+      border-color: #0456c5;
+      color: #ffffff;
+    }
+
+    &:active {
+      transform: scale(0.96);
+    }
+  }
+
+  .total-badge {
+    background: #e6e8ea;
+    border-radius: 999px;
+    color: #424653;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 4px 12px;
+  }
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  gap: 12px;
+
+  ion-spinner {
+    color: #0456c5;
+  }
+
+  p {
+    color: #424653;
+    font-size: 0.95rem;
+  }
+}
+
+.compras-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+
+  ion-icon {
+    color: #c3c6d6;
+    font-size: 3.5rem;
+    margin-bottom: 12px;
+  }
+
+  h3 {
+    color: #191c1e;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+
+  p {
+    color: #424653;
+    font-size: 0.95rem;
+    margin: 0 0 16px;
+  }
+
+  ion-button {
+    --border-radius: 999px;
+  }
+}
+
+.compra-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  position: relative;
+  border: 1px solid #e6e8ea;
+
+  &--liquidada {
+    opacity: 0.6;
+    border-color: #10b981;
+  }
+
+  .compra-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+
+    .compra-info {
+      flex: 1;
+      min-width: 0;
+
+      h3 {
+        color: #191c1e;
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0 0 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .compra-fecha {
+        color: #737785;
+        font-size: 0.8rem;
+      }
+    }
+
+    .compra-total {
+      color: #191c1e;
+      font-size: 1.05rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+  }
+
+  .compra-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 12px 0 10px;
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+
+      span {
+        color: #737785;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+
+      strong {
+        color: #191c1e;
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-top: 1px;
+      }
+    }
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #e6e8ea;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+  }
+
+  .compra-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    border-top: 1px solid #f2f4f6;
+    padding-top: 12px;
+
+    .action-btn {
+      align-items: center;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      color: #424653;
+      cursor: pointer;
+      display: inline-flex;
+      font-size: 0.8rem;
+      font-weight: 500;
+      gap: 6px;
+      padding: 6px 12px;
+      transition: all 0.2s;
+
+      ion-icon {
+        font-size: 1rem;
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      &--liquidar {
+        color: #10b981;
+
+        &:hover {
+          background: #d1fae5;
+        }
+      }
+
+      &--delete {
+        color: #ef4444;
+
+        &:hover {
+          background: #fee2e2;
+        }
+      }
+    }
+  }
+
+  .liquidada-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #d1fae5;
+    color: #065f46;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    ion-icon {
+      font-size: 0.85rem;
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .historial-wrapper {
+    padding-inline: 14px;
+  }
+
+  .compra-card {
+    padding: 14px;
+
+    .compra-details {
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+  }
+}

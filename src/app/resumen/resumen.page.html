@@ -1,6 +1,6 @@
 <ion-content class="summary-content app-content" [fullscreen]="false">
   <section class="summary-wrapper app-page-wrapper">
-    
+
     <header class="summary-title-block">
       <h1>Resumen</h1>
       <p>Análisis de tus finanzas este mes</p>
@@ -10,25 +10,32 @@
       <p>TOTAL ACUMULADO</p>
       <h2>{{ totalAcumulado | currency: 'USD' : 'symbol' : '1.2-2' }}</h2>
       <span class="trend-chip">
-        <ion-icon [name]="variacionMesAnterior <= 0 ? 'trending-down-outline' : 'trending-up-outline'" aria-hidden="true"></ion-icon>
-        {{ variacionMesAnterior >= 0 ? variacionMesAnterior + '% más que el mes pasado' : (variacionMesAnterior * -1) + '% menos que el mes pasado' }}
+        <ion-icon [name]="variacionMesAnterior <= 0 ? 'trending-down-outline' : 'trending-up-outline'"
+          aria-hidden="true"></ion-icon>
+        {{ variacionMesAnterior >= 0 ? variacionMesAnterior + '% más que el mes pasado' : (variacionMesAnterior * -1) +
+        '% menos que el mes pasado' }}
       </span>
     </article>
 
     <article class="chart-card" aria-label="Gráfica circular de gastos">
-      
+
+      <!-- El donut usa colorIcon (SATURADO) -->
       <div class="donut-chart" [style.background]="chartGradient">
         <div class="donut-center">
-          <span>Gastos</span>
+          <span class="donut-label">Gastos</span>
           <strong>100%</strong>
         </div>
       </div>
 
+      <!-- La leyenda usa colorHex que AHORA es el color saturado -->
       <div class="chart-legend">
         <ng-container *ngFor="let item of desgloseCategorias">
           <div class="legend-item" *ngIf="item.porcentaje > 0">
             <span class="legend-dot" [style.background]="item.colorHex"></span>
-            <span class="legend-text">{{ item.categoria }} ({{ item.porcentaje }}%)</span>
+            <!-- ↑ AHORA usa colorHex que es el mismo color saturado -->
+            <span class="legend-text" [class.legend-text--inactive]="!item.activa">
+              {{ item.categoria }} ({{ item.porcentaje }}%)
+            </span>
           </div>
         </ng-container>
       </div>
@@ -38,13 +45,18 @@
     <article class="top-category-card" *ngIf="categoriaPrincipal">
       <div class="top-category-header">
         <p>Categoría con más gastos</p>
-        <div class="top-category-icon">
+        <div class="top-category-icon" [style.background]="categoriaPrincipal.colorBg"
+          [style.color]="categoriaPrincipal.colorIcon">
           <ion-icon [name]="categoriaPrincipal.icono" aria-hidden="true"></ion-icon>
         </div>
       </div>
-      <h3>{{ categoriaPrincipal.categoria }} ({{ categoriaPrincipal.porcentaje }}%)</h3>
+      <h3 [class.text-inactive]="!categoriaPrincipal.activa">
+        {{ categoriaPrincipal.categoria }} ({{ categoriaPrincipal.porcentaje }}%)
+        <span *ngIf="!categoriaPrincipal.activa" class="inactive-badge">⚠️ Eliminada</span>
+      </h3>
       <div class="progress-track">
-        <span [style.width.%]="categoriaPrincipal.porcentaje"></span>
+        <span [style.width.%]="categoriaPrincipal.porcentaje"
+          [style.background]="categoriaPrincipal.activa ? '#007442' : '#9CA3AF'"></span>
       </div>
     </article>
 
@@ -52,9 +64,10 @@
       <h2>DESGLOSE POR CATEGORÍA</h2>
 
       <div class="category-list">
-        <article class="category-item" *ngFor="let item of desgloseCategorias">
-          
-          <div class="category-icon" [ngClass]="item.clase">
+        <article class="category-item" *ngFor="let item of desgloseCategorias"
+          [class.category-item--inactive]="!item.activa">
+
+          <div class="category-icon" [style.background]="item.colorBg" [style.color]="item.colorIcon">
             <ion-icon [name]="item.icono" aria-hidden="true"></ion-icon>
           </div>
 
